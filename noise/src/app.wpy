@@ -1,0 +1,27 @@
+<style lang="less">
+</style>
+
+<script>
+import wepy from 'wepy'
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/water',
+      'pages/fire',
+      'pages/gold',
+      'pages/soil',
+      'pages/tree'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#66ffff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    }
+  }
+
+  onLaunch() {
+    console.log(this)
+  }
+}
+</script>

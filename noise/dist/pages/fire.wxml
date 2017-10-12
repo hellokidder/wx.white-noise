@@ -1,0 +1,5 @@
+
+  <view class="position" touchstart="touchstart" touchmove="touchmove">
+    <view class="text"/>
+    <view class="yuan center"><image class="mark" src="{{mark}}"/></view>
+  </view>
