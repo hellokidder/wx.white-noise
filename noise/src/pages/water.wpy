@@ -31,7 +31,7 @@
 </style>
 <template>
   <view class="position" @touchstart="touchstart" @touchmove="touchmove">
-    <view class="text"></view>
+    <view class="text">{{k}}</view>
     <view class"yuan center"><image class="mark" src="{{mark}}"></image></view>
   </view>
 </template>
@@ -42,6 +42,7 @@ export default class Index extends wepy.page {
     navigationBarTitleText: '吾心归处'
   }
   data = {
+    k: '0',
     mark: '../image/water.png',
     starPoint: [0, 0],
     curPoint: [0, 0]
@@ -54,8 +55,28 @@ export default class Index extends wepy.page {
     touchmove(e) {
       let self = this
       self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
-      if (self.curPoint[0] > self.starPoint[0]) {
-        self.mark = '../image/fire.png'
+      let xchange = self.curPoint[0] - self.starPoint[0]
+      let ychange = self.curPoint[1] - self.starPoint[1]
+      if (self.curPoint[0] >= self.starPoint[0]) {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+          self.k = 'you'
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+            self.k = 'xia'
+          } else {
+            self.k = 'shang'
+          }
+        }
+      } else {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+          self.k = 'zuo'
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+            self.k = 'xia'
+          } else {
+            self.k = 'shang'
+          }
+        }
       }
     }
   }
