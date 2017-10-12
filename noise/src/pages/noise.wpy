@@ -1,0 +1,139 @@
+<style lang="less">
+  .position{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    //background-color: #66ffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .mark{
+    width: 100px;
+    height: 100px;
+  }
+  .text{
+    width: 100%;
+    height: 20%;
+  }
+  .yuan{
+    width: 150px;
+    height: 150px;
+    border: 1px solid white;
+    border-radius: 75px;
+  }
+  .center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+<template>
+  <view class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" style="background-color: {{bgcolor}};">
+    <view class="text"></view>
+    <view class="yuan center"><image class="mark" src="{{mark}}"></image></view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class Water extends wepy.page {
+  config = {
+    navigationBarTitleText: '吾心归处'
+  }
+  data = {
+    mark: '../image/water.png',
+    starPoint: [0, 0],
+    curPoint: [0, 0],
+    bgcolor: '#66ffff',
+    node: '3'
+  }
+  methods = {
+    touchstart(e) {
+      let self = this
+      self.starPoint = [e.touches[0].pageX, e.touches[0].pageY]
+    },
+    touchmove(e) {
+      let self = this
+      self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
+    },
+    touchend(e) {
+      let self = this
+      let xchange = self.curPoint[0] - self.starPoint[0]
+      let ychange = self.curPoint[1] - self.starPoint[1]
+
+      if (self.curPoint[0] >= self.starPoint[0]) {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+          switch (self.node) {
+            case '1':
+              break
+            case '2':
+              self.mark = '../image/gold.png'
+              self.node = '1'
+              self.bgcolor = '#ffff33'
+              console.log(self)
+              self.config.navigationBarBackgroundColor = '#ffff33'
+              break
+            case '3':
+              self.mark = '../image/tree.png'
+              self.node = '2'
+              self.bgcolor = '#99ff00'
+              self.config.navigationBarBackgroundColor = '#99ff00'
+              break
+            case '4':
+              self.mark = '../image/water.png'
+              self.node = '3'
+              self.bgcolor = '#66ffff'
+              self.config.navigationBarBackgroundColor = '#66ffff'
+              break
+            case '5':
+              self.mark = '../image/fire.png'
+              self.node = '4'
+              self.bgcolor = '#ff0000'
+              self.config.navigationBarBackgroundColor = '#ff0000'
+              break
+          }
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+          } else {
+          }
+        }
+      } else {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+          switch (self.node) {
+            case '1':
+              self.mark = '../image/tree.png'
+              self.node = '2'
+              self.bgcolor = '#99ff00'
+              self.config.navigationBarBackgroundColor = '#ffffff'
+              break
+            case '2':
+              self.mark = '../image/water.png'
+              self.node = '3'
+              self.bgcolor = '#66ffff'
+              break
+            case '3':
+              self.mark = '../image/fire.png'
+              self.node = '4'
+              self.bgcolor = '#ff0000'
+              break
+            case '4':
+              self.mark = '../image/soil.png'
+              self.node = '5'
+              self.bgcolor = '#ff9999'
+              break
+            case '5':
+              break
+          }
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+          } else {
+          }
+        }
+      }
+    }
+  }
+  onLoad() {
+  }
+}
+</script>

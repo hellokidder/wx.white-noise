@@ -1,0 +1,5 @@
+
+  <view class="position" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend" style="background-color: {{bgcolor}};">
+    <view class="text"/>
+    <view class="yuan center"><image class="mark" src="{{mark}}"/></view>
+  </view>
