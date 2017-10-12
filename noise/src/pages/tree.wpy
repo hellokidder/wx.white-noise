@@ -30,7 +30,7 @@
   }
 </style>
 <template>
-  <view class="position" @touchstart="touchstart" @touchmove="touchmove">
+  <view class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
     <view class="text"></view>
     <view class="yuan center"><image class="mark" src="{{mark}}"></image></view>
   </view>
@@ -52,12 +52,15 @@ export default class Index extends wepy.page {
     touchmove(e) {
       let self = this
       self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
+    },
+    touchend() {
+      let self = this
       let xchange = self.curPoint[0] - self.starPoint[0]
       let ychange = self.curPoint[1] - self.starPoint[1]
       if (self.curPoint[0] >= self.starPoint[0]) {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
-          wepy.navigateTo({
-            url: '../pages/water'
+          wepy.navigateBack({
+            delta: 1
           })
         } else {
           if (self.curPoint[1] >= self.starPoint[1]) {
@@ -66,6 +69,9 @@ export default class Index extends wepy.page {
         }
       } else {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
+          wepy.navigateBack({
+            delta: 1
+          })
           wepy.navigateTo({
             url: '../pages/gold'
           })

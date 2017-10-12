@@ -57,6 +57,7 @@ export default class Water extends wepy.page {
       self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
     },
     touchend(e) {
+      let self = this
       let xchange = self.curPoint[0] - self.starPoint[0]
       let ychange = self.curPoint[1] - self.starPoint[1]
       if (self.curPoint[0] >= self.starPoint[0]) {
