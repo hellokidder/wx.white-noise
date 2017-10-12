@@ -1,14 +1,48 @@
 <style lang="less">
+  .position{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #99ff00;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .mark{
+    width: 100px;
+    height: 100px;
+  }
+  .text{
+    width: 100%;
+    height: 20%;
+  }
+  .yuan{
+    width: 150px;
+    height: 150px;
+    border: 1px solid white;
+    border-radius: 75px;
+  }
+  .center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>
 <template>
+  <view class="position">
+    <view class="text"></view>
+    <view class"yuan center"><image class="mark" src="{{mark}}"></image></view>
+  </view>
 </template>
 <script>
 import wepy from 'wepy'
 export default class Index extends wepy.page {
   config = {
-    navigationBarTitleText: ''
+    navigationBarTitleText: '吾心归处'
   }
   data = {
+    mark: '../image/tree.png'
   }
   methods = {
   }

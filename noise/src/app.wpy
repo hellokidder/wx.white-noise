@@ -6,11 +6,16 @@ import wepy from 'wepy'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/water'
+      'pages/water',
+      'pages/fire',
+      'pages/gold',
+      'pages/soil',
+      'pages/tree'
+
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#66ffff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
     }

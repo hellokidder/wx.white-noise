@@ -1,5 +1,5 @@
 
-  <view class="position">
+  <view class="position" bindtouchstart="touchstart" bindtouchmove="touchmove">
     <view class="text"/>
     <view class="yuan center"><image class="mark" src="{{mark}}"/></view>
   </view>
