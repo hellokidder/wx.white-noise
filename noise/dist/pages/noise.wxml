@@ -1,5 +1,11 @@
 
   <view class="position" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend" style="background-color: {{bgcolor}};">
     <view class="text"/>
-    <view class="yuan center"><image class="mark" src="{{mark}}"/></view>
+    <view class="yuan center center">
+      <view style="display: flex; flex-direction: column;">
+        <image class="mark" src="{{mark}}"/>
+        <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+      </view>
+    </view>
+    <view class="center"/>
   </view>
