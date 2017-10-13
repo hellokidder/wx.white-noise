@@ -1,11 +1,13 @@
 
-  <view class="position" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend" style="background-color: {{bgcolor}};">
-    <view class="text"/>
-    <view class="yuan center center">
-      <view style="display: flex; flex-direction: column;">
-        <image class="mark" src="{{mark}}"/>
-        <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+  <view class="position" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
+    <view class="markposition" style="background-color:{{bgcolor}}">
+      <view class="text"/>
+      <view class="yuan center">
+        <view style="display: flex; flex-direction: column;">
+          <view class="center"><image class="mark" src="{{mark}}"/></view>
+          <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+        </view>
       </view>
+      <view class="center"/>
     </view>
-    <view class="center"/>
   </view>

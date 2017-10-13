@@ -7,6 +7,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1507874324&di=35d625e5e928c9af293703f3d4d90732&src=http://img4.duitang.com/uploads/item/201409/09/20140909211122_wWVay.png');
+    background-size: 100% 100%;
+  }
+  .markposition{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 255, 255, 0.3);
   }
   .mark{
     width: 80px;
@@ -14,7 +26,7 @@
   }
   .text{
     width: 100%;
-    height: 20%;
+    height: 10%;
   }
   .yuan{
     width: 200px;
@@ -35,15 +47,17 @@
   }
 </style>
 <template>
-  <view class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" style="background-color: {{bgcolor}};">
-    <view class="text"></view>
-    <view class="yuan center center">
-      <view style="display: flex; flex-direction: column;">
-        <image class="mark" src="{{mark}}"></image>
-        <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+  <view class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
+    <view class="markposition" style="background-color:{{bgcolor}}">
+      <view class="text"></view>
+      <view class="yuan center">
+        <view style="display: flex; flex-direction: column;">
+          <view class="center"><image class="mark" src="{{mark}}"></image></view>
+          <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+        </view>
       </view>
+      <view class="center"></view>
     </view>
-    <view class="center"></view>
   </view>
 </template>
 <script>
@@ -56,14 +70,15 @@ export default class Water extends wepy.page {
     mark: '../image/water.png',
     starPoint: [0, 0],
     curPoint: [0, 0],
-    bgcolor: '#66ffff',
+    bgcolor: '',
     node: '3',
     month: '',
     mon: '',
     day: '',
     week: '',
     weekd: '',
-    year: ''
+    year: '',
+    bg: 'url(https://b-ssl.duitang.com/uploads/item/201511/07/20151107225500_VBkwS.thumb.700_0.jpeg)'
   }
   methods = {
     touchstart(e) {
@@ -87,27 +102,23 @@ export default class Water extends wepy.page {
             case '2':
               self.mark = '../image/gold.png'
               self.node = '1'
-              self.bgcolor = '#ffff33'
+              self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
               console.log(self)
-              self.config.navigationBarBackgroundColor = '#ffff33'
               break
             case '3':
               self.mark = '../image/tree.png'
               self.node = '2'
-              self.bgcolor = '#99ff00'
-              self.config.navigationBarBackgroundColor = '#99ff00'
+              self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
               break
             case '4':
               self.mark = '../image/water.png'
               self.node = '3'
-              self.bgcolor = '#66ffff'
-              self.config.navigationBarBackgroundColor = '#66ffff'
+              self.bgcolor = 'rgba(0, 255, 255, 0.3)'
               break
             case '5':
               self.mark = '../image/fire.png'
               self.node = '4'
-              self.bgcolor = '#ff0000'
-              self.config.navigationBarBackgroundColor = '#ff0000'
+              self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
               break
           }
         } else {
@@ -121,23 +132,22 @@ export default class Water extends wepy.page {
             case '1':
               self.mark = '../image/tree.png'
               self.node = '2'
-              self.bgcolor = '#99ff00'
-              self.config.navigationBarBackgroundColor = '#ffffff'
+              self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
               break
             case '2':
               self.mark = '../image/water.png'
               self.node = '3'
-              self.bgcolor = '#66ffff'
+              self.bgcolor = 'rgba(0, 255, 255, 0.3)'
               break
             case '3':
               self.mark = '../image/fire.png'
               self.node = '4'
-              self.bgcolor = '#ff0000'
+              self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
               break
             case '4':
               self.mark = '../image/soil.png'
               self.node = '5'
-              self.bgcolor = '#ff9999'
+              self.bgcolor = 'rgba( 238, 99, 99, 0.3)'
               break
             case '5':
               break
