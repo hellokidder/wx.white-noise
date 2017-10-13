@@ -111,7 +111,7 @@ export default class Water extends wepy.page {
     weekd: '',
     year: '',
     min: 20,
-    sec: 0,
+    sec: '00',
     add: 0,
     tick: 0
   }
@@ -131,14 +131,16 @@ export default class Water extends wepy.page {
           if (self.curPoint[1] >= self.starPoint[1]) {
             self.add = self.add + 1
             if (self.add === 5) {
-              self.min --
+              self.min -- 
               self.add = 0
+              self.min = self.min < 10 ? '0' + self.min.toString() : self.min
             }
           } else {
             self.add = self.add + 1
             if (self.add === 5) {
               self.min ++
               self.add = 0
+              self.min = self.min < 10 ? '0' + self.min.toString() : self.min
             }
           }
         }
@@ -150,12 +152,14 @@ export default class Water extends wepy.page {
             if (self.add === 5) {
               self.min --
               self.add = 0
+              self.min = self.min < 10 ? '0' + self.min.toString() : self.min
             }
           } else {
             self.add = self.add + 1
             if (self.add === 5) {
               self.min ++
               self.add = 0
+              self.min = self.min < 10 ? '0' + self.min.toString() : self.min
             }
           }
         }
@@ -235,18 +239,22 @@ export default class Water extends wepy.page {
 
     floor() {
       let self = this
-      self.tick = self.min *secondsPerMin
-      setInterval(() => {
+      self.tick = self.min * secondsPerMin
+      let timer = setInterval(() => {
         self.tick --
-        if (self.tick !== 0) {
-          self.min = Number((self.tick / secondsPerMin).toString().slice(0, 2))
+        if (self.tick !== -1) {
+          let minutes = Number((self.tick / secondsPerMin).toString().slice(0, 2))
+          self.min = minutes < 10 ? '0' + minutes.toString() : minutes
           self.setData({
-            min: Number((self.tick / secondsPerMin).toString().slice(0, 2))
+            min: self.min
           })
-          self.sec = self.tick % secondsPerMin
+          let second = self.tick % secondsPerMin
+          self.sec = second < 10 ? '0' + second.toString() : second
           self.setData({
-            sec: self.tick % secondsPerMin
+            sec: self.sec
           })
+        } else {
+          clearInterval(timer)
         }
         console.log(self.tick, self.min, self.sec)
       }, 1000)
