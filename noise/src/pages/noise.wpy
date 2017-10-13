@@ -18,7 +18,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(0, 255, 255, 0.3);
   }
   .mark{
     width: 80px;
@@ -70,7 +69,7 @@ export default class Water extends wepy.page {
     mark: '../image/water.png',
     starPoint: [0, 0],
     curPoint: [0, 0],
-    bgcolor: '',
+    bgcolor: 'rgba(0, 255, 255, 0.3)',
     node: '3',
     month: '',
     mon: '',
