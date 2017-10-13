@@ -19,6 +19,15 @@
     flex-direction: column;
     align-items: center;
   }
+  .top{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .mark{
     width: 80px;
     height: 80px;
@@ -44,28 +53,52 @@
     border-top: 1px solid white;
     margin-top: 20%;
   }
+  .timefloor{
+    margin-top: 7%;
+    color: white;
+    font-size: 20px;
+  }
 </style>
 <template>
-  <view class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
-    <view class="markposition" style="background-color:{{bgcolor}}">
-      <view class="text"></view>
-      <view class="yuan center">
-        <view style="display: flex; flex-direction: column;">
-          <view class="center"><image class="mark" src="{{mark}}"></image></view>
-          <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+  <view>
+    <view wx:if="{{showImg}}">
+      <image src="../image/bg.jpeg" class="top"></image>
+    </view>
+    <view wx:else class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
+      <view class="markposition" style="background-color:{{bgcolor}}">
+        <view class="top">  
+          <view class="text"></view>
+            <view class="yuan center">
+              <view style="display: flex; flex-direction: column;">
+                <view class="center"><image class="mark" src="{{mark}}"></image></view>
+                <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+              </view>
+            </view>
+          <view class="center timefloor">
+            <text>{{min}} : {{sec}} </text>
+          </view>
+          <view @tap='floor'>
+            <text>Start</text>
+          </view>
+          <view>
+            <text></text>
+          </view>
         </view>
       </view>
-      <view class="center"></view>
     </view>
   </view>
 </template>
 <script>
 import wepy from 'wepy'
+
+const secondsPerMin = 60
+
 export default class Water extends wepy.page {
   config = {
-    navigationBarTitleText: '吾心归处'
+    navigationBarTitleText: '归心'
   }
   data = {
+    showImg: true,
     mark: '../image/water.png',
     starPoint: [0, 0],
     curPoint: [0, 0],
@@ -77,7 +110,10 @@ export default class Water extends wepy.page {
     week: '',
     weekd: '',
     year: '',
-    bg: 'url(https://b-ssl.duitang.com/uploads/item/201511/07/20151107225500_VBkwS.thumb.700_0.jpeg)'
+    min: 20,
+    sec: 0,
+    add: 0,
+    tick: 0
   }
   methods = {
     touchstart(e) {
@@ -87,7 +123,45 @@ export default class Water extends wepy.page {
     touchmove(e) {
       let self = this
       self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
+      let xchange = self.curPoint[0] - self.starPoint[0]
+      let ychange = self.curPoint[1] - self.starPoint[1]
+      if (self.curPoint[0] >= self.starPoint[0]) {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+            self.add = self.add + 1
+            if (self.add === 5) {
+              self.min --
+              self.add = 0
+            }
+          } else {
+            self.add = self.add + 1
+            if (self.add === 5) {
+              self.min ++
+              self.add = 0
+            }
+          }
+        }
+      } else {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+            self.add = self.add + 1
+            if (self.add === 5) {
+              self.min --
+              self.add = 0
+            }
+          } else {
+            self.add = self.add + 1
+            if (self.add === 5) {
+              self.min ++
+              self.add = 0
+            }
+          }
+        }
+      }
     },
+
     touchend(e) {
       let self = this
       let xchange = self.curPoint[0] - self.starPoint[0]
@@ -157,12 +231,39 @@ export default class Water extends wepy.page {
           }
         }
       }
+    },
+
+    floor() {
+      let self = this
+      self.tick = self.min *secondsPerMin
+      setInterval(() => {
+        self.tick --
+        if (self.tick !== 0) {
+          self.min = Number((self.tick / secondsPerMin).toString().slice(0, 2))
+          self.setData({
+            min: Number((self.tick / secondsPerMin).toString().slice(0, 2))
+          })
+          self.sec = self.tick % secondsPerMin
+          self.setData({
+            sec: self.tick % secondsPerMin
+          })
+        }
+        console.log(self.tick, self.min, self.sec)
+      }, 1000)
     }
 
+  }
+  onShareAppMessage() {
+    return {
+      title: '归心',
+      desc: '都市喧闹 何处归心',
+      path: '/page/noise'
+    }
   }
   onLoad() {
     let date = new Date()
     let self = this
+    self.tick = self.min * secondsPerMin
     self.week = date.getUTCDay()
     switch (self.week) {
       case 0:
@@ -228,6 +329,13 @@ export default class Water extends wepy.page {
     }
     self.day = date.getDate()
     self.year = date.getFullYear()
+
+    setTimeout(() => {
+      self.showImg = false
+      self.setData({
+        showImg: false
+      })
+    }, 2000)
   }
 }
 </script>
