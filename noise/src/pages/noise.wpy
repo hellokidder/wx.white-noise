@@ -102,7 +102,7 @@
 import wepy from 'wepy'
 
 const secondsPerMin = 60
-let timer = null;
+let timer = null
 
 export default class Water extends wepy.page {
   config = {
@@ -128,28 +128,7 @@ export default class Water extends wepy.page {
     key: 'Start'
   }
   methods = {
-    startCount(self){
-      return setInterval(() => {
-          self.setData({
-            tick: self.tick - 1
-          })
-          if (self.tick !== -1) {
-            let minutes = Math.floor((self.tick / secondsPerMin));
-            self.min = minutes < 10 ? '0' + minutes.toString() : minutes
-            self.setData({
-              min: self.min
-            })
-            let second = self.tick % secondsPerMin
-            self.sec = second < 10 ? '0' + second.toString() : second
-            self.setData({
-              sec: self.sec
-            })
-          } else {
-            clearInterval(timer)
-          }
-          console.log(self.tick, self.min, self.sec)
-        }, 1000)
-    },
+
     touchstart(e) {
       let self = this
       self.starPoint = [e.touches[0].pageX, e.touches[0].pageY]
@@ -163,18 +142,28 @@ export default class Water extends wepy.page {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
         } else {
           if (self.curPoint[1] >= self.starPoint[1]) {
-            self.add = self.add + 1
-            if (self.add === 5) {
-              self.min--
-              self.add = 0
-              self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+            if (self.min > 0) {
+              self.add = self.add + 1
+              if (self.add === 5) {
+                self.min--
+                self.add = 0
+                self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+                self.tick = self.min * secondsPerMin + self.sec * 1
+              }
+            } else {
+              self.min = '00'
             }
           } else {
-            self.add = self.add + 1
-            if (self.add === 5) {
-              self.min++
-              self.add = 0
-              self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+            if (self.min < 60) {
+              self.add = self.add + 1
+              if (self.add === 5) {
+                self.min++
+                self.add = 0
+                self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+                self.tick = self.min * secondsPerMin + self.sec * 1
+              }
+            } else {
+              self.min = '60'
             }
           }
         }
@@ -182,18 +171,28 @@ export default class Water extends wepy.page {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
         } else {
           if (self.curPoint[1] >= self.starPoint[1]) {
-            self.add = self.add + 1
-            if (self.add === 5) {
-              self.min--
-              self.add = 0
-              self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+            if (self.min > 0) {
+              self.add = self.add + 1
+              if (self.add === 5) {
+                self.min--
+                self.add = 0
+                self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+                self.tick = self.min * secondsPerMin + self.sec * 1
+              }
+            } else {
+              self.min = '00'
             }
           } else {
-            self.add = self.add + 1
-            if (self.add === 5) {
-              self.min++
-              self.add = 0
-              self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+            if (self.min < 60) {
+              self.add = self.add + 1
+              if (self.add === 5) {
+                self.min++
+                self.add = 0
+                self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+                self.tick = self.min * secondsPerMin + self.sec * 1
+              }
+            } else {
+              self.min = '60'
             }
           }
         }
@@ -273,16 +272,33 @@ export default class Water extends wepy.page {
     floor() {
       let self = this
       if (timer) {
-        clearInterval(timer);
+        clearInterval(timer)
       }
       if (self.key === 'Start') {
         let self = this
-        //self.tick = self.min * secondsPerMin + self.sec
-        timer = self.startCount(self);
+        timer = setInterval(() => {
+          self.tick --
+          console.log(self.data.tick)
+          if (self.tick !== -1) {
+            let minutes = Math.floor((self.tick / secondsPerMin))
+            self.min = minutes < 10 ? '0' + minutes.toString() : minutes
+            self.setData({
+              min: self.min
+            })
+            let second = self.tick % secondsPerMin
+            self.sec = second < 10 ? '0' + second.toString() : second
+            self.setData({
+              sec: self.sec
+            })
+          } else {
+            clearInterval(timer)
+          }
+          console.log(self.tick, self.min, self.sec)
+        }, 1000)
         self.key = 'End'
       } else {
         self.key = 'Start'
-        clearInterval(timer);
+        clearInterval(timer)
       }
     }
   }
@@ -298,69 +314,12 @@ export default class Water extends wepy.page {
     let date = new Date()
     let self = this
     self.tick = self.min * secondsPerMin
+    const weeks = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
     self.week = date.getUTCDay()
-    switch (self.week) {
-      case 0:
-        self.weekd = 'Sun'
-        break
-      case 1:
-        self.weekd = 'Mon'
-        break
-      case 2:
-        self.weekd = 'Tues'
-        break
-      case 3:
-        self.weekd = 'Wed'
-        break
-      case 4:
-        self.weekd = 'Thur'
-        break
-      case 5:
-        self.weekd = 'Fri'
-        break
-      case 6:
-        self.weekd = 'Sat'
-        break
-    }
+    self.weekd = weeks[self.week]
     self.month = date.getMonth()
-    switch (self.month) {
-      case 0:
-        self.mon = 'Jan'
-        break
-      case 1:
-        self.mon = 'Feb'
-        break
-      case 2:
-        self.mon = 'Mar'
-        break
-      case 3:
-        self.mon = 'Apr'
-        break
-      case 4:
-        self.mon = 'May'
-        break
-      case 5:
-        self.mon = 'June'
-        break
-      case 6:
-        self.mon = 'July'
-        break
-      case 7:
-        self.mon = 'Aug'
-        break
-      case 8:
-        self.mon = 'Sept'
-        break
-      case 9:
-        self.mon = 'Oct'
-        break
-      case 10:
-        self.mon = 'Nov'
-        break
-      case 11:
-        self.mon = 'Dec'
-        break
-    }
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+    self.mon = months[self.month]
     self.day = date.getDate()
     self.year = date.getFullYear()
 
