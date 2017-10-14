@@ -72,7 +72,7 @@
   display: flex;
   flex-direction: row;
   color: white;
-  width: 100%; 
+  width: 100%;
 }
 </style>
 <template>
@@ -89,11 +89,11 @@
               <view class="center">
                 <image class="mark" src="{{mark}}"></image>
               </view>
-              <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+              <text class="time">{{dates}}</text>
             </view>
           </view>
           <view class="center timefloor">
-            <text>{{min}} : {{sec}} </text>
+            <text>{{(tick / 60) >= 60 ? '∞' : ((tick - (tick % 60))/ 60) < 10? '0'+((tick - (tick % 60))/ 60 ) : ((tick - (tick % 60))/ 60)}} : {{(tick % 60) > 10 ? (tick % 60): '0'+ (tick % 60)}} </text>
           </view>
           <view @tap='floor' class="key center" wx:if="{{key==='开始' }}">
             <text>{{key}}</text>
@@ -103,7 +103,7 @@
               <text>{{key}}</text>
             </view>
             <view @tap='floorEnd' style="margin-left: 8%;">
-              <text>{{End}}</text>
+              <text>{{end}}</text>
             </view>
           </view>
           <view>
@@ -118,6 +118,8 @@
 import wepy from 'wepy'
 
 const secondsPerMin = 60
+const changeTimePoint = 5
+const changeImagePoint = 3
 let timer = null
 
 export default class Water extends wepy.page {
@@ -131,21 +133,139 @@ export default class Water extends wepy.page {
     starPoint: [0, 0],
     curPoint: [0, 0],
     bgcolor: 'rgba(0, 255, 255, 0.3)',
-    node: '3',
-    month: '',
-    mon: '',
-    day: '',
-    week: '',
-    weekd: '',
-    year: '',
-    min: 20,
-    sec: '00',
-    add: 0,
+    imageNode: '3',
     tick: 0,
     key: '开始',
-    End: '结束'
+    dates: '',
+    end: '结束',
+    changePoint: 0
   }
   methods = {
+    timeChange(self, e) {
+      self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
+      let xchange = self.curPoint[0] - self.starPoint[0]
+      let ychange = self.curPoint[1] - self.starPoint[1]
+      if (self.curPoint[0] >= self.starPoint[0]) {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+            if ((self.tick / 60) > 0) {
+              self.changePoint = self.changePoint + 1
+              if (self.changePoint === changeTimePoint) {
+                self.tick = self.tick - 60
+                self.changePoint = 0
+              }
+            }
+          } else {
+            if ((self.tick / 60) < 60) {
+              self.changePoint = self.changePoint + 1
+              if (self.changePoint === changeTimePoint) {
+                self.tick = self.tick + 60
+                self.changePoint = 0
+              }
+            }
+          }
+        }
+      } else {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+            if ((self.tick / 60) > 0) {
+              self.changePoint = self.changePoint + 1
+              if (self.changePoint === changeTimePoint) {
+                self.tick = self.tick - 60
+                self.changePoint = 0
+              }
+            }
+          } else {
+            if ((self.tick / 60) < 60) {
+              self.changePoint = self.changePoint + 1
+              if (self.changePoint === changeTimePoint) {
+                self.tick = self.tick + 60
+                self.changePoint = 0
+              }
+            }
+          }
+        }
+      }
+    },
+
+    imageChange(self, e) {
+      let xchange = self.curPoint[0] - self.starPoint[0]
+      let ychange = self.curPoint[1] - self.starPoint[1]
+
+      if (self.curPoint[0] >= self.starPoint[0]) {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+          self.changePoint = self.changePoint + 1
+          if (self.changePoint === changeImagePoint) {
+            switch (self.imageNode) {
+              case '1':
+                break
+              case '2':
+                self.mark = '../image/gold.png'
+                self.imageNode = '1'
+                self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
+                break
+              case '3':
+                self.mark = '../image/tree.png'
+                self.imageNode = '2'
+                self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                break
+              case '4':
+                self.mark = '../image/water.png'
+                self.imageNode = '3'
+                self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                break
+              case '5':
+                self.mark = '../image/fire.png'
+                self.imageNode = '4'
+                self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                break
+            }
+            self.changePoint = 0
+          }
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+          } else {
+          }
+        }
+      } else {
+        if (Math.abs(xchange) >= Math.abs(ychange)) {
+          self.changePoint = self.changePoint + 1
+          if (self.changePoint === changeImagePoint) {
+            switch (self.imageNode) {
+              case '1':
+                self.mark = '../image/tree.png'
+                self.imageNode = '2'
+                self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                break
+              case '2':
+                self.mark = '../image/water.png'
+                self.imageNode = '3'
+                self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                break
+              case '3':
+                self.mark = '../image/fire.png'
+                self.imageNode = '4'
+                self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                break
+              case '4':
+                self.mark = '../image/soil.png'
+                self.imageNode = '5'
+                self.bgcolor = 'rgba( 238, 99, 99, 0.3)'
+                break
+              case '5':
+                break
+            }
+            self.changePoint = 0
+          }
+        } else {
+          if (self.curPoint[1] >= self.starPoint[1]) {
+          } else {
+          }
+        }
+      }
+    },
 
     touchstart(e) {
       let self = this
@@ -154,159 +274,14 @@ export default class Water extends wepy.page {
     touchmove(e) {
       let self = this
       if (self.switch) {
-        self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
-        let xchange = self.curPoint[0] - self.starPoint[0]
-        let ychange = self.curPoint[1] - self.starPoint[1]
-        if (self.curPoint[0] >= self.starPoint[0]) {
-          if (Math.abs(xchange) >= Math.abs(ychange)) {
-          } else {
-            if (self.curPoint[1] >= self.starPoint[1]) {
-              if (self.min === '∞') {
-                self.min = 60
-                self.sec = '00'
-              } else {
-                if (self.min > 0) {
-                  self.add = self.add + 1
-                  if (self.add === 5) {
-                    self.min--
-                    self.add = 0
-                    self.min = self.min < 10 ? '0' + self.min.toString() : self.min
-                    self.tick = self.min * secondsPerMin + self.sec * 1
-                  }
-                } else {
-                  self.min = '00'
-                }
-              }
-            } else {
-              if (self.min < 60) {
-                self.add = self.add + 1
-                if (self.add === 5) {
-                  self.min++
-                  self.add = 0
-                  self.min = self.min < 10 ? '0' + self.min.toString() : self.min
-                  self.tick = self.min * secondsPerMin + self.sec * 1
-                }
-              } else {
-                self.min = '∞'
-                self.sec = '∞'
-              }
-            }
-          }
-        } else {
-          if (Math.abs(xchange) >= Math.abs(ychange)) {
-          } else {
-            if (self.curPoint[1] >= self.starPoint[1]) {
-              if (self.min === '∞') {
-                self.min = 60
-                self.sec = '00'
-              } else {
-                if (self.min > 0) {
-                  self.add = self.add + 1
-                  if (self.add === 5) {
-                    self.min--
-                    self.add = 0
-                    self.min = self.min < 10 ? '0' + self.min.toString() : self.min
-                    self.tick = self.min * secondsPerMin + self.sec * 1
-                  }
-                } else {
-                  self.min = '00'
-                }
-              }
-            } else {
-              if (self.min < 60) {
-                self.add = self.add + 1
-                if (self.add === 5) {
-                  self.min++
-                  self.add = 0
-                  self.min = self.min < 10 ? '0' + self.min.toString() : self.min
-                  self.tick = self.min * secondsPerMin + self.sec * 1
-                }
-              } else {
-                self.min = '∞'
-              }
-            }
-          }
-        }
+        self.methods.timeChange(self, e)
       }
     },
 
     touchend(e) {
       let self = this
       if (self.switch) {
-        let xchange = self.curPoint[0] - self.starPoint[0]
-        let ychange = self.curPoint[1] - self.starPoint[1]
-
-        if (self.curPoint[0] >= self.starPoint[0]) {
-          if (Math.abs(xchange) >= Math.abs(ychange)) {
-            self.add = self.add + 1
-            if (self.add === 4) {
-              switch (self.node) {
-                case '1':
-                  break
-                case '2':
-                  self.mark = '../image/gold.png'
-                  self.node = '1'
-                  self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
-                  break
-                case '3':
-                  self.mark = '../image/tree.png'
-                  self.node = '2'
-                  self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
-                  break
-                case '4':
-                  self.mark = '../image/water.png'
-                  self.node = '3'
-                  self.bgcolor = 'rgba(0, 255, 255, 0.3)'
-                  break
-                case '5':
-                  self.mark = '../image/fire.png'
-                  self.node = '4'
-                  self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
-                  break
-              }
-              self.add = 0
-            }
-          } else {
-            if (self.curPoint[1] >= self.starPoint[1]) {
-            } else {
-            }
-          }
-        } else {
-          if (Math.abs(xchange) >= Math.abs(ychange)) {
-            self.add = self.add + 1
-            if (self.add === 4) {
-              switch (self.node) {
-                case '1':
-                  self.mark = '../image/tree.png'
-                  self.node = '2'
-                  self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
-                  break
-                case '2':
-                  self.mark = '../image/water.png'
-                  self.node = '3'
-                  self.bgcolor = 'rgba(0, 255, 255, 0.3)'
-                  break
-                case '3':
-                  self.mark = '../image/fire.png'
-                  self.node = '4'
-                  self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
-                  break
-                case '4':
-                  self.mark = '../image/soil.png'
-                  self.node = '5'
-                  self.bgcolor = 'rgba( 238, 99, 99, 0.3)'
-                  break
-                case '5':
-                  break
-              }
-              self.add = 0
-            }
-          } else {
-            if (self.curPoint[1] >= self.starPoint[1]) {
-            } else {
-            }
-          }
-        }
+        self.methods.imageChange(self, e)
       }
     },
 
@@ -319,22 +294,10 @@ export default class Water extends wepy.page {
         let self = this
         timer = setInterval(() => {
           self.tick--
-          console.log(self.data.tick)
-          if (self.tick !== -1) {
-            let minutes = Math.floor((self.tick / secondsPerMin))
-            self.min = minutes < 10 ? '0' + minutes.toString() : minutes
-            self.setData({
-              min: self.min
-            })
-            let second = self.tick % secondsPerMin
-            self.sec = second < 10 ? '0' + second.toString() : second
-            self.setData({
-              sec: self.sec
-            })
-          } else {
+          if (self.tick === 0) {
             clearInterval(timer)
           }
-          console.log(self.tick, self.min, self.sec)
+          console.log(self.tick)
         }, 1000)
         self.key = '暂停'
         self.switch = false
@@ -346,10 +309,9 @@ export default class Water extends wepy.page {
     floorEnd() {
       let self = this
       clearInterval(timer)
-      self.min = '20'
-      self.sec = '00'
       self.key = '开始'
       self.switch = true
+      self.tick = 20 * secondsPerMin
       console.log(self.switch)
     }
   }
@@ -364,28 +326,28 @@ export default class Water extends wepy.page {
   onLoad() {
     let date = new Date()
     let self = this
-    self.tick = self.min * secondsPerMin
     const weeks = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
-    self.week = date.getUTCDay()
-    self.weekd = weeks[self.week]
-    self.month = date.getMonth()
+    const week = date.getUTCDay()
+    const weekd = weeks[week]
+    const month = date.getMonth()
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-    self.mon = months[self.month]
-    self.day = date.getDate()
-    self.year = date.getFullYear()
-
+    const mon = months[month]
+    const day = date.getDate()
+    const year = date.getFullYear()
+    self.dates = mon + ' ' + day + ' ' + weekd + ' ' + year
+    self.tick = 20 * secondsPerMin
     setTimeout(() => {
       self.showImg = false
       self.setData({
         showImg: false
       })
     }, 2000)
-    wepy.request({
-      url: 'http://127.0.0.1:7001/voice/list',
-      success: function (res) {
-        console.log(res)
-      }
-    })
+    // wepy.request({
+    //   url: 'http://127.0.0.1:7001/voice/list',
+    //   success: function(res) {
+    //     console.log(res)
+    //   }
+    // })
   }
 }
 </script>

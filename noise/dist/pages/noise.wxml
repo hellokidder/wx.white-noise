@@ -12,11 +12,11 @@
               <view class="center">
                 <image class="mark" src="{{mark}}"/>
               </view>
-              <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+              <text class="time">{{dates}}</text>
             </view>
           </view>
           <view class="center timefloor">
-            <text>{{min}} : {{sec}} </text>
+            <text>{{(tick / 60) >= 60 ? '∞' : ((tick - (tick % 60))/ 60) < 10? '0'+((tick - (tick % 60))/ 60 ) : ((tick - (tick % 60))/ 60)}} : {{(tick % 60) > 10 ? (tick % 60): '0'+ (tick % 60)}} </text>
           </view>
           <view bindtap="floor" class="key center" wx:if="{{key==='开始' }}">
             <text>{{key}}</text>
@@ -26,7 +26,7 @@
               <text>{{key}}</text>
             </view>
             <view bindtap="floorEnd" style="margin-left: 8%;">
-              <text>{{End}}</text>
+              <text>{{end}}</text>
             </view>
           </view>
           <view>
