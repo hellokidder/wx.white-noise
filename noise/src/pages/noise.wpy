@@ -66,6 +66,9 @@
   color: white;
   font-size: 20px;
 }
+.key {
+  margin-top: 40%;
+}
 </style>
 <template>
   <view>
@@ -87,7 +90,7 @@
           <view class="center timefloor">
             <text>{{min}} : {{sec}} </text>
           </view>
-          <view @tap='floor'>
+          <view @tap='floor' class="key">
             <text>{{key}}</text>
           </view>
           <view>
@@ -142,16 +145,21 @@ export default class Water extends wepy.page {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
         } else {
           if (self.curPoint[1] >= self.starPoint[1]) {
-            if (self.min > 0) {
-              self.add = self.add + 1
-              if (self.add === 5) {
-                self.min--
-                self.add = 0
-                self.min = self.min < 10 ? '0' + self.min.toString() : self.min
-                self.tick = self.min * secondsPerMin + self.sec * 1
-              }
+            if (self.min === '∞') {
+              self.min = 60
+              self.sec = '00'
             } else {
-              self.min = '00'
+              if (self.min > 0) {
+                self.add = self.add + 1
+                if (self.add === 5) {
+                  self.min--
+                  self.add = 0
+                  self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+                  self.tick = self.min * secondsPerMin + self.sec * 1
+                }
+              } else {
+                self.min = '00'
+              }
             }
           } else {
             if (self.min < 60) {
@@ -163,7 +171,8 @@ export default class Water extends wepy.page {
                 self.tick = self.min * secondsPerMin + self.sec * 1
               }
             } else {
-              self.min = '60'
+              self.min = '∞'
+              self.sec = '∞'
             }
           }
         }
@@ -171,16 +180,21 @@ export default class Water extends wepy.page {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
         } else {
           if (self.curPoint[1] >= self.starPoint[1]) {
-            if (self.min > 0) {
-              self.add = self.add + 1
-              if (self.add === 5) {
-                self.min--
-                self.add = 0
-                self.min = self.min < 10 ? '0' + self.min.toString() : self.min
-                self.tick = self.min * secondsPerMin + self.sec * 1
-              }
+            if (self.min === '∞') {
+              self.min = 60
+              self.sec = '00'
             } else {
-              self.min = '00'
+              if (self.min > 0) {
+                self.add = self.add + 1
+                if (self.add === 5) {
+                  self.min--
+                  self.add = 0
+                  self.min = self.min < 10 ? '0' + self.min.toString() : self.min
+                  self.tick = self.min * secondsPerMin + self.sec * 1
+                }
+              } else {
+                self.min = '00'
+              }
             }
           } else {
             if (self.min < 60) {
@@ -192,7 +206,7 @@ export default class Water extends wepy.page {
                 self.tick = self.min * secondsPerMin + self.sec * 1
               }
             } else {
-              self.min = '60'
+              self.min = '∞'
             }
           }
         }
@@ -206,29 +220,33 @@ export default class Water extends wepy.page {
 
       if (self.curPoint[0] >= self.starPoint[0]) {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
-          switch (self.node) {
-            case '1':
-              break
-            case '2':
-              self.mark = '../image/gold.png'
-              self.node = '1'
-              self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
-              break
-            case '3':
-              self.mark = '../image/tree.png'
-              self.node = '2'
-              self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
-              break
-            case '4':
-              self.mark = '../image/water.png'
-              self.node = '3'
-              self.bgcolor = 'rgba(0, 255, 255, 0.3)'
-              break
-            case '5':
-              self.mark = '../image/fire.png'
-              self.node = '4'
-              self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
-              break
+          self.add = self.add + 1
+          if (self.add === 2) {
+            switch (self.node) {
+              case '1':
+                break
+              case '2':
+                self.mark = '../image/gold.png'
+                self.node = '1'
+                self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
+                break
+              case '3':
+                self.mark = '../image/tree.png'
+                self.node = '2'
+                self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                break
+              case '4':
+                self.mark = '../image/water.png'
+                self.node = '3'
+                self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                break
+              case '5':
+                self.mark = '../image/fire.png'
+                self.node = '4'
+                self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                break
+            }
+            self.add = 0
           }
         } else {
           if (self.curPoint[1] >= self.starPoint[1]) {
@@ -237,29 +255,33 @@ export default class Water extends wepy.page {
         }
       } else {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
-          switch (self.node) {
-            case '1':
-              self.mark = '../image/tree.png'
-              self.node = '2'
-              self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
-              break
-            case '2':
-              self.mark = '../image/water.png'
-              self.node = '3'
-              self.bgcolor = 'rgba(0, 255, 255, 0.3)'
-              break
-            case '3':
-              self.mark = '../image/fire.png'
-              self.node = '4'
-              self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
-              break
-            case '4':
-              self.mark = '../image/soil.png'
-              self.node = '5'
-              self.bgcolor = 'rgba( 238, 99, 99, 0.3)'
-              break
-            case '5':
-              break
+          self.add = self.add + 1
+          if (self.add === 2) {
+            switch (self.node) {
+              case '1':
+                self.mark = '../image/tree.png'
+                self.node = '2'
+                self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                break
+              case '2':
+                self.mark = '../image/water.png'
+                self.node = '3'
+                self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                break
+              case '3':
+                self.mark = '../image/fire.png'
+                self.node = '4'
+                self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                break
+              case '4':
+                self.mark = '../image/soil.png'
+                self.node = '5'
+                self.bgcolor = 'rgba( 238, 99, 99, 0.3)'
+                break
+              case '5':
+                break
+            }
+            self.add = 0
           }
         } else {
           if (self.curPoint[1] >= self.starPoint[1]) {
@@ -295,7 +317,7 @@ export default class Water extends wepy.page {
           }
           console.log(self.tick, self.min, self.sec)
         }, 1000)
-        self.key = 'End'
+        self.key = 'Pause'
       } else {
         self.key = 'Start'
         clearInterval(timer)
