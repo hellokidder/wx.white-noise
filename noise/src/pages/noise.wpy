@@ -93,7 +93,8 @@
             </view>
           </view>
           <view class="center timefloor">
-            <text>{{(tick / 60) >= 60 ? '∞' : ((tick - (tick % 60))/ 60) < 10? '0'+((tick - (tick % 60))/ 60 ) : ((tick - (tick % 60))/ 60)}} : {{(tick % 60) > 10 ? (tick % 60): '0'+ (tick % 60)}} </text>
+            <text>{{(tick / 60) >= 60 ? '∞' :
+               ((tick - (tick % 60))/ 60) < 10 ? '0'+((tick - (tick % 60))/ 60 ) : ((tick - (tick % 60))/ 60)}} : {{(tick % 60) >= 10 ? (tick % 60): '0'+ (tick % 60)}} </text>
           </view>
           <view @tap='floor' class="key center" wx:if="{{key==='开始' }}">
             <text>{{key}}</text>
@@ -292,8 +293,14 @@ export default class Water extends wepy.page {
       }
       if (self.key === '开始' || self.key === '继续') {
         let self = this
+        let tickCount = self.tick
         timer = setInterval(() => {
-          self.tick--
+          tickCount--
+          self.setData({
+            tick: tickCount
+          })
+          self.tick = tickCount
+
           if (self.tick === 0) {
             clearInterval(timer)
           }

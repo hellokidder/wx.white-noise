@@ -16,7 +16,8 @@
             </view>
           </view>
           <view class="center timefloor">
-            <text>{{(tick / 60) >= 60 ? '∞' : ((tick - (tick % 60))/ 60) < 10? '0'+((tick - (tick % 60))/ 60 ) : ((tick - (tick % 60))/ 60)}} : {{(tick % 60) > 10 ? (tick % 60): '0'+ (tick % 60)}} </text>
+            <text>{{(tick / 60) >= 60 ? '∞' :
+               ((tick - (tick % 60))/ 60) < 10 ? '0'+((tick - (tick % 60))/ 60 ) : ((tick - (tick % 60))/ 60)}} : {{(tick % 60) >= 10 ? (tick % 60): '0'+ (tick % 60)}} </text>
           </view>
           <view bindtap="floor" class="key center" wx:if="{{key==='开始' }}">
             <text>{{key}}</text>
