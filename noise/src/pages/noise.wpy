@@ -93,17 +93,16 @@
             </view>
           </view>
           <view class="center timefloor">
-            <text>{{(tick / 60) >= 60 ? '∞' :
-               ((tick - (tick % 60))/ 60) < 10 ? '0'+((tick - (tick % 60))/ 60 ) : ((tick - (tick % 60))/ 60)}} : {{(tick % 60) >= 10 ? (tick % 60): '0'+ (tick % 60)}} </text>
+            <text>{{time}} </text>
           </view>
-          <view @tap='floor' class="key center" wx:if="{{key==='开始' }}">
+          <view wx:if="{{key==='开始'}}" @tap="floor" class="key center">
             <text>{{key}}</text>
           </view>
-          <view class="key center" wx:else>
-            <view @tap='floor' style="margin-right: 8%;">
+          <view wx:else class="key center">
+            <view @tap="floor" style="margin-right: 8%;">
               <text>{{key}}</text>
             </view>
-            <view @tap='floorEnd' style="margin-left: 8%;">
+            <view @tap="floorEnd" style="margin-left: 8%;">
               <text>{{end}}</text>
             </view>
           </view>
@@ -139,7 +138,8 @@ export default class Water extends wepy.page {
     key: '开始',
     dates: '',
     end: '结束',
-    changePoint: 0
+    changePoint: 0,
+    time: ''
   }
   methods = {
     timeChange(self, e) {
@@ -288,11 +288,11 @@ export default class Water extends wepy.page {
 
     floor() {
       let self = this
+      let currentTime
       if (timer) {
         clearInterval(timer)
       }
       if (self.key === '开始' || self.key === '继续') {
-        let self = this
         let tickCount = self.tick
         timer = setInterval(() => {
           tickCount--
@@ -305,11 +305,25 @@ export default class Water extends wepy.page {
             clearInterval(timer)
           }
           console.log(self.tick)
+
+          currentTime = (self.tick / 60) >= 60 ? '∞' : (((self.tick - (self.tick % 60)) / 60) < 10 ? '0' + ((self.tick - (self.tick % 60)) / 60) : ((self.tick - (self.tick % 60)) / 60)) + ' : ' + ((self.tick % 60) >= 10 ? (self.tick % 60) : '0' + (self.tick % 60))
+
+          self.setData({
+            time: currentTime
+          })
+          self.time = currentTime
         }, 1000)
         self.key = '暂停'
         self.switch = false
       } else {
         self.key = '继续'
+        currentTime = (self.tick / 60) >= 60 ? '∞' : (((self.tick - (self.tick % 60)) / 60) < 10 ? '0' + ((self.tick - (self.tick % 60)) / 60) : ((self.tick - (self.tick % 60)) / 60)) + ' : ' + ((self.tick % 60) >= 10 ? (self.tick % 60) : '0' + (self.tick % 60))
+        console.log(currentTime)
+        self.setData({
+          time: currentTime
+        })
+        self.time = currentTime
+        console.log(self.time)
         clearInterval(timer)
       }
     },
@@ -343,6 +357,7 @@ export default class Water extends wepy.page {
     const year = date.getFullYear()
     self.dates = mon + ' ' + day + ' ' + weekd + ' ' + year
     self.tick = 20 * secondsPerMin
+    self.time = (self.tick / 60) + ' : 0' + (self.tick % 60)
     setTimeout(() => {
       self.showImg = false
       self.setData({
