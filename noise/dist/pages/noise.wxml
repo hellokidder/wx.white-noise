@@ -18,8 +18,16 @@
           <view class="center timefloor">
             <text>{{min}} : {{sec}} </text>
           </view>
-          <view bindtap="floor" class="key">
+          <view bindtap="floor" class="key center" wx:if="{{key==='开始' }}">
             <text>{{key}}</text>
+          </view>
+          <view class="key center" wx:else>
+            <view bindtap="floor" style="margin-right: 8%;">
+              <text>{{key}}</text>
+            </view>
+            <view bindtap="floorEnd" style="margin-left: 8%;">
+              <text>{{End}}</text>
+            </view>
           </view>
           <view>
             <text/>

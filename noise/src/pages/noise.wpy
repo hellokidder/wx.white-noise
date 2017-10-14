@@ -66,8 +66,13 @@
   color: white;
   font-size: 20px;
 }
+
 .key {
-  margin-top: 40%;
+  margin-top: 38%;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  width: 100%; 
 }
 </style>
 <template>
@@ -90,8 +95,16 @@
           <view class="center timefloor">
             <text>{{min}} : {{sec}} </text>
           </view>
-          <view @tap='floor' class="key">
+          <view @tap='floor' class="key center" wx:if="{{key==='开始' }}">
             <text>{{key}}</text>
+          </view>
+          <view class="key center" wx:else>
+            <view @tap='floor' style="margin-right: 8%;">
+              <text>{{key}}</text>
+            </view>
+            <view @tap='floorEnd' style="margin-left: 8%;">
+              <text>{{End}}</text>
+            </view>
           </view>
           <view>
             <text></text>
@@ -128,7 +141,8 @@ export default class Water extends wepy.page {
     sec: '00',
     add: 0,
     tick: 0,
-    key: 'Start'
+    key: '开始',
+    End: '结束'
   }
   methods = {
 
@@ -221,7 +235,7 @@ export default class Water extends wepy.page {
       if (self.curPoint[0] >= self.starPoint[0]) {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
           self.add = self.add + 1
-          if (self.add === 2) {
+          if (self.add === 4) {
             switch (self.node) {
               case '1':
                 break
@@ -256,7 +270,7 @@ export default class Water extends wepy.page {
       } else {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
           self.add = self.add + 1
-          if (self.add === 2) {
+          if (self.add === 4) {
             switch (self.node) {
               case '1':
                 self.mark = '../image/tree.png'
@@ -296,10 +310,10 @@ export default class Water extends wepy.page {
       if (timer) {
         clearInterval(timer)
       }
-      if (self.key === 'Start') {
+      if (self.key === '开始' || self.key === '继续') {
         let self = this
         timer = setInterval(() => {
-          self.tick --
+          self.tick--
           console.log(self.data.tick)
           if (self.tick !== -1) {
             let minutes = Math.floor((self.tick / secondsPerMin))
@@ -317,11 +331,18 @@ export default class Water extends wepy.page {
           }
           console.log(self.tick, self.min, self.sec)
         }, 1000)
-        self.key = 'Pause'
+        self.key = '暂停'
       } else {
-        self.key = 'Start'
+        self.key = '继续'
         clearInterval(timer)
       }
+    },
+    floorEnd() {
+      let self = this
+      clearInterval(timer)
+      self.min = '20'
+      self.sec = '00'
+      self.key = '开始'
     }
   }
   onShareAppMessage() {
@@ -351,6 +372,12 @@ export default class Water extends wepy.page {
         showImg: false
       })
     }, 2000)
+    wepy.request({
+      url: 'http://127.0.0.1:7001/voice/list',
+      success: function (res) {
+        console.log(res)
+      }
+    })
   }
 }
 </script>
