@@ -1,63 +1,71 @@
 <style lang="less">
-  .position{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1507874324&di=35d625e5e928c9af293703f3d4d90732&src=http://img4.duitang.com/uploads/item/201409/09/20140909211122_wWVay.png');
-    background-size: 100% 100%;
-  }
-  .markposition{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .top{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .mark{
-    width: 80px;
-    height: 80px;
-  }
-  .text{
-    width: 100%;
-    height: 10%;
-  }
-  .yuan{
-    width: 200px;
-    height: 200px;
-    border: 1px solid white;
-    border-radius: 100px;
-  }
-  .center{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .time{
-    color: white;
-    border-bottom: 1px solid white;
-    border-top: 1px solid white;
-    margin-top: 20%;
-  }
-  .timefloor{
-    margin-top: 7%;
-    color: white;
-    font-size: 20px;
-  }
+.position {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1507874324&di=35d625e5e928c9af293703f3d4d90732&src=http://img4.duitang.com/uploads/item/201409/09/20140909211122_wWVay.png');
+  background-size: 100% 100%;
+}
+
+.markposition {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mark {
+  width: 80px;
+  height: 80px;
+}
+
+.text {
+  width: 100%;
+  height: 10%;
+}
+
+.yuan {
+  width: 200px;
+  height: 200px;
+  border: 1px solid white;
+  border-radius: 100px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.time {
+  color: white;
+  border-bottom: 1px solid white;
+  border-top: 1px solid white;
+  margin-top: 20%;
+}
+
+.timefloor {
+  margin-top: 7%;
+  color: white;
+  font-size: 20px;
+}
 </style>
 <template>
   <view>
@@ -66,19 +74,21 @@
     </view>
     <view wx:else class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
       <view class="markposition" style="background-color:{{bgcolor}}">
-        <view class="top">  
+        <view class="top">
           <view class="text"></view>
-            <view class="yuan center">
-              <view style="display: flex; flex-direction: column;">
-                <view class="center"><image class="mark" src="{{mark}}"></image></view>
-                <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+          <view class="yuan center">
+            <view style="display: flex; flex-direction: column;">
+              <view class="center">
+                <image class="mark" src="{{mark}}"></image>
               </view>
+              <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
             </view>
+          </view>
           <view class="center timefloor">
             <text>{{min}} : {{sec}} </text>
           </view>
           <view @tap='floor'>
-            <text>Start</text>
+            <text>{{key}}</text>
           </view>
           <view>
             <text></text>
@@ -92,6 +102,7 @@
 import wepy from 'wepy'
 
 const secondsPerMin = 60
+let timer = null;
 
 export default class Water extends wepy.page {
   config = {
@@ -113,9 +124,32 @@ export default class Water extends wepy.page {
     min: 20,
     sec: '00',
     add: 0,
-    tick: 0
+    tick: 0,
+    key: 'Start'
   }
   methods = {
+    startCount(self){
+      return setInterval(() => {
+          self.setData({
+            tick: self.tick - 1
+          })
+          if (self.tick !== -1) {
+            let minutes = Math.floor((self.tick / secondsPerMin));
+            self.min = minutes < 10 ? '0' + minutes.toString() : minutes
+            self.setData({
+              min: self.min
+            })
+            let second = self.tick % secondsPerMin
+            self.sec = second < 10 ? '0' + second.toString() : second
+            self.setData({
+              sec: self.sec
+            })
+          } else {
+            clearInterval(timer)
+          }
+          console.log(self.tick, self.min, self.sec)
+        }, 1000)
+    },
     touchstart(e) {
       let self = this
       self.starPoint = [e.touches[0].pageX, e.touches[0].pageY]
@@ -131,14 +165,14 @@ export default class Water extends wepy.page {
           if (self.curPoint[1] >= self.starPoint[1]) {
             self.add = self.add + 1
             if (self.add === 5) {
-              self.min -- 
+              self.min--
               self.add = 0
               self.min = self.min < 10 ? '0' + self.min.toString() : self.min
             }
           } else {
             self.add = self.add + 1
             if (self.add === 5) {
-              self.min ++
+              self.min++
               self.add = 0
               self.min = self.min < 10 ? '0' + self.min.toString() : self.min
             }
@@ -150,14 +184,14 @@ export default class Water extends wepy.page {
           if (self.curPoint[1] >= self.starPoint[1]) {
             self.add = self.add + 1
             if (self.add === 5) {
-              self.min --
+              self.min--
               self.add = 0
               self.min = self.min < 10 ? '0' + self.min.toString() : self.min
             }
           } else {
             self.add = self.add + 1
             if (self.add === 5) {
-              self.min ++
+              self.min++
               self.add = 0
               self.min = self.min < 10 ? '0' + self.min.toString() : self.min
             }
@@ -180,7 +214,6 @@ export default class Water extends wepy.page {
               self.mark = '../image/gold.png'
               self.node = '1'
               self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
-              console.log(self)
               break
             case '3':
               self.mark = '../image/tree.png'
@@ -239,27 +272,19 @@ export default class Water extends wepy.page {
 
     floor() {
       let self = this
-      self.tick = self.min * secondsPerMin
-      let timer = setInterval(() => {
-        self.tick --
-        if (self.tick !== -1) {
-          let minutes = Number((self.tick / secondsPerMin).toString().slice(0, 2))
-          self.min = minutes < 10 ? '0' + minutes.toString() : minutes
-          self.setData({
-            min: self.min
-          })
-          let second = self.tick % secondsPerMin
-          self.sec = second < 10 ? '0' + second.toString() : second
-          self.setData({
-            sec: self.sec
-          })
-        } else {
-          clearInterval(timer)
-        }
-        console.log(self.tick, self.min, self.sec)
-      }, 1000)
+      if (timer) {
+        clearInterval(timer);
+      }
+      if (self.key === 'Start') {
+        let self = this
+        //self.tick = self.min * secondsPerMin + self.sec
+        timer = self.startCount(self);
+        self.key = 'End'
+      } else {
+        self.key = 'Start'
+        clearInterval(timer);
+      }
     }
-
   }
   onShareAppMessage() {
     return {
@@ -268,6 +293,7 @@ export default class Water extends wepy.page {
       path: '/page/noise'
     }
   }
+
   onLoad() {
     let date = new Date()
     let self = this

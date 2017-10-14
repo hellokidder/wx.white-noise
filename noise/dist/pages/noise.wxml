@@ -5,19 +5,21 @@
     </view>
     <view  wx:else class="position" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
       <view class="markposition" style="background-color:{{bgcolor}}">
-        <view class="top">  
+        <view class="top">
           <view class="text"/>
-            <view class="yuan center">
-              <view style="display: flex; flex-direction: column;">
-                <view class="center"><image class="mark" src="{{mark}}"/></view>
-                <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
+          <view class="yuan center">
+            <view style="display: flex; flex-direction: column;">
+              <view class="center">
+                <image class="mark" src="{{mark}}"/>
               </view>
+              <text class="time">{{mon}} {{day}} {{weekd}} {{year}}</text>
             </view>
+          </view>
           <view class="center timefloor">
             <text>{{min}} : {{sec}} </text>
           </view>
           <view bindtap="floor">
-            <text>Start</text>
+            <text>{{key}}</text>
           </view>
           <view>
             <text/>
