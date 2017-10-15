@@ -318,7 +318,7 @@ export default class Water extends wepy.page {
       } else {
         self.key = '继续'
         currentTime = (self.tick / 60) >= 60 ? '∞' : (((self.tick - (self.tick % 60)) / 60) < 10 ? '0' + ((self.tick - (self.tick % 60)) / 60) : ((self.tick - (self.tick % 60)) / 60)) + ' : ' + ((self.tick % 60) >= 10 ? (self.tick % 60) : '0' + (self.tick % 60))
-        console.log(currentTime)
+        // console.log(currentTime)
         self.setData({
           time: currentTime
         })
@@ -331,9 +331,9 @@ export default class Water extends wepy.page {
       let self = this
       clearInterval(timer)
       self.key = '开始'
-      self.switch = true
       self.tick = 20 * secondsPerMin
-      console.log(self.switch)
+      self.time = '20 : 00'
+      self.switch = true
     }
   }
   onShareAppMessage() {
