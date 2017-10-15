@@ -117,6 +117,7 @@
 <script>
 import wepy from 'wepy'
 
+const initialTime = 20
 const secondsPerMin = 60
 const changeTimePoint = 5
 const changeImagePoint = 10
@@ -360,7 +361,7 @@ export default class Water extends wepy.page {
       let self = this
       clearInterval(timer)
       self.key = '开始'
-      self.tick = 20 * secondsPerMin
+      self.tick = initialTime * secondsPerMin
       self.time = '20 : 00'
       self.switch = true
     }
@@ -385,8 +386,8 @@ export default class Water extends wepy.page {
     const day = date.getDate()
     const year = date.getFullYear()
     self.dates = mon + ' ' + day + ' ' + weekd + ' ' + year
-    self.tick = 20 * secondsPerMin
-    self.time = (self.tick / 60) + ' : 0' + (self.tick % 60)
+    self.tick = initialTime * secondsPerMin
+    self.time = (self.tick / secondsPerMin) + ' : 0' + (self.tick % secondsPerMin)
     setTimeout(() => {
       self.showImg = false
       self.setData({
