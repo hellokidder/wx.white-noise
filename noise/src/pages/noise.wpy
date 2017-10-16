@@ -95,15 +95,15 @@
           <view class="center timefloor">
             <text>{{time}} </text>
           </view>
-          <view wx:if="{{key==='开始'}}" @tap="floor" class="key center">
-            <text>{{key}}</text>
+          <view wx:if="{{key === 0}}" @tap="floor" class="key center">
+            <text>{{kStatus[key]}}</text>
           </view>
           <view wx:else class="key center">
             <view @tap="floor" style="margin-right: 8%;">
-              <text>{{key}}</text>
+              <text>{{kStatus[key]}}</text>
             </view>
             <view @tap="floorEnd" style="margin-left: 8%;">
-              <text>{{end}}</text>
+              <text>{{kStatus[ksStop]}}</text>
             </view>
           </view>
           <view>
@@ -118,6 +118,7 @@
 import wepy from 'wepy'
 
 const initialTime = 20
+const initialTimeText = '20 : 00'
 const secondsPerMin = 60
 const changeTimePoint = 5
 const changeImagePoint = 10
@@ -127,6 +128,9 @@ const bitsPoint = 10
 const Xpos = 0
 const Ypos = 1
 let timer = null
+const ksStart = 0
+const ksPause = 1
+const ksContinue = 2
 
 export default class Water extends wepy.page {
   config = {
@@ -141,15 +145,15 @@ export default class Water extends wepy.page {
     bgcolor: 'rgba(0, 255, 255, 0.3)',
     imageNode: 'water',
     tick: 0,
-    key: '开始',
+    key: ksStart,
     dates: '',
-    end: '结束',
     changePoint: 0,
-    time: ''
+    time: '',
+    kStatus: ['开始', '暂停', '继续', '结束'],
+    ksStop: 3
   }
   methods = {
     timeChange(self, e) {
-      self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
       let xchange = self.curPoint[Xpos] - self.starPoint[Xpos]
       let ychange = self.curPoint[Ypos] - self.starPoint[Ypos]
       let currentTime
@@ -306,6 +310,7 @@ export default class Water extends wepy.page {
     touchmove(e) {
       console.log('move')
       let self = this
+      self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
       if (self.switch) {
         self.methods.timeChange(self, e)
       }
@@ -322,32 +327,34 @@ export default class Water extends wepy.page {
     floor() {
       let self = this
       let currentTime
-      if (timer) {
-        clearInterval(timer)
-      }
-      if (self.key === '开始' || self.key === '继续') {
-        let tickCount = self.tick
-        timer = setInterval(() => {
-          tickCount--
-          self.setData({
-            tick: tickCount
-          })
-          self.tick = tickCount
+      if (self.key === ksStart || self.key === ksContinue) {
+        if (self.time === '∞') {
+          self.key = ksPause
+          self.switch = false
+        } else {
+          let tickCount = self.tick
+          timer = setInterval(() => {
+            tickCount--
+            self.setData({
+              tick: tickCount
+            })
+            self.tick = tickCount
 
-          if (self.tick === timeLowPoint) {
-            clearInterval(timer)
-          }
-          console.log(self.tick)
-          currentTime = (self.tick / secondsPerMin) >= timeTopPoint ? '∞' : (((self.tick - (self.tick % secondsPerMin)) / secondsPerMin) < bitsPoint ? '0' + ((self.tick - (self.tick % secondsPerMin)) / secondsPerMin) : ((self.tick - (self.tick % secondsPerMin)) / secondsPerMin)) + ' : ' + ((self.tick % secondsPerMin) >= bitsPoint ? (self.tick % secondsPerMin) : '0' + (self.tick % secondsPerMin))
-          self.setData({
-            time: currentTime
-          })
-          self.time = currentTime
-        }, 1000)
-        self.key = '暂停'
-        self.switch = false
+            if (self.tick === timeLowPoint) {
+              clearInterval(timer)
+            }
+            console.log(self.tick)
+            currentTime = (self.tick / secondsPerMin) >= timeTopPoint ? '∞' : (((self.tick - (self.tick % secondsPerMin)) / secondsPerMin) < bitsPoint ? '0' + ((self.tick - (self.tick % secondsPerMin)) / secondsPerMin) : ((self.tick - (self.tick % secondsPerMin)) / secondsPerMin)) + ' : ' + ((self.tick % secondsPerMin) >= bitsPoint ? (self.tick % secondsPerMin) : '0' + (self.tick % secondsPerMin))
+            self.setData({
+              time: currentTime
+            })
+            self.time = currentTime
+          }, 1000)
+          self.key = ksPause
+          self.switch = false
+        }
       } else {
-        self.key = '继续'
+        self.key = ksContinue
         currentTime = (self.tick / secondsPerMin) >= timeTopPoint ? '∞' : (((self.tick - (self.tick % secondsPerMin)) / secondsPerMin) < bitsPoint ? '0' + ((self.tick - (self.tick % secondsPerMin)) / secondsPerMin) : ((self.tick - (self.tick % secondsPerMin)) / secondsPerMin)) + ' : ' + ((self.tick % secondsPerMin) >= bitsPoint ? (self.tick % secondsPerMin) : '0' + (self.tick % secondsPerMin))
         self.setData({
           time: currentTime
@@ -360,9 +367,9 @@ export default class Water extends wepy.page {
     floorEnd() {
       let self = this
       clearInterval(timer)
-      self.key = '开始'
+      self.key = ksStart
       self.tick = initialTime * secondsPerMin
-      self.time = '20 : 00'
+      self.time = initialTimeText
       self.switch = true
     }
   }

@@ -18,15 +18,15 @@
           <view class="center timefloor">
             <text>{{time}} </text>
           </view>
-          <view wx:if="{{key==='开始'}}" bindtap="floor" class="key center">
-            <text>{{key}}</text>
+          <view wx:if="{{key === 0}}" bindtap="floor" class="key center">
+            <text>{{kStatus[key]}}</text>
           </view>
           <view wx:else class="key center">
             <view bindtap="floor" style="margin-right: 8%;">
-              <text>{{key}}</text>
+              <text>{{kStatus[key]}}</text>
             </view>
             <view bindtap="floorEnd" style="margin-left: 8%;">
-              <text>{{end}}</text>
+              <text>{{kStatus[ksStop]}}</text>
             </view>
           </view>
           <view>
