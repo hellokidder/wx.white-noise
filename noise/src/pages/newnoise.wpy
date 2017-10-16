@@ -1,0 +1,283 @@
+<style lang="less">
+.position {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1507874324&di=35d625e5e928c9af293703f3d4d90732&src=http://img4.duitang.com/uploads/item/201409/09/20140909211122_wWVay.png');
+  background-size: 100% 100%;
+}
+
+.markposition {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mark {
+  width: 80px;
+  height: 80px;
+}
+
+.text {
+  width: 100%;
+  height: 10%;
+}
+
+.yuan {
+  width: 200px;
+  height: 200px;
+  border: 1px solid white;
+  border-radius: 100px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.time {
+  color: white;
+  border-bottom: 1px solid white;
+  border-top: 1px solid white;
+  margin-top: 20%;
+}
+
+.timefloor {
+  margin-top: 7%;
+  color: white;
+  font-size: 20px;
+}
+
+.key {
+  margin-top: 38%;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  width: 100%;
+}
+</style>
+<template>
+  <view>
+    <view wx:if="{{showImge}}">
+      <image src="../image/bg.jpeg" class="top"></image>
+    </view>
+    <view wx:else class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
+      <view class="markposition" style="background-color:{{bgcolor}}">
+        <view class="top">
+          <view class="text"></view>
+          <view class="yuan center">
+            <view style="display: flex; flex-direction: column;">
+              <view class="center">
+                <image class="mark" src="{{mark}}"></image>
+              </view>
+              <text class="time">{{dates}}</text>
+            </view>
+          </view>
+          <view class="center timefloor">
+            <text>{{time}} </text>
+          </view>
+          <view wx:if="{{key === 0}}" @tap="time" class="key center">
+            <text>{{kStatus[key]}}</text>
+          </view>
+          <view wx:else class="key center">
+            <view @tap="time" style="margin-right: 8%;">
+              <text>{{kStatus[key]}}</text>
+            </view>
+            <view @tap="timerEnd" style="margin-left: 8%;">
+              <text>{{endKey}}</text>
+            </view>
+          </view>
+          <view>
+            <text></text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+const initialTimeText = '20 : 00'
+const initialTime = 20
+const secondsPerMin = 60
+const timeUplimit = 60
+const timeLowlimit = 0
+const ksStart = 0
+const ksPause = 1
+const ksContinue = 2
+const xPos = 0
+const yPos = 1
+const changeTimePoint = 5
+
+let timer
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '归心'
+  }
+  data = {
+    mark: '../image/water.png',
+    dates: '',
+    showImge: false,
+    tick: 0,
+    time: '',
+    key: ksStart,
+    kStatus: ['开始', '暂停', '继续'],
+    endKey: '结束',
+    touchmove: true,
+    changePoint: 0
+  }
+  methods = {
+    date(self) {
+      let date = new Date()
+      const weeks = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
+      const week = date.getUTCDay()
+      const weekd = weeks[week]
+      const month = date.getMonth()
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+      const mon = months[month]
+      const day = date.getDate()
+      const year = date.getFullYear()
+      self.dates = mon + ' ' + day + ' ' + weekd + ' ' + year
+    },
+    // 判断是否开启计时器
+    time() {
+      let self = this
+      let min = (self.tick - (self.tick % secondsPerMin)) / secondsPerMin
+      if (min > timeLowlimit && min <= timeUplimit) {
+        self.methods.timer(self)
+      }
+    },
+    // 计时器
+    timer(self) {
+      self.touchmove = false
+      if (self.key === ksStart || self.key === ksContinue) {
+        timer = setInterval(function() {
+          self.tick--
+          self.methods.setTime(self, self.tick)
+          if (self.tick === timeLowlimit) {
+            clearInterval(timer)
+          }
+        }, 1000)
+        self.key = ksPause
+      } else {
+        self.methods.setTime(self, self.tick)
+        clearInterval(timer)
+        self.key = ksContinue
+      }
+    },
+    // 刷新时间
+    setTime(self, tick) {
+      console.log(self)
+      let currentTime = self.methods.currentTime(self.tick)
+      self.setData({
+        time: currentTime
+      })
+      self.time = currentTime
+    },
+    timerEnd() {
+      let self = this
+      console.log(self)
+      clearInterval(timer)
+      self.key = ksStart
+      self.tick = initialTime * secondsPerMin
+      self.time = initialTimeText
+      self.touchmove = true
+    },
+    // 计算时间及输出格式
+    currentTime(tick) {
+      let min = (tick - (tick % secondsPerMin)) / secondsPerMin
+      let sec = tick % secondsPerMin
+      if (min > timeUplimit) {
+        return '∞'
+      } else {
+        if (min < 10) {
+          min = '0' + min
+        }
+        if (sec < 10) {
+          sec = '0' + sec
+        }
+        return min + ':' + sec
+      }
+    },
+    touchstart(e) {
+      console.log('star')
+      let self = this
+      self.starPoint = [e.touches[0].pageX, e.touches[0].pageY]
+    },
+    touchmove(e) {
+      console.log('move')
+      let self = this
+      self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
+      if (self.touchmove) {
+        self.methods.timeChange(self)
+      }
+    },
+    touchend(e) {
+      console.log('end')
+      let self = this
+      if (self.touchmove) {
+      }
+    },
+    timeChange(self) {
+      let xchange = self.curPoint[xPos] - self.starPoint[xPos]
+      let ychange = self.curPoint[yPos] - self.starPoint[yPos]
+      if (Math.abs(xchange) < Math.abs(ychange)) {
+        self.changePoint++
+        console.log(self.changePoint)
+        if (self.changePoint > changeTimePoint) {
+          if (self.curPoint[yPos] > self.starPoint[yPos] && self.tick > 0) {
+            self.tick = self.tick - secondsPerMin
+            self.methods.setTime(self, self.tick)
+            self.changePoint = 0
+          }
+          if (self.curPoint[yPos] < self.starPoint[yPos]) {
+            self.tick = self.tick + secondsPerMin
+            self.methods.setTime(self, self.tick)
+            self.changePoint = 0
+          }
+        }
+      }
+    }
+  }
+  onShareAppMessage() {
+    return {
+      title: '归心',
+      desc: '都市喧闹 何处归心',
+      path: '/page/noise'
+    }
+  }
+  onLoad() {
+    let self = this
+    self.methods.date(self)
+    setTimeout(() => {
+      self.showImge = false
+      self.setData({
+        showImge: false
+      })
+    }, 2000)
+    self.time = initialTimeText
+    self.tick = initialTime * secondsPerMin
+  }
+}
+</script>

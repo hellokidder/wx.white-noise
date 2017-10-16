@@ -1,14 +1,14 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": false,
-		"es6": false,
-		"postcss": false,
-		"minified": false
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true
 	},
 	"compileType": "weapp",
 	"libVersion": "1.5.4",
-	"appid": "touristappid",
+	"appid": "wx2d1ae648c752ad57",
 	"projectname": "noise",
 	"condition": {
 		"weapp": {

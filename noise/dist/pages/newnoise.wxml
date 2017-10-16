@@ -1,0 +1,38 @@
+
+  <view>
+    <view  wx:if="{{showImge}}">
+      <image src="../image/bg.jpeg" class="top"/>
+    </view>
+    <view  wx:else class="position" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
+      <view class="markposition" style="background-color:{{bgcolor}}">
+        <view class="top">
+          <view class="text"/>
+          <view class="yuan center">
+            <view style="display: flex; flex-direction: column;">
+              <view class="center">
+                <image class="mark" src="{{mark}}"/>
+              </view>
+              <text class="time">{{dates}}</text>
+            </view>
+          </view>
+          <view class="center timefloor">
+            <text>{{time}} </text>
+          </view>
+          <view wx:if="{{key === 0}}" bindtap="time" class="key center">
+            <text>{{kStatus[key]}}</text>
+          </view>
+          <view wx:else class="key center">
+            <view bindtap="time" style="margin-right: 8%;">
+              <text>{{kStatus[key]}}</text>
+            </view>
+            <view bindtap="timerEnd" style="margin-left: 8%;">
+              <text>{{endKey}}</text>
+            </view>
+          </view>
+          <view>
+            <text/>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
