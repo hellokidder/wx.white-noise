@@ -399,7 +399,7 @@ export default class Water extends wepy.page {
       self.showImg = false
       self.setData({
         showImg: false
-      })
+      }}
     }, 2000)
     // wepy.request({
     //   url: 'http://127.0.0.1:7001/voice/list',

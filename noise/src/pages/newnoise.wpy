@@ -116,7 +116,24 @@
 </template>
 <script>
 import wepy from 'wepy'
-import const from '../text/const.js'
+
+const initialTimeText = '20 : 00'
+const initialTime = 20
+const secondsPerMin = 60
+const timeUplimit = 60
+const timeLowlimit = 0
+const ksStart = 0
+const ksPause = 1
+const ksContinue = 2
+const xPos = 0
+const yPos = 1
+const changeTimePoint = 5
+const changeImagePoint = 5
+const GOLD = 'gold'
+const TREE = 'tree'
+const WATER = 'water'
+const FIRE = 'fire'
+const SOIL = 'soil'
 
 let timer
 
@@ -154,6 +171,11 @@ export default class Index extends wepy.page {
     // 判断是否开启计时器
     time() {
       let self = this
+      wepy.playBackgroundAudio({
+        dataUrl: '//music.163.com/outchain/player?type=3&id=907005819',
+        title: '123',
+        coverImgUrl: ''
+      })
       let min = (self.tick - (self.tick % secondsPerMin)) / secondsPerMin
       if (min > timeLowlimit && min <= timeUplimit) {
         self.methods.timer(self)
