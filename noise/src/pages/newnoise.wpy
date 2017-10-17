@@ -116,18 +116,7 @@
 </template>
 <script>
 import wepy from 'wepy'
-
-const initialTimeText = '20 : 00'
-const initialTime = 20
-const secondsPerMin = 60
-const timeUplimit = 60
-const timeLowlimit = 0
-const ksStart = 0
-const ksPause = 1
-const ksContinue = 2
-const xPos = 0
-const yPos = 1
-const changeTimePoint = 5
+import const from '../text/const.js'
 
 let timer
 
@@ -145,7 +134,9 @@ export default class Index extends wepy.page {
     kStatus: ['开始', '暂停', '继续'],
     endKey: '结束',
     touchmove: true,
-    changePoint: 0
+    changePoint: 0,
+    imageNode: WATER,
+    bgcolor: 'rgba(0, 255, 255, 0.3)'
   }
   methods = {
     date(self) {
@@ -166,6 +157,8 @@ export default class Index extends wepy.page {
       let min = (self.tick - (self.tick % secondsPerMin)) / secondsPerMin
       if (min > timeLowlimit && min <= timeUplimit) {
         self.methods.timer(self)
+      } else {
+        self.key = ksPause
       }
     },
     // 计时器
@@ -188,7 +181,6 @@ export default class Index extends wepy.page {
     },
     // 刷新时间
     setTime(self, tick) {
-      console.log(self)
       let currentTime = self.methods.currentTime(self.tick)
       self.setData({
         time: currentTime
@@ -197,7 +189,6 @@ export default class Index extends wepy.page {
     },
     timerEnd() {
       let self = this
-      console.log(self)
       clearInterval(timer)
       self.key = ksStart
       self.tick = initialTime * secondsPerMin
@@ -229,6 +220,7 @@ export default class Index extends wepy.page {
       console.log('move')
       let self = this
       self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
+      self.changePoint++
       if (self.touchmove) {
         self.methods.timeChange(self)
       }
@@ -237,13 +229,14 @@ export default class Index extends wepy.page {
       console.log('end')
       let self = this
       if (self.touchmove) {
+        self.methods.imageChange(self)
       }
     },
+    // 上下滑动调节时间
     timeChange(self) {
       let xchange = self.curPoint[xPos] - self.starPoint[xPos]
       let ychange = self.curPoint[yPos] - self.starPoint[yPos]
       if (Math.abs(xchange) < Math.abs(ychange)) {
-        self.changePoint++
         console.log(self.changePoint)
         if (self.changePoint > changeTimePoint) {
           if (self.curPoint[yPos] > self.starPoint[yPos] && self.tick > 0) {
@@ -254,6 +247,69 @@ export default class Index extends wepy.page {
           if (self.curPoint[yPos] < self.starPoint[yPos]) {
             self.tick = self.tick + secondsPerMin
             self.methods.setTime(self, self.tick)
+            self.changePoint = 0
+          }
+        }
+      }
+    },
+    // 左右滑动调节图片
+    imageChange(self) {
+      let xchange = self.curPoint[xPos] - self.starPoint[xPos]
+      let ychange = self.curPoint[yPos] - self.starPoint[yPos]
+      if (Math.abs(xchange) > Math.abs(ychange)) {
+        console.log(self.changePoint)
+        if (self.changePoint > changeImagePoint) {
+          if (self.curPoint[xPos] > self.starPoint[xPos]) {
+            switch (self.imageNode) {
+              case GOLD:
+                break
+              case TREE:
+                self.mark = '../image/gold.png'
+                self.imageNode = GOLD
+                self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
+                break
+              case WATER:
+                self.mark = '../image/tree.png'
+                self.imageNode = TREE
+                self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                break
+              case FIRE:
+                self.mark = '../image/water.png'
+                self.imageNode = WATER
+                self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                break
+              case SOIL:
+                self.mark = '../image/fire.png'
+                self.imageNode = FIRE
+                self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                break
+            }
+            self.changePoint = 0
+          } else if (self.curPoint[xPos] < self.starPoint[xPos]) {
+            switch (self.imageNode) {
+              case GOLD:
+                self.mark = '../image/tree.png'
+                self.imageNode = TREE
+                self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                break
+              case TREE:
+                self.mark = '../image/water.png'
+                self.imageNode = WATER
+                self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                break
+              case WATER:
+                self.mark = '../image/fire.png'
+                self.imageNode = FIRE
+                self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                break
+              case FIRE:
+                self.mark = '../image/soil.png'
+                self.imageNode = SOIL
+                self.bgcolor = 'rgba( 238, 99, 99, 0.3)'
+                break
+              case SOIL:
+                break
+            }
             self.changePoint = 0
           }
         }

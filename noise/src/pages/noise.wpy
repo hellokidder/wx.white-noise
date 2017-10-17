@@ -234,7 +234,7 @@ export default class Water extends wepy.page {
         if (Math.abs(xchange) >= Math.abs(ychange)) {
           if (self.changePoint > changeImagePoint) {
             switch (self.imageNode) {
-              case 'gold':
+              case 'gold': 
                 break
               case 'tree':
                 self.mark = '../image/gold.png'
