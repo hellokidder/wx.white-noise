@@ -62,7 +62,7 @@
 }
 
 .timefloor {
-  margin-top: 7%;
+  margin-top: 5%;
   color: white;
   font-size: 20px;
 }
@@ -84,7 +84,7 @@
       <view class="markposition" style="background-color:{{bgcolor}}">
         <view class="top">
           <view class="text"></view>
-          <view class="yuan center">
+          <view class="yuan center" style="background-color:{{circlecolor}}">
             <view style="display: flex; flex-direction: column;">
               <view class="center">
                 <image class="mark" src="{{mark}}"></image>
@@ -153,7 +153,11 @@ export default class Index extends wepy.page {
     touchmove: true,
     changePoint: 0,
     imageNode: WATER,
-    bgcolor: 'rgba(0, 255, 255, 0.3)'
+    bgcolor: 'rgba(0, 255, 255, 0.3)',
+    circlecolor: 'rgba(0, 0, 0, 0)',
+    starPoint: [0, 0],
+    curPoint: [0, 0],
+    touches: [0, 0]
   }
   methods = {
     date(self) {
@@ -171,12 +175,8 @@ export default class Index extends wepy.page {
     // 判断是否开启计时器
     time() {
       let self = this
-      wepy.playBackgroundAudio({
-        dataUrl: '//music.163.com/outchain/player?type=3&id=907005819',
-        title: '123',
-        coverImgUrl: ''
-      })
       let min = (self.tick - (self.tick % secondsPerMin)) / secondsPerMin
+      self.methods.circleColorChange(self)
       if (min > timeLowlimit && min <= timeUplimit) {
         self.methods.timer(self)
       } else {
@@ -191,6 +191,18 @@ export default class Index extends wepy.page {
           self.tick--
           self.methods.setTime(self, self.tick)
           if (self.tick === timeLowlimit) {
+            self.setData({
+              touchmove: true,
+              circlecolor: 'rgba(0, 0, 0, 0)',
+              key: ksStart,
+              tick: initialTime * secondsPerMin,
+              time: initialTimeText
+            })
+            self.time = initialTimeText
+            self.tick = initialTime * secondsPerMin
+            self.touchmove = true
+            self.circlecolor = 'rgba(0, 0, 0, 0)'
+            self.key = ksStart
             clearInterval(timer)
           }
         }, 1000)
@@ -199,6 +211,7 @@ export default class Index extends wepy.page {
         self.methods.setTime(self, self.tick)
         clearInterval(timer)
         self.key = ksContinue
+        self.circlecolor = 'rgba(255, 255, 0, 0.1)'
       }
     },
     // 刷新时间
@@ -216,6 +229,7 @@ export default class Index extends wepy.page {
       self.tick = initialTime * secondsPerMin
       self.time = initialTimeText
       self.touchmove = true
+      self.circlecolor = 'rgba(0, 0, 0, 0)'
     },
     // 计算时间及输出格式
     currentTime(tick) {
@@ -259,7 +273,6 @@ export default class Index extends wepy.page {
       let xchange = self.curPoint[xPos] - self.starPoint[xPos]
       let ychange = self.curPoint[yPos] - self.starPoint[yPos]
       if (Math.abs(xchange) < Math.abs(ychange)) {
-        console.log(self.changePoint)
         if (self.changePoint > changeTimePoint) {
           if (self.curPoint[yPos] > self.starPoint[yPos] && self.tick > 0) {
             self.tick = self.tick - secondsPerMin
@@ -279,7 +292,6 @@ export default class Index extends wepy.page {
       let xchange = self.curPoint[xPos] - self.starPoint[xPos]
       let ychange = self.curPoint[yPos] - self.starPoint[yPos]
       if (Math.abs(xchange) > Math.abs(ychange)) {
-        console.log(self.changePoint)
         if (self.changePoint > changeImagePoint) {
           if (self.curPoint[xPos] > self.starPoint[xPos]) {
             switch (self.imageNode) {
@@ -335,6 +347,32 @@ export default class Index extends wepy.page {
             self.changePoint = 0
           }
         }
+      }
+    },
+    playnoise() {
+      wepy.playBackgroundAudio({
+        dataUrl: '{{}}',
+        title: '',
+        coverImgUrl: ''
+      })
+    },
+    circleColorChange(self) {
+      switch (self.imageNode) {
+        case GOLD:
+          self.circlecolor = 'rgba( 255, 255, 0, 0.3)'
+          break
+        case TREE:
+          self.circlecolor = 'rgba( 0, 255, 0, 0.3)'
+          break
+        case WATER:
+          self.circlecolor = 'rgba(0, 255, 255, 0.3)'
+          break
+        case FIRE:
+          self.circlecolor = 'rgba( 255, 0, 0, 0.3)'
+          break
+        case SOIL:
+          self.circlecolor = 'rgba( 238, 99, 99, 0.3)'
+          break
       }
     }
   }

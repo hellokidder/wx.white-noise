@@ -7,7 +7,7 @@
       <view class="markposition" style="background-color:{{bgcolor}}">
         <view class="top">
           <view class="text"/>
-          <view class="yuan center">
+          <view class="yuan center" style="background-color:{{circlecolor}}">
             <view style="display: flex; flex-direction: column;">
               <view class="center">
                 <image class="mark" src="{{mark}}"/>
