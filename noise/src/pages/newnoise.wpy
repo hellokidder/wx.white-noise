@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1507874324&di=35d625e5e928c9af293703f3d4d90732&src=http://img4.duitang.com/uploads/item/201409/09/20140909211122_wWVay.png');
+  background-image: url('http://localhost:5000/123.jpeg');
   background-size: 100% 100%;
 }
 
@@ -134,6 +134,11 @@ const TREE = 'tree'
 const WATER = 'water'
 const FIRE = 'fire'
 const SOIL = 'soil'
+const noiseGold = 'http://localhost:5000/%E9%92%9F.mp3'
+const noiseTree = 'http://localhost:5000/%E6%A3%AE.mp3'
+const noiseWater = 'http://localhost:5000/%E9%9B%A8.mp3'
+const noiseFire = 'http://localhost:5000/%E7%81%AB.mp3'
+const noiseSoil = 'http://localhost:5000/%E6%BD%AE.mp3'
 
 let timer
 
@@ -157,7 +162,8 @@ export default class Index extends wepy.page {
     circlecolor: 'rgba(0, 0, 0, 0)',
     starPoint: [0, 0],
     curPoint: [0, 0],
-    touches: [0, 0]
+    touches: [0, 0],
+    noise: 'http://localhost:5000/雨.mp3'
   }
   methods = {
     date(self) {
@@ -177,6 +183,7 @@ export default class Index extends wepy.page {
       let self = this
       let min = (self.tick - (self.tick % secondsPerMin)) / secondsPerMin
       self.methods.circleColorChange(self)
+      self.methods.playnoise(self)
       if (min > timeLowlimit && min <= timeUplimit) {
         self.methods.timer(self)
       } else {
@@ -190,6 +197,13 @@ export default class Index extends wepy.page {
         timer = setInterval(function() {
           self.tick--
           self.methods.setTime(self, self.tick)
+          wepy.getBackgroundAudioPlayerState({
+            success: function(res) {
+              if (res.status !== 1) {
+                self.methods.playnoise(self)
+              }
+            }
+          })
           if (self.tick === timeLowlimit) {
             self.setData({
               touchmove: true,
@@ -198,6 +212,7 @@ export default class Index extends wepy.page {
               tick: initialTime * secondsPerMin,
               time: initialTimeText
             })
+            wepy.stopBackgroundAudio()
             self.time = initialTimeText
             self.tick = initialTime * secondsPerMin
             self.touchmove = true
@@ -208,6 +223,7 @@ export default class Index extends wepy.page {
         }, 1000)
         self.key = ksPause
       } else {
+        wepy.pauseBackgroundAudio()
         self.methods.setTime(self, self.tick)
         clearInterval(timer)
         self.key = ksContinue
@@ -225,6 +241,7 @@ export default class Index extends wepy.page {
     timerEnd() {
       let self = this
       clearInterval(timer)
+      wepy.stopBackgroundAudio()
       self.key = ksStart
       self.tick = initialTime * secondsPerMin
       self.time = initialTimeText
@@ -248,12 +265,10 @@ export default class Index extends wepy.page {
       }
     },
     touchstart(e) {
-      console.log('star')
       let self = this
       self.starPoint = [e.touches[0].pageX, e.touches[0].pageY]
     },
     touchmove(e) {
-      console.log('move')
       let self = this
       self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
       self.changePoint++
@@ -262,7 +277,6 @@ export default class Index extends wepy.page {
       }
     },
     touchend(e) {
-      console.log('end')
       let self = this
       if (self.touchmove) {
         self.methods.imageChange(self)
@@ -301,21 +315,25 @@ export default class Index extends wepy.page {
                 self.mark = '../image/gold.png'
                 self.imageNode = GOLD
                 self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
+                self.noise = noiseGold
                 break
               case WATER:
                 self.mark = '../image/tree.png'
                 self.imageNode = TREE
                 self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                self.noise = noiseTree
                 break
               case FIRE:
                 self.mark = '../image/water.png'
                 self.imageNode = WATER
                 self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                self.noise = noiseWater
                 break
               case SOIL:
                 self.mark = '../image/fire.png'
                 self.imageNode = FIRE
                 self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                self.noise = noiseFire
                 break
             }
             self.changePoint = 0
@@ -325,21 +343,25 @@ export default class Index extends wepy.page {
                 self.mark = '../image/tree.png'
                 self.imageNode = TREE
                 self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                self.noise = noiseTree
                 break
               case TREE:
                 self.mark = '../image/water.png'
                 self.imageNode = WATER
                 self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                self.noise = noiseWater
                 break
               case WATER:
                 self.mark = '../image/fire.png'
                 self.imageNode = FIRE
                 self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                self.noise = noiseFire
                 break
               case FIRE:
                 self.mark = '../image/soil.png'
                 self.imageNode = SOIL
                 self.bgcolor = 'rgba( 238, 99, 99, 0.3)'
+                self.noise = noiseSoil
                 break
               case SOIL:
                 break
@@ -349,11 +371,9 @@ export default class Index extends wepy.page {
         }
       }
     },
-    playnoise() {
+    playnoise(self) {
       wepy.playBackgroundAudio({
-        dataUrl: '{{}}',
-        title: '',
-        coverImgUrl: ''
+        dataUrl: self.noise
       })
     },
     circleColorChange(self) {
