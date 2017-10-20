@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url('http://localhost:5000/123.jpeg');
+  background-image: url('http://localhost:5000/WechatIMG11.png');
   background-size: 100% 100%;
 }
 
@@ -32,8 +32,8 @@
 }
 
 .mark {
-  width: 80px;
-  height: 80px;
+  font-size: 35px;
+  color: white;
 }
 
 .text {
@@ -44,7 +44,7 @@
 .yuan {
   width: 200px;
   height: 200px;
-  border: 1px solid white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 100px;
 }
 
@@ -58,7 +58,12 @@
   color: white;
   border-bottom: 1px solid white;
   border-top: 1px solid white;
-  margin-top: 20%;
+  // border-radius: 15px;
+  // border-left-color: rgba(255, 255, 255, 0);
+  // border-right-color: rgba(255, 255, 255, 0);
+  margin-top: 5%;
+  font-size: 11px;
+  font-weight: bold;
 }
 
 .timefloor {
@@ -74,6 +79,18 @@
   color: white;
   width: 100%;
 }
+.font{
+  font-size: 25px;
+}
+.txt{
+  border: 1px solid white;
+  border-radius: 10px;
+}
+.nongli{
+  color: white;
+  font-size: 12px;
+  margin-top: 20%;
+}
 </style>
 <template>
   <view>
@@ -85,20 +102,19 @@
         <view class="top">
           <view class="text"></view>
           <view class="yuan center" style="background-color:{{circlecolor}}">
-            <view style="display: flex; flex-direction: column;">
-              <view class="center">
-                <image class="mark" src="{{mark}}"></image>
-              </view>
-              <text class="time">{{dates}}</text>
+            <view class="center" style="display: flex; flex-direction: column;">
+              <view><text class="mark">{{text}}</text></view>
+              <view class="time"><text>{{dates}}</text></view>
+              <view class="nongli"><text>农历八月二十九</text></view>
             </view>
           </view>
           <view class="center timefloor">
             <text>{{time}} </text>
           </view>
-          <view wx:if="{{key === 0}}" @tap="time" class="key center">
+          <view wx:if="{{key === 0}}" @tap="time" class="key center font">
             <text>{{kStatus[key]}}</text>
           </view>
-          <view wx:else class="key center">
+          <view wx:else class="key center font">
             <view @tap="time" style="margin-right: 8%;">
               <text>{{kStatus[key]}}</text>
             </view>
@@ -158,12 +174,13 @@ export default class Index extends wepy.page {
     touchmove: true,
     changePoint: 0,
     imageNode: WATER,
-    bgcolor: 'rgba(0, 255, 255, 0.3)',
+    bgcolor: 'rgba(0, 255, 255, 0)',
     circlecolor: 'rgba(0, 0, 0, 0)',
     starPoint: [0, 0],
     curPoint: [0, 0],
     touches: [0, 0],
-    noise: 'http://localhost:5000/雨.mp3'
+    noise: 'http://localhost:5000/雨.mp3',
+    text: '森林'
   }
   methods = {
     date(self) {

@@ -1,0 +1,26 @@
+2017-10-17 15:05:29,210 ERROR 21650 [-/127.0.0.1/-/1ms GET /] nodejs.TypeError: table.string(...).notNullable.defaultTo is not a function
+    at TableBuilder._fn (/Users/a9/github/wx.white-noise/egg-noise/app.js:14:43)
+    at TableBuilder.toSQL (/Users/a9/github/wx.white-noise/egg-noise/node_modules/knex/lib/schema/tablebuilder.js:71:12)
+    at SchemaCompiler_MySQL.createTableIfNotExists (/Users/a9/github/wx.white-noise/egg-noise/node_modules/knex/lib/schema/compiler.js:62:23)
+    at SchemaCompiler_MySQL.toSQL (/Users/a9/github/wx.white-noise/egg-noise/node_modules/knex/lib/schema/compiler.js:51:26)
+    at SchemaBuilder.toSQL (/Users/a9/github/wx.white-noise/egg-noise/node_modules/knex/lib/schema/builder.js:57:43)
+    at SchemaBuilder.Target.toQuery (/Users/a9/github/wx.white-noise/egg-noise/node_modules/knex/lib/interface.js:26:21)
+    at SchemaBuilder.toString (/Users/a9/github/wx.white-noise/egg-noise/node_modules/knex/lib/schema/builder.js:53:15)
+    at /Users/a9/github/wx.white-noise/egg-noise/app.js:18:40
+    at Generator.next (<anonymous>)
+    at onFulfilled (/Users/a9/github/wx.white-noise/egg-noise/node_modules/co/index.js:65:19)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+
+pid: 21650
+hostname: 9deMacBook-Air.lan
+
+2017-10-18 09:48:24,616 ERROR 21712 nodejs.ClusterClientNoResponseError: client no response in 47218293ms exceeding maxIdleTime 60000ms, maybe the connection is close on other side.
+    at Timeout.Leader._heartbeatTimer.setInterval [as _onTimeout] (/Users/a9/github/wx.white-noise/egg-noise/node_modules/cluster-client/lib/leader.js:73:23)
+    at ontimeout (timers.js:469:11)
+    at tryOnTimeout (timers.js:304:5)
+    at Timer.listOnTimeout (timers.js:264:5)
+name: 'ClusterClientNoResponseError'
+pid: 21712
+hostname: 9deMacBook-Air.lan
+

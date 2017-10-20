@@ -1,0 +1,164 @@
+2017-10-17 15:05:28,761 INFO 21650 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:05:28,793 INFO 21650 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:05:28,793 INFO 21650 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:05:28,802 INFO 21650 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:05:29,144 INFO 21650 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:05:29,146 INFO 21650 [egg-security] use csrf middleware
+2017-10-17 15:05:29,147 INFO 21650 [egg-security] use methodnoallow middleware
+2017-10-17 15:05:29,147 INFO 21650 [egg-security] use noopen middleware
+2017-10-17 15:05:29,148 INFO 21650 [egg-security] use nosniff middleware
+2017-10-17 15:05:29,148 INFO 21650 [egg-security] use xssProtection middleware
+2017-10-17 15:05:29,148 INFO 21650 [egg-security] use xframe middleware
+2017-10-17 15:05:29,148 INFO 21650 [egg-security] use dta middleware
+2017-10-17 15:05:29,148 INFO 21650 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:05:29,187 INFO 21650 [egg-watcher:app] watcher start success
+2017-10-17 15:05:29,195 INFO 21650 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:05:29 GMT+0800 (CST)
+2017-10-17 15:06:04,832 INFO 21670 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:06:04,864 INFO 21670 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:06:04,864 INFO 21670 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:06:04,872 INFO 21670 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:06:05,138 INFO 21670 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:06:05,141 INFO 21670 [egg-security] use csrf middleware
+2017-10-17 15:06:05,141 INFO 21670 [egg-security] use methodnoallow middleware
+2017-10-17 15:06:05,143 INFO 21670 [egg-security] use noopen middleware
+2017-10-17 15:06:05,143 INFO 21670 [egg-security] use nosniff middleware
+2017-10-17 15:06:05,143 INFO 21670 [egg-security] use xssProtection middleware
+2017-10-17 15:06:05,144 INFO 21670 [egg-security] use xframe middleware
+2017-10-17 15:06:05,144 INFO 21670 [egg-security] use dta middleware
+2017-10-17 15:06:05,144 INFO 21670 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:06:05,184 INFO 21670 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:06:05 GMT+0800 (CST)
+2017-10-17 15:06:05,195 INFO 21670 [egg-watcher:app] watcher start success
+2017-10-17 15:06:50,511 INFO 21713 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:06:50,542 INFO 21713 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:06:50,542 INFO 21713 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:06:50,551 INFO 21713 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:06:50,807 INFO 21713 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:06:50,810 INFO 21713 [egg-security] use csrf middleware
+2017-10-17 15:06:50,810 INFO 21713 [egg-security] use methodnoallow middleware
+2017-10-17 15:06:50,812 INFO 21713 [egg-security] use noopen middleware
+2017-10-17 15:06:50,812 INFO 21713 [egg-security] use nosniff middleware
+2017-10-17 15:06:50,813 INFO 21713 [egg-security] use xssProtection middleware
+2017-10-17 15:06:50,813 INFO 21713 [egg-security] use xframe middleware
+2017-10-17 15:06:50,813 INFO 21713 [egg-security] use dta middleware
+2017-10-17 15:06:50,813 INFO 21713 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:06:50,850 INFO 21713 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:06:50 GMT+0800 (CST)
+2017-10-17 15:06:50,859 INFO 21713 [egg-watcher:app] watcher start success
+2017-10-17 15:09:06,022 INFO 21761 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:09:06,075 INFO 21761 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:09:06,075 INFO 21761 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:09:06,091 INFO 21761 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:09:06,474 INFO 21761 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:09:06,483 INFO 21761 [egg-security] use csrf middleware
+2017-10-17 15:09:06,484 INFO 21761 [egg-security] use methodnoallow middleware
+2017-10-17 15:09:06,487 INFO 21761 [egg-security] use noopen middleware
+2017-10-17 15:09:06,488 INFO 21761 [egg-security] use nosniff middleware
+2017-10-17 15:09:06,488 INFO 21761 [egg-security] use xssProtection middleware
+2017-10-17 15:09:06,489 INFO 21761 [egg-security] use xframe middleware
+2017-10-17 15:09:06,489 INFO 21761 [egg-security] use dta middleware
+2017-10-17 15:09:06,489 INFO 21761 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:09:06,567 INFO 21761 [egg-watcher:app] watcher start success
+2017-10-17 15:09:06,569 INFO 21761 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:09:06 GMT+0800 (CST)
+2017-10-17 15:11:20,830 INFO 21808 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:11:20,881 INFO 21808 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:11:20,881 INFO 21808 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:11:20,894 INFO 21808 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:11:21,234 INFO 21808 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:11:21,237 INFO 21808 [egg-security] use csrf middleware
+2017-10-17 15:11:21,238 INFO 21808 [egg-security] use methodnoallow middleware
+2017-10-17 15:11:21,241 INFO 21808 [egg-security] use noopen middleware
+2017-10-17 15:11:21,243 INFO 21808 [egg-security] use nosniff middleware
+2017-10-17 15:11:21,244 INFO 21808 [egg-security] use xssProtection middleware
+2017-10-17 15:11:21,245 INFO 21808 [egg-security] use xframe middleware
+2017-10-17 15:11:21,246 INFO 21808 [egg-security] use dta middleware
+2017-10-17 15:11:21,246 INFO 21808 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:11:21,316 INFO 21808 [egg-watcher:app] watcher start success
+2017-10-17 15:11:21,319 INFO 21808 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:11:21 GMT+0800 (CST)
+2017-10-17 15:11:40,206 INFO 21824 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:11:40,250 INFO 21824 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:11:40,250 INFO 21824 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:11:40,265 INFO 21824 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:11:40,586 INFO 21824 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:11:40,593 INFO 21824 [egg-security] use csrf middleware
+2017-10-17 15:11:40,595 INFO 21824 [egg-security] use methodnoallow middleware
+2017-10-17 15:11:40,598 INFO 21824 [egg-security] use noopen middleware
+2017-10-17 15:11:40,598 INFO 21824 [egg-security] use nosniff middleware
+2017-10-17 15:11:40,599 INFO 21824 [egg-security] use xssProtection middleware
+2017-10-17 15:11:40,599 INFO 21824 [egg-security] use xframe middleware
+2017-10-17 15:11:40,599 INFO 21824 [egg-security] use dta middleware
+2017-10-17 15:11:40,599 INFO 21824 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:11:40,670 INFO 21824 [egg-watcher:app] watcher start success
+2017-10-17 15:11:40,673 INFO 21824 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:11:40 GMT+0800 (CST)
+2017-10-17 15:27:11,907 INFO 22208 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:27:11,947 INFO 22208 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:27:11,947 INFO 22208 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:27:11,955 INFO 22208 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:27:12,217 INFO 22208 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:27:12,219 INFO 22208 [egg-security] use csrf middleware
+2017-10-17 15:27:12,219 INFO 22208 [egg-security] use methodnoallow middleware
+2017-10-17 15:27:12,220 INFO 22208 [egg-security] use noopen middleware
+2017-10-17 15:27:12,220 INFO 22208 [egg-security] use nosniff middleware
+2017-10-17 15:27:12,220 INFO 22208 [egg-security] use xssProtection middleware
+2017-10-17 15:27:12,221 INFO 22208 [egg-security] use xframe middleware
+2017-10-17 15:27:12,221 INFO 22208 [egg-security] use dta middleware
+2017-10-17 15:27:12,221 INFO 22208 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:27:12,254 INFO 22208 [egg-watcher:app] watcher start success
+2017-10-17 15:27:12,259 INFO 22208 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:27:12 GMT+0800 (CST)
+2017-10-17 15:54:18,645 INFO 22856 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:54:18,723 INFO 22856 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:54:18,723 INFO 22856 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:54:18,772 INFO 22856 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:54:19,882 INFO 22856 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:54:19,886 INFO 22856 [egg-security] use csrf middleware
+2017-10-17 15:54:19,888 INFO 22856 [egg-security] use methodnoallow middleware
+2017-10-17 15:54:19,889 INFO 22856 [egg-security] use noopen middleware
+2017-10-17 15:54:19,891 INFO 22856 [egg-security] use nosniff middleware
+2017-10-17 15:54:19,893 INFO 22856 [egg-security] use xssProtection middleware
+2017-10-17 15:54:19,895 INFO 22856 [egg-security] use xframe middleware
+2017-10-17 15:54:19,896 INFO 22856 [egg-security] use dta middleware
+2017-10-17 15:54:19,896 INFO 22856 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:54:20,344 INFO 22866 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:54:20,387 INFO 22866 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:54:20,387 INFO 22866 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:54:20,397 INFO 22866 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:54:20,709 INFO 22866 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:54:20,712 INFO 22866 [egg-security] use csrf middleware
+2017-10-17 15:54:20,713 INFO 22866 [egg-security] use methodnoallow middleware
+2017-10-17 15:54:20,713 INFO 22866 [egg-security] use noopen middleware
+2017-10-17 15:54:20,714 INFO 22866 [egg-security] use nosniff middleware
+2017-10-17 15:54:20,715 INFO 22866 [egg-security] use xssProtection middleware
+2017-10-17 15:54:20,715 INFO 22866 [egg-security] use xframe middleware
+2017-10-17 15:54:20,716 INFO 22866 [egg-security] use dta middleware
+2017-10-17 15:54:20,716 INFO 22866 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:54:20,762 INFO 22866 [egg-watcher:app] watcher start success
+2017-10-17 15:54:20,772 INFO 22866 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:54:20 GMT+0800 (CST)
+2017-10-17 15:54:49,887 INFO 22886 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 15:54:49,923 INFO 22886 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 15:54:49,923 INFO 22886 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 15:54:49,933 INFO 22886 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 15:54:50,252 INFO 22886 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 15:54:50,256 INFO 22886 [egg-security] use csrf middleware
+2017-10-17 15:54:50,257 INFO 22886 [egg-security] use methodnoallow middleware
+2017-10-17 15:54:50,260 INFO 22886 [egg-security] use noopen middleware
+2017-10-17 15:54:50,261 INFO 22886 [egg-security] use nosniff middleware
+2017-10-17 15:54:50,262 INFO 22886 [egg-security] use xssProtection middleware
+2017-10-17 15:54:50,263 INFO 22886 [egg-security] use xframe middleware
+2017-10-17 15:54:50,263 INFO 22886 [egg-security] use dta middleware
+2017-10-17 15:54:50,263 INFO 22886 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 15:54:50,310 INFO 22886 [egg-watcher:app] watcher start success
+2017-10-17 15:54:50,317 INFO 22886 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 07:54:50 GMT+0800 (CST)
+2017-10-17 16:06:40,378 INFO 23068 [egg:logger] init all loggers with options: {"dir":"/Users/a9/github/wx.white-noise/egg-noise/logs/noise","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"noise-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":true,"type":"application"}
+2017-10-17 16:06:40,443 INFO 23068 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/clean_log.js
+2017-10-17 16:06:40,444 INFO 23068 [egg-schedule]: register schedule /Users/a9/github/wx.white-noise/egg-noise/node_modules/egg-logrotator/app/schedule/rotate_by_file.js
+2017-10-17 16:06:40,490 INFO 23068 [egg-mysql] connecting root@127.0.0.1:3306/noise
+2017-10-17 16:06:41,676 INFO 23068 [egg-static] starting static serve /public/ -> /Users/a9/github/wx.white-noise/egg-noise/app/public
+2017-10-17 16:06:41,681 INFO 23068 [egg-security] use csrf middleware
+2017-10-17 16:06:41,684 INFO 23068 [egg-security] use methodnoallow middleware
+2017-10-17 16:06:41,688 INFO 23068 [egg-security] use noopen middleware
+2017-10-17 16:06:41,690 INFO 23068 [egg-security] use nosniff middleware
+2017-10-17 16:06:41,692 INFO 23068 [egg-security] use xssProtection middleware
+2017-10-17 16:06:41,693 INFO 23068 [egg-security] use xframe middleware
+2017-10-17 16:06:41,695 INFO 23068 [egg-security] use dta middleware
+2017-10-17 16:06:41,695 INFO 23068 [egg-security] compose 7 middlewares into one security middleware
+2017-10-17 16:06:41,742 INFO 23068 [egg-watcher:app] watcher start success
+2017-10-17 16:06:41,747 INFO 23068 [egg-mysql] instance[0] status OK, rds currentTime: Tue Oct 17 2017 08:06:41 GMT+0800 (CST)
+2017-10-18 09:48:24,603 WARN 23068 [ClusterClient:Watcher] follower closed, and try to init it again
