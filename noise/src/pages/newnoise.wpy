@@ -10,7 +10,7 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-image: url('http://localhost:5000/WechatIMG11.png');
+  background-image: url('https://raw.githubusercontent.com/hellokidder/wx.white-noise/master/noise/src/image/WechatIMG11.png');
   background-size: 100% 100%;
 }
 
@@ -76,18 +76,6 @@
   font-size: 18px;
   font-weight: 100;
 }
-// .key {
-//   margin-top: 20%;
-//   display: flex;
-//   flex-direction: row;
-//   color: white;
-//   width: 100%;
-//   font-size: 25px;
-// }
-
-// .font {
-//   font-size: 25px;
-// }
 
 .txt {
   border: 1px solid white;
@@ -118,6 +106,7 @@
   position: fixed;
   bottom: 10%;
   font-weight: 100;
+  width: 100%;
 }
 </style>
 <template>
@@ -144,21 +133,21 @@
           </view>
           <view class="center timer">
             <view><image src="../image/up.png" class="uplow"></image></view>
-            <view><text>{{timerrrrr}} </text></view>
+            <view><text>{{time}} </text></view>
             <view><image src="../image/low.png" class="uplow"></image></view>
           </view>
           <view wx:if="{{key === 0}}" @tap="time" class="center buttonview">
             <text class="button center">{{kStatus[key]}}</text>
           </view>
-          <view wx:else class="key center font">
-            <view @tap="time" style="margin-right: 8%;">
+          <view wx:else class="center buttonview">
+            <view @tap="time" class="button center" style="margin-right: 8%;">
               <text>{{kStatus[key]}}</text>
             </view>
-            <view @tap="timerEnd" style="margin-left: 8%;">
+            <view @tap="timerEnd" class="button center" style="margin-left: 8%;">
               <text>{{endKey}}</text>
             </view>
           </view>
-          <view class="lowertext">
+          <view class="lowertext center">
             <text>过去的都是假的，回忆是一条没有归途的路</text>
           </view>
         </view>
@@ -169,7 +158,7 @@
 <script>
 import wepy from 'wepy'
 
-const initialTimeText = '20 : 00'
+const initialTimeText = '20 分钟'
 const initialTime = 20
 const secondsPerMin = 60
 const timeUplimit = 60
@@ -210,14 +199,13 @@ export default class Index extends wepy.page {
     touchmove: true,
     changePoint: 0,
     imageNode: WATER,
-    bgcolor: 'rgba(0, 0, 255, 0.2)',
+    bgcolor: 'rgba(0, 255, 255, 0.12)',
     circlecolor: 'rgba(0, 0, 0, 0)',
     starPoint: [0, 0],
     curPoint: [0, 0],
     touches: [0, 0],
     noise: 'http://localhost:5000/雨.mp3',
-    text: '森林',
-    timerrrrr: '20分钟'
+    text: '雨水'
   }
   methods = {
     date(self) {
@@ -281,7 +269,7 @@ export default class Index extends wepy.page {
         self.methods.setTime(self, self.tick)
         clearInterval(timer)
         self.key = ksContinue
-        self.circlecolor = 'rgba(255, 255, 0, 0.1)'
+        self.circlecolor = 'rgba(255, 255, 0, 0)'
       }
     },
     // 刷新时间
@@ -315,7 +303,7 @@ export default class Index extends wepy.page {
         if (sec < 10) {
           sec = '0' + sec
         }
-        return min + ':' + sec
+        return min + ' : ' + sec
       }
     },
     touchstart(e) {
@@ -366,27 +354,27 @@ export default class Index extends wepy.page {
               case GOLD:
                 break
               case TREE:
-                self.mark = '../image/gold.png'
+                self.text = '寺钟'
                 self.imageNode = GOLD
-                self.bgcolor = 'rgba( 255, 255, 0, 0.3)'
+                self.bgcolor = 'rgba( 255, 255, 0, 0.12)'
                 self.noise = noiseGold
                 break
               case WATER:
-                self.mark = '../image/tree.png'
+                self.text = '森林'
                 self.imageNode = TREE
-                self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                self.bgcolor = 'rgba( 0, 255, 0, 0.12)'
                 self.noise = noiseTree
                 break
               case FIRE:
-                self.mark = '../image/water.png'
+                self.text = '雨水'
                 self.imageNode = WATER
-                self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                self.bgcolor = 'rgba(0, 255, 255, 0.12)'
                 self.noise = noiseWater
                 break
               case SOIL:
-                self.mark = '../image/fire.png'
+                self.text = '篝火'
                 self.imageNode = FIRE
-                self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                self.bgcolor = 'rgba( 255, 0, 0, 0.12)'
                 self.noise = noiseFire
                 break
             }
@@ -394,27 +382,27 @@ export default class Index extends wepy.page {
           } else if (self.curPoint[xPos] < self.starPoint[xPos]) {
             switch (self.imageNode) {
               case GOLD:
-                self.mark = '../image/tree.png'
+                self.text = '森林'
                 self.imageNode = TREE
-                self.bgcolor = 'rgba( 0, 255, 0, 0.3)'
+                self.bgcolor = 'rgba( 0, 255, 0, 0.12)'
                 self.noise = noiseTree
                 break
               case TREE:
-                self.mark = '../image/water.png'
+                self.text = '雨水'
                 self.imageNode = WATER
-                self.bgcolor = 'rgba(0, 255, 255, 0.3)'
+                self.bgcolor = 'rgba(0, 255, 255, 0.12)'
                 self.noise = noiseWater
                 break
               case WATER:
-                self.mark = '../image/fire.png'
+                self.text = '篝火'
                 self.imageNode = FIRE
-                self.bgcolor = 'rgba( 255, 0, 0, 0.3)'
+                self.bgcolor = 'rgba( 255, 0, 0, 0.12)'
                 self.noise = noiseFire
                 break
               case FIRE:
-                self.mark = '../image/soil.png'
+                self.text = '浪潮'
                 self.imageNode = SOIL
-                self.bgcolor = 'rgba( 238, 99, 99, 0.3)'
+                self.bgcolor = 'rgba( 238, 99, 99, 0.12)'
                 self.noise = noiseSoil
                 break
               case SOIL:

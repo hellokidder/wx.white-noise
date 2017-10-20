@@ -22,21 +22,21 @@
           </view>
           <view class="center timer">
             <view><image src="../image/up.png" class="uplow"/></view>
-            <view><text>{{timerrrrr}} </text></view>
+            <view><text>{{time}} </text></view>
             <view><image src="../image/low.png" class="uplow"/></view>
           </view>
           <view wx:if="{{key === 0}}" bindtap="time" class="center buttonview">
             <text class="button center">{{kStatus[key]}}</text>
           </view>
-          <view wx:else class="key center font">
-            <view bindtap="time" style="margin-right: 8%;">
+          <view wx:else class="center buttonview">
+            <view bindtap="time" class="button center" style="margin-right: 8%;">
               <text>{{kStatus[key]}}</text>
             </view>
-            <view bindtap="timerEnd" style="margin-left: 8%;">
+            <view bindtap="timerEnd" class="button center" style="margin-left: 8%;">
               <text>{{endKey}}</text>
             </view>
           </view>
-          <view class="lowertext">
+          <view class="lowertext center">
             <text>过去的都是假的，回忆是一条没有归途的路</text>
           </view>
         </view>
