@@ -10,7 +10,7 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-image: url('https://raw.githubusercontent.com/hellokidder/wx.white-noise/master/noise/src/image/WechatIMG11.png');
+  background-image: url('http://img.hb.aicdn.com/919c81c67eadc61e60259cbd5fb386119dd7bf6117ecaa-NZGCl9_fw658');
   background-size: 100% 100%;
 }
 
@@ -47,8 +47,7 @@
 .dates {
   color: white;
   border-bottom: 0.5px solid white;
-  border-top: 0.5px solid white;
-   // border-radius: 15px;
+  border-top: 0.5px solid white; // border-radius: 15px;
   // border-left-color: rgba(255, 255, 255, 0);
   // border-right-color: rgba(255, 255, 255, 0);
   margin-top: 5%;
@@ -62,6 +61,7 @@
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 100px;
 }
+
 .buttonview {
   margin-top: 20%;
   color: white;
@@ -87,10 +87,12 @@
   font-size: 12px;
   margin-top: 20%;
 }
-.uplow{
+
+.uplow {
   width: 10px;
   height: 10px;
 }
+
 .timer {
   display: flex;
   flex-direction: column;
@@ -100,6 +102,7 @@
   color: white;
   font-size: 18px;
 }
+
 .lowertext {
   color: rgba(255, 255, 255, 0.5);
   font-size: 12px;
@@ -118,7 +121,7 @@
       <view class="markbackground" style="background-color:{{bgcolor}}">
         <view class="top">
           <view class="blank"></view>
-          <view class="circular center" style="background-color:{{circlecolor}}">
+          <view class="circular center" style="background-color:{{circlecolor}};  box-shadow:0px 0px 10px {{shadowcolor}};">
             <view class="center" style="display: flex; flex-direction: column;">
               <view class="mark">
                 <text>{{text}}</text>
@@ -127,14 +130,20 @@
                 <text>{{dates}}</text>
               </view>
               <view class="nongli">
-                <text>农历八月二十九</text>
+                <text>农历九月初一</text>
               </view>
             </view>
           </view>
           <view class="center timer">
-            <view><image src="../image/up.png" class="uplow"></image></view>
-            <view><text>{{time}} </text></view>
-            <view><image src="../image/low.png" class="uplow"></image></view>
+            <view>
+              <image src="../image/up.png" class="uplow"></image>
+            </view>
+            <view>
+              <text>{{time}} </text>
+            </view>
+            <view>
+              <image src="../image/low.png" class="uplow"></image>
+            </view>
           </view>
           <view wx:if="{{key === 0}}" @tap="time" class="center buttonview">
             <text class="button center">{{kStatus[key]}}</text>
@@ -148,7 +157,7 @@
             </view>
           </view>
           <view class="lowertext center">
-            <text>过去的都是假的，回忆是一条没有归途的路</text>
+            <text>跨过山水，我在这里拥抱你</text>
           </view>
         </view>
       </view>
@@ -158,7 +167,7 @@
 <script>
 import wepy from 'wepy'
 
-const initialTimeText = '20 分钟'
+const initialTimeText = '20 : 00'
 const initialTime = 20
 const secondsPerMin = 60
 const timeUplimit = 60
@@ -190,7 +199,7 @@ export default class Index extends wepy.page {
   data = {
     mark: '../image/water.png',
     dates: '',
-    showImge: false,
+    showImge: true,
     tick: 0,
     time: '',
     key: ksStart,
@@ -205,7 +214,8 @@ export default class Index extends wepy.page {
     curPoint: [0, 0],
     touches: [0, 0],
     noise: 'http://localhost:5000/雨.mp3',
-    text: '雨水'
+    text: '雨水',
+    shadowcolor: '#333333'
   }
   methods = {
     date(self) {
@@ -229,6 +239,15 @@ export default class Index extends wepy.page {
       if (min > timeLowlimit && min <= timeUplimit) {
         self.methods.timer(self)
       } else {
+        timer = setInterval(function() {
+          wepy.getBackgroundAudioPlayerState({
+            success: function(res) {
+              if (res.status !== 1) {
+                self.methods.playnoise(self)
+              }
+            }
+          })
+        }, 1000)
         self.key = ksPause
       }
     },
@@ -289,6 +308,7 @@ export default class Index extends wepy.page {
       self.time = initialTimeText
       self.touchmove = true
       self.circlecolor = 'rgba(0, 0, 0, 0)'
+      self.shadowcolor = '#333333'
     },
     // 计算时间及输出格式
     currentTime(tick) {
@@ -421,19 +441,24 @@ export default class Index extends wepy.page {
     circleColorChange(self) {
       switch (self.imageNode) {
         case GOLD:
-          self.circlecolor = 'rgba( 255, 255, 0, 0.3)'
+          self.circlecolor = 'rgba( 255, 255, 0, 0.1)'
+          self.shadowcolor = 'rgba( 255, 255, 0, 1)'
           break
         case TREE:
-          self.circlecolor = 'rgba( 0, 255, 0, 0.3)'
+          self.circlecolor = 'rgba( 0, 255, 0, 0.1)'
+          self.shadowcolor = 'rgba( 0, 255, 0, 1)'
           break
         case WATER:
-          self.circlecolor = 'rgba(0, 255, 255, 0.3)'
+          self.circlecolor = 'rgba(0, 255, 255, 0.1)'
+          self.shadowcolor = 'rgba(0, 255, 255, 1)'
           break
         case FIRE:
-          self.circlecolor = 'rgba( 255, 0, 0, 0.3)'
+          self.circlecolor = 'rgba( 255, 0, 0, 0.1)'
+          self.shadowcolor = 'rgba( 255, 0, 0, 1)'
           break
         case SOIL:
-          self.circlecolor = 'rgba( 238, 99, 99, 0.3)'
+          self.circlecolor = 'rgba( 238, 99, 99, 0.1)'
+          self.shadowcolor = 'rgba( 238, 99, 99, 1)'
           break
       }
     }

@@ -7,7 +7,7 @@
       <view class="markbackground" style="background-color:{{bgcolor}}">
         <view class="top">
           <view class="blank"/>
-          <view class="circular center" style="background-color:{{circlecolor}}">
+          <view class="circular center" style="background-color:{{circlecolor}};  box-shadow:0px 0px 10px {{shadowcolor}};">
             <view class="center" style="display: flex; flex-direction: column;">
               <view class="mark">
                 <text>{{text}}</text>
@@ -16,14 +16,20 @@
                 <text>{{dates}}</text>
               </view>
               <view class="nongli">
-                <text>农历八月二十九</text>
+                <text>农历九月初一</text>
               </view>
             </view>
           </view>
           <view class="center timer">
-            <view><image src="../image/up.png" class="uplow"/></view>
-            <view><text>{{time}} </text></view>
-            <view><image src="../image/low.png" class="uplow"/></view>
+            <view>
+              <image src="../image/up.png" class="uplow"/>
+            </view>
+            <view>
+              <text>{{time}} </text>
+            </view>
+            <view>
+              <image src="../image/low.png" class="uplow"/>
+            </view>
           </view>
           <view wx:if="{{key === 0}}" bindtap="time" class="center buttonview">
             <text class="button center">{{kStatus[key]}}</text>
@@ -37,7 +43,7 @@
             </view>
           </view>
           <view class="lowertext center">
-            <text>过去的都是假的，回忆是一条没有归途的路</text>
+            <text>跨过山水，我在这里拥抱你</text>
           </view>
         </view>
       </view>
