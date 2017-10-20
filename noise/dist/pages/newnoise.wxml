@@ -3,22 +3,30 @@
     <view  wx:if="{{showImge}}">
       <image src="../image/bg.jpeg" class="top"/>
     </view>
-    <view  wx:else class="position" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
-      <view class="markposition" style="background-color:{{bgcolor}}">
+    <view  wx:else class="background" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
+      <view class="markbackground" style="background-color:{{bgcolor}}">
         <view class="top">
-          <view class="text"/>
-          <view class="yuan center" style="background-color:{{circlecolor}}">
+          <view class="blank"/>
+          <view class="circular center" style="background-color:{{circlecolor}}">
             <view class="center" style="display: flex; flex-direction: column;">
-              <view><text class="mark">{{text}}</text></view>
-              <view class="time"><text>{{dates}}</text></view>
-              <view class="nongli"><text>农历八月二十九</text></view>
+              <view class="mark">
+                <text>{{text}}</text>
+              </view>
+              <view class="dates">
+                <text>{{dates}}</text>
+              </view>
+              <view class="nongli">
+                <text>农历八月二十九</text>
+              </view>
             </view>
           </view>
-          <view class="center timefloor">
-            <text>{{time}} </text>
+          <view class="center timer">
+            <view><image src="../image/up.png" class="uplow"/></view>
+            <view><text>{{timerrrrr}} </text></view>
+            <view><image src="../image/low.png" class="uplow"/></view>
           </view>
-          <view wx:if="{{key === 0}}" bindtap="time" class="key center font">
-            <text>{{kStatus[key]}}</text>
+          <view wx:if="{{key === 0}}" bindtap="time" class="center buttonview">
+            <text class="button center">{{kStatus[key]}}</text>
           </view>
           <view wx:else class="key center font">
             <view bindtap="time" style="margin-right: 8%;">
@@ -28,8 +36,8 @@
               <text>{{endKey}}</text>
             </view>
           </view>
-          <view>
-            <text/>
+          <view class="lowertext">
+            <text>过去的都是假的，回忆是一条没有归途的路</text>
           </view>
         </view>
       </view>

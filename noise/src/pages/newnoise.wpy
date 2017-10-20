@@ -1,17 +1,20 @@
 <style lang="less">
-.position {
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.background {
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   background-image: url('http://localhost:5000/WechatIMG11.png');
   background-size: 100% 100%;
 }
 
-.markposition {
+.markbackground {
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -36,29 +39,16 @@
   color: white;
 }
 
-.text {
+.blank {
   width: 100%;
   height: 10%;
 }
 
-.yuan {
-  width: 200px;
-  height: 200px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 100px;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.time {
+.dates {
   color: white;
-  border-bottom: 1px solid white;
-  border-top: 1px solid white;
-  // border-radius: 15px;
+  border-bottom: 0.5px solid white;
+  border-top: 0.5px solid white;
+   // border-radius: 15px;
   // border-left-color: rgba(255, 255, 255, 0);
   // border-right-color: rgba(255, 255, 255, 0);
   margin-top: 5%;
@@ -66,30 +56,68 @@
   font-weight: bold;
 }
 
-.timefloor {
-  margin-top: 5%;
-  color: white;
-  font-size: 20px;
+.circular {
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 100px;
 }
-
-.key {
-  margin-top: 38%;
-  display: flex;
-  flex-direction: row;
+.buttonview {
+  margin-top: 20%;
   color: white;
   width: 100%;
 }
-.font{
-  font-size: 25px;
+
+.button {
+  padding: 4px;
+  width: 18%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 100;
 }
-.txt{
+// .key {
+//   margin-top: 20%;
+//   display: flex;
+//   flex-direction: row;
+//   color: white;
+//   width: 100%;
+//   font-size: 25px;
+// }
+
+// .font {
+//   font-size: 25px;
+// }
+
+.txt {
   border: 1px solid white;
   border-radius: 10px;
 }
-.nongli{
+
+.nongli {
   color: white;
   font-size: 12px;
   margin-top: 20%;
+}
+.uplow{
+  width: 10px;
+  height: 10px;
+}
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  margin-top: 5%;
+  color: white;
+  font-size: 18px;
+}
+.lowertext {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  position: fixed;
+  bottom: 10%;
+  font-weight: 100;
 }
 </style>
 <template>
@@ -97,22 +125,30 @@
     <view wx:if="{{showImge}}">
       <image src="../image/bg.jpeg" class="top"></image>
     </view>
-    <view wx:else class="position" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
-      <view class="markposition" style="background-color:{{bgcolor}}">
+    <view wx:else class="background" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
+      <view class="markbackground" style="background-color:{{bgcolor}}">
         <view class="top">
-          <view class="text"></view>
-          <view class="yuan center" style="background-color:{{circlecolor}}">
+          <view class="blank"></view>
+          <view class="circular center" style="background-color:{{circlecolor}}">
             <view class="center" style="display: flex; flex-direction: column;">
-              <view><text class="mark">{{text}}</text></view>
-              <view class="time"><text>{{dates}}</text></view>
-              <view class="nongli"><text>农历八月二十九</text></view>
+              <view class="mark">
+                <text>{{text}}</text>
+              </view>
+              <view class="dates">
+                <text>{{dates}}</text>
+              </view>
+              <view class="nongli">
+                <text>农历八月二十九</text>
+              </view>
             </view>
           </view>
-          <view class="center timefloor">
-            <text>{{time}} </text>
+          <view class="center timer">
+            <view><image src="../image/up.png" class="uplow"></image></view>
+            <view><text>{{timerrrrr}} </text></view>
+            <view><image src="../image/low.png" class="uplow"></image></view>
           </view>
-          <view wx:if="{{key === 0}}" @tap="time" class="key center font">
-            <text>{{kStatus[key]}}</text>
+          <view wx:if="{{key === 0}}" @tap="time" class="center buttonview">
+            <text class="button center">{{kStatus[key]}}</text>
           </view>
           <view wx:else class="key center font">
             <view @tap="time" style="margin-right: 8%;">
@@ -122,8 +158,8 @@
               <text>{{endKey}}</text>
             </view>
           </view>
-          <view>
-            <text></text>
+          <view class="lowertext">
+            <text>过去的都是假的，回忆是一条没有归途的路</text>
           </view>
         </view>
       </view>
@@ -174,13 +210,14 @@ export default class Index extends wepy.page {
     touchmove: true,
     changePoint: 0,
     imageNode: WATER,
-    bgcolor: 'rgba(0, 255, 255, 0)',
+    bgcolor: 'rgba(0, 0, 255, 0.2)',
     circlecolor: 'rgba(0, 0, 0, 0)',
     starPoint: [0, 0],
     curPoint: [0, 0],
     touches: [0, 0],
     noise: 'http://localhost:5000/雨.mp3',
-    text: '森林'
+    text: '森林',
+    timerrrrr: '20分钟'
   }
   methods = {
     date(self) {
