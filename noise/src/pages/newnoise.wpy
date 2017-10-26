@@ -10,8 +10,7 @@
   bottom: 0;
   width: 100%;
   height: 100%; 
-  // background-image: url('http://localhost:5000/WechatIMG11.png');
-  background-image: url('http://img.hb.aicdn.com/919c81c67eadc61e60259cbd5fb386119dd7bf6117ecaa-NZGCl9_fw658');
+  background-image: url('http://www.smartestee.com/noise/bgImage.png');
   background-size: 100% 100%;
 }
 
@@ -207,11 +206,11 @@ const TREE = 'tree'
 const WATER = 'water'
 const FIRE = 'fire'
 const SOIL = 'soil'
-const noiseGold = 'http://localhost:5000/%E9%92%9F.mp3'
-const noiseTree = 'http://localhost:5000/%E6%A3%AE.mp3'
-const noiseWater = 'http://localhost:5000/%E9%9B%A8.mp3'
-const noiseFire = 'http://localhost:5000/%E7%81%AB.mp3'
-const noiseSoil = 'http://localhost:5000/%E6%BD%AE.mp3'
+const noiseGold = 'http://www.smartestee.com/noise/gold.mp3'
+const noiseTree = 'http://www.smartestee.com/noise/tree.mp3'
+const noiseWater = 'http://www.smartestee.com/noise/water.mp3'
+const noiseFire = 'http://www.smartestee.com/noise/fire.mp3'
+const noiseSoil = 'http://www.smartestee.com/noise/soil.mp3'
 const trueOpacity = 1
 const falseOpacity = 0.3
 const loop = '∞'
@@ -241,7 +240,7 @@ export default class Index extends wepy.page {
     starPoint: [0, 0],
     curPoint: [0, 0],
     touches: [0, 0],
-    noise: 'http://localhost:5000/雨.mp3',
+    noise: 'http://www.smartestee.com/noise/water.mp3',
     text: '雨水',
     shadowcolor: '#333333',
     goldPoint: falseOpacity,
@@ -289,7 +288,6 @@ export default class Index extends wepy.page {
         self.methods.timer(self, false)
       } else {
         self.methods.timer(self, true)
-        console.log('%%%%%%')
       }
     },
     // 计时器
@@ -297,7 +295,7 @@ export default class Index extends wepy.page {
       self.touchmove = false
       if (self.key === ksStart || self.key === ksContinue) {
         timer = setInterval(function() {
-          if (loops) {
+          if (self.tick === -1) {
             self.tick = -1
           } else {
             self.tick--
@@ -316,20 +314,21 @@ export default class Index extends wepy.page {
               circlecolor: 'rgba(0, 0, 0, 0)',
               key: ksStart,
               tick: initialTime * secondsPerMin,
-              time: initialTimeText
+              time: initialTimeText,
+              shadowcolor: '#333333'
             })
             wepy.stopBackgroundAudio()
             self.time = initialTimeText
             self.tick = initialTime * secondsPerMin
             self.touchmove = true
             self.circlecolor = 'rgba(0, 0, 0, 0)'
+            self.shadowcolor = '#333333'
             self.key = ksStart
             clearInterval(timer)
           }
         }, 1000)
         self.key = ksPause
       } else {
-        console.log(self.tick)
         wepy.pauseBackgroundAudio()
         self.methods.setTime(self, self.tick)
         clearInterval(timer)
@@ -364,6 +363,7 @@ export default class Index extends wepy.page {
         let min = (tick - (tick % secondsPerMin)) / secondsPerMin
         let sec = tick % secondsPerMin
         if (min > timeUplimit) {
+          tick = -1
           return loop
         } else {
           if (min < 10) {
