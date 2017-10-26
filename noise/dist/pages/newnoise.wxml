@@ -45,6 +45,13 @@
           <view class="lowertext center">
             <text>跨过山水，我在这里拥抱你</text>
           </view>
+          <view class="lowpoint center">
+            <image src="../image/point.png" class="point" style="opacity: {{goldPoint}};"/>
+            <image src="../image/point.png" class="point" style="opacity: {{treePoint}};"/>
+            <image src="../image/point.png" class="point" style="opacity: {{waterPoint}};"/>
+            <image src="../image/point.png" class="point" style="opacity: {{firePoint}};"/>
+            <image src="../image/point.png" class="point" style="opacity: {{soilPoint}};"/>
+          </view>
         </view>
       </view>
     </view>
