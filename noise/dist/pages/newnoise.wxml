@@ -24,7 +24,10 @@
             <view>
               <image src="../image/up.png" class="uplow"/>
             </view>
-            <view>
+            <view wx:if="{{tick === -1}}">
+              <text>{{loops}} </text>
+            </view>
+            <view wx:else>
               <text>{{time}} </text>
             </view>
             <view>

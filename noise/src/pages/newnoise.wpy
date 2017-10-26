@@ -9,7 +9,7 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 100%;
+  height: 100%; 
   // background-image: url('http://localhost:5000/WechatIMG11.png');
   background-image: url('http://img.hb.aicdn.com/919c81c67eadc61e60259cbd5fb386119dd7bf6117ecaa-NZGCl9_fw658');
   background-size: 100% 100%;
@@ -112,11 +112,13 @@
   font-weight: 100;
   width: 100%;
 }
+
 .point {
   width: 15px;
   height: 15px;
 }
-.lowpoint{
+
+.lowpoint {
   position: fixed;
   width: 100%;
   bottom: 5%;
@@ -148,7 +150,10 @@
             <view>
               <image src="../image/up.png" class="uplow"></image>
             </view>
-            <view>
+            <view wx:if="{{tick === -1}}">
+              <text>{{loops}} </text>
+            </view>
+            <view wx:else>
               <text>{{time}} </text>
             </view>
             <view>
@@ -170,11 +175,11 @@
             <text>跨过山水，我在这里拥抱你</text>
           </view>
           <view class="lowpoint center">
-            <image src = "../image/point.png" class="point" style="opacity: {{goldPoint}};"></image>
-            <image src = "../image/point.png" class="point" style="opacity: {{treePoint}};"></image>
-            <image src = "../image/point.png" class="point" style="opacity: {{waterPoint}};"></image>
-            <image src = "../image/point.png" class="point" style="opacity: {{firePoint}};"></image>
-            <image src = "../image/point.png" class="point" style="opacity: {{soilPoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{goldPoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{treePoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{waterPoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{firePoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{soilPoint}};"></image>
           </view>
         </view>
       </view>
@@ -195,7 +200,7 @@ const ksPause = 1
 const ksContinue = 2
 const xPos = 0
 const yPos = 1
-const changeTimePoint = 5
+const changeTimePoint = 1
 const changeImagePoint = 5
 const GOLD = 'gold'
 const TREE = 'tree'
@@ -209,6 +214,7 @@ const noiseFire = 'http://localhost:5000/%E7%81%AB.mp3'
 const noiseSoil = 'http://localhost:5000/%E6%BD%AE.mp3'
 const trueOpacity = 1
 const falseOpacity = 0.3
+const loop = '∞'
 
 let timer
 
@@ -242,7 +248,8 @@ export default class Index extends wepy.page {
     treePoint: falseOpacity,
     waterPoint: trueOpacity,
     firePoint: falseOpacity,
-    soilPoint: falseOpacity
+    soilPoint: falseOpacity,
+    loops: loop
   }
   methods = {
     date(self) {
@@ -279,26 +286,22 @@ export default class Index extends wepy.page {
       self.methods.circleColorChange(self)
       self.methods.playnoise(self)
       if (min > timeLowlimit && min <= timeUplimit) {
-        self.methods.timer(self)
+        self.methods.timer(self, false)
       } else {
-        timer = setInterval(function() {
-          wepy.getBackgroundAudioPlayerState({
-            success: function(res) {
-              if (res.status !== 1) {
-                self.methods.playnoise(self)
-              }
-            }
-          })
-        }, 1000)
-        self.key = ksPause
+        self.methods.timer(self, true)
+        console.log('%%%%%%')
       }
     },
     // 计时器
-    timer(self) {
+    timer(self, loops) {
       self.touchmove = false
       if (self.key === ksStart || self.key === ksContinue) {
         timer = setInterval(function() {
-          self.tick--
+          if (loops) {
+            self.tick = -1
+          } else {
+            self.tick--
+          }
           self.methods.setTime(self, self.tick)
           wepy.getBackgroundAudioPlayerState({
             success: function(res) {
@@ -326,6 +329,7 @@ export default class Index extends wepy.page {
         }, 1000)
         self.key = ksPause
       } else {
+        console.log(self.tick)
         wepy.pauseBackgroundAudio()
         self.methods.setTime(self, self.tick)
         clearInterval(timer)
@@ -354,18 +358,22 @@ export default class Index extends wepy.page {
     },
     // 计算时间及输出格式
     currentTime(tick) {
-      let min = (tick - (tick % secondsPerMin)) / secondsPerMin
-      let sec = tick % secondsPerMin
-      if (min > timeUplimit) {
-        return '∞'
+      if (tick < 0) {
+        return loop
       } else {
-        if (min < 10) {
-          min = '0' + min
+        let min = (tick - (tick % secondsPerMin)) / secondsPerMin
+        let sec = tick % secondsPerMin
+        if (min > timeUplimit) {
+          return loop
+        } else {
+          if (min < 10) {
+            min = '0' + min
+          }
+          if (sec < 10) {
+            sec = '0' + sec
+          }
+          return min + ' : ' + sec
         }
-        if (sec < 10) {
-          sec = '0' + sec
-        }
-        return min + ' : ' + sec
       }
     },
     touchstart(e) {
