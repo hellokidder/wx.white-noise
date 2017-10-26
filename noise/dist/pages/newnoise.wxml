@@ -16,7 +16,7 @@
                 <text>{{dates}}</text>
               </view>
               <view class="nongli">
-                <text>农历九月初一</text>
+                <text>{{lunar}}</text>
               </view>
             </view>
           </view>

@@ -10,7 +10,7 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-image: url('http://img.hb.aicdn.com/919c81c67eadc61e60259cbd5fb386119dd7bf6117ecaa-NZGCl9_fw658');
+  background-image: url('http://localhost:5000/WechatIMG11.png');
   background-size: 100% 100%;
 }
 
@@ -130,7 +130,7 @@
                 <text>{{dates}}</text>
               </view>
               <view class="nongli">
-                <text>农历九月初一</text>
+                <text>{{lunar}}</text>
               </view>
             </view>
           </view>
@@ -167,6 +167,7 @@
 <script>
 import wepy from 'wepy'
 
+const calendar = require('../pages/calendar.js')
 const initialTimeText = '20 : 00'
 const initialTime = 20
 const secondsPerMin = 60
@@ -199,6 +200,8 @@ export default class Index extends wepy.page {
   data = {
     mark: '../image/water.png',
     dates: '',
+    lunar: '',
+    lunarDay: '',
     showImge: true,
     tick: 0,
     time: '',
@@ -229,6 +232,21 @@ export default class Index extends wepy.page {
       const day = date.getDate()
       const year = date.getFullYear()
       self.dates = mon + ' ' + day + ' ' + weekd + ' ' + year
+      let lunardate = calendar.solar2lunar(year, month + 1, day)
+      const lunarMonths = ['正月', '贰月', '叁月', '肆月', '伍月', '陆月', '七月', '捌月', '玖月', '拾月', '拾壹月', '腊月']
+      const lunarDays = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
+      if (lunardate.lDay <= 10) {
+        self.lunarDay = '初' + lunarDays[lunardate.lDay - 1]
+      } else if (lunardate.lDay > 10 && lunardate.lDay < 20) {
+        self.lunarDay = '十' + lunarDays[lunardate.lDay - 11]
+      } else if (lunardate.lDay > 20 && lunardate.lDay < 30) {
+        self.lunarDay = '廿' + lunarDays[lunardate.lDay - 21]
+      } else if (lunardate.lDay === 20) {
+        self.lunarDay = '二十'
+      } else if (lunardate.lDay === 30) {
+        self.lunarDay = '三十'
+      }
+      self.lunar = '农历' + lunarMonths[lunardate.lMonth - 1] + self.lunarDay
     },
     // 判断是否开启计时器
     time() {
@@ -473,6 +491,7 @@ export default class Index extends wepy.page {
   onLoad() {
     let self = this
     self.methods.date(self)
+    // self.calendar.solar2lunar()
     setTimeout(() => {
       self.showImge = false
       self.setData({
