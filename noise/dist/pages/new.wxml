@@ -1,8 +1,0 @@
-
-  <view class="position">
-    <view class="center view"><image class="water" src="{{water}}"/></view>
-    <view class="center view"><image class="tree absolute" style="{{treexy}}" src="{{tree}}"/></view>
-    <view class="center view"><image class="soil absolute" style="{{soilxy}}" src="{{soil}}"/></view>
-    <view class="center view"><image class="fire absolute" style="{{firexy}}" src="{{fire}}"/></view>
-    <view class="center view"><image class="gold absolute" style="{{goldxy}}" src="{{gold}}"/></view>
-  </view>
