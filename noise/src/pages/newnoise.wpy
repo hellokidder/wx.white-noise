@@ -324,35 +324,33 @@ export default class Index extends wepy.page {
             self.shadowcolor = '#333333'
             self.key = ksStart
             clearInterval(self.timer)
-            let interval = setInterval(function() {
-              console.log('interval')
-              wepy.getBackgroundAudioPlayerState({
-                success: function(res) {
-                  if (res.status === 1) {
-                    console.log('1')
-                    wepy.pauseBackgroundAudio()
-                    clearInterval(interval)
-                  }
-                }
-              })
-            }, 100)
+            // let interval = setInterval(function() {
+            //   console.log('interval')
+            //   wepy.getBackgroundAudioPlayerState({
+            //     success: function(res) {
+            //       if (res.status === 1) {
+            //         console.log('1')
+            //         wepy.pauseBackgroundAudio()
+            //         clearInterval(interval)
+            //       }
+            //     }
+            //   })
+            // }, 100)
           }
         }, 1000)
         self.key = ksPause
       } else {
         clearInterval(self.timer)
-        let interval = setInterval(function() {
-          console.log('interval')
-          wepy.getBackgroundAudioPlayerState({
-            success: function(res) {
-              if (res.status === 1) {
-                console.log('1')
-                wepy.pauseBackgroundAudio()
-                clearInterval(interval)
-              }
-            }
-          })
-        }, 100)
+        // let interval = setInterval(function() {
+        //   wepy.getBackgroundAudioPlayerState({
+        //     success: function(res) {
+        //       if (res.status === 1) {
+        //         wepy.pauseBackgroundAudio()
+        //         clearInterval(interval)
+        //       }
+        //     }
+        //   })
+        // }, 100)
         self.methods.setTime(self, self.tick)
         self.key = ksContinue
         self.circlecolor = 'rgba(255, 255, 0, 0)'
@@ -400,7 +398,8 @@ export default class Index extends wepy.page {
     },
     playnoise(self) {
       wepy.playBackgroundAudio({
-        dataUrl: self.noise
+        dataUrl: self.noise,
+        title: '1234567'
       })
     },
     touchstart(e) {
