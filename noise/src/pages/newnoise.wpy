@@ -9,8 +9,8 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 100%; 
-  background-image: url('http://www.smartestee.com/noise/bgImage.png');
+  height: 100%;
+  background-image: url("http://www.smartestee.com/noise/bgImage.png");
   background-size: 100% 100%;
 }
 
@@ -215,8 +215,6 @@ const trueOpacity = 1
 const falseOpacity = 0.3
 const loop = '∞'
 
-let timer
-
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '归心'
@@ -248,7 +246,8 @@ export default class Index extends wepy.page {
     waterPoint: trueOpacity,
     firePoint: falseOpacity,
     soilPoint: falseOpacity,
-    loops: loop
+    loops: loop,
+    timer: null
   }
   methods = {
     date(self) {
@@ -294,7 +293,7 @@ export default class Index extends wepy.page {
     timer(self, loops) {
       self.touchmove = false
       if (self.key === ksStart || self.key === ksContinue) {
-        timer = setInterval(function() {
+        self.timer = setInterval(function() {
           if (self.tick === -1) {
             self.tick = -1
           } else {
@@ -324,14 +323,37 @@ export default class Index extends wepy.page {
             self.circlecolor = 'rgba(0, 0, 0, 0)'
             self.shadowcolor = '#333333'
             self.key = ksStart
-            clearInterval(timer)
+            clearInterval(self.timer)
+            let interval = setInterval(function() {
+              console.log('interval')
+              wepy.getBackgroundAudioPlayerState({
+                success: function(res) {
+                  if (res.status === 1) {
+                    console.log('1')
+                    wepy.pauseBackgroundAudio()
+                    clearInterval(interval)
+                  }
+                }
+              })
+            }, 100)
           }
         }, 1000)
         self.key = ksPause
       } else {
-        wepy.pauseBackgroundAudio()
+        clearInterval(self.timer)
+        let interval = setInterval(function() {
+          console.log('interval')
+          wepy.getBackgroundAudioPlayerState({
+            success: function(res) {
+              if (res.status === 1) {
+                console.log('1')
+                wepy.pauseBackgroundAudio()
+                clearInterval(interval)
+              }
+            }
+          })
+        }, 100)
         self.methods.setTime(self, self.tick)
-        clearInterval(timer)
         self.key = ksContinue
         self.circlecolor = 'rgba(255, 255, 0, 0)'
       }
@@ -346,7 +368,7 @@ export default class Index extends wepy.page {
     },
     timerEnd() {
       let self = this
-      clearInterval(timer)
+      clearInterval(self.timer)
       wepy.stopBackgroundAudio()
       self.key = ksStart
       self.tick = initialTime * secondsPerMin
@@ -375,6 +397,11 @@ export default class Index extends wepy.page {
           return min + ' : ' + sec
         }
       }
+    },
+    playnoise(self) {
+      wepy.playBackgroundAudio({
+        dataUrl: self.noise
+      })
     },
     touchstart(e) {
       let self = this
@@ -499,11 +526,6 @@ export default class Index extends wepy.page {
         }
       }
     },
-    playnoise(self) {
-      wepy.playBackgroundAudio({
-        dataUrl: self.noise
-      })
-    },
     circleColorChange(self) {
       switch (self.imageNode) {
         case GOLD:
@@ -539,7 +561,6 @@ export default class Index extends wepy.page {
   onLoad() {
     let self = this
     self.methods.date(self)
-    // self.calendar.solar2lunar()
     setTimeout(() => {
       self.showImge = false
       self.setData({
