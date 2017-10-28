@@ -1,1 +1,1 @@
-{"pages":["pages/newnoise"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"white","navigationBarTitleText":"WeChat","navigationBarTextStyle":"black"}}
+{"pages":["pages/noise","pages/newnoise"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"white","navigationBarTitleText":"WeChat","navigationBarTextStyle":"black"}}

@@ -129,13 +129,13 @@
       <image src="../image/bg.jpeg" class="top"></image>
     </view>
     <view wx:else class="background" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
-      <view class="markbackground" style="background-color:{{bgcolor}}">
+      <view class="markbackground" style="background-color:{{node.bgcolor}}">
         <view class="top">
           <view class="blank"></view>
           <view class="circular center" style="background-color:{{circlecolor}};  box-shadow:0px 0px 10px {{shadowcolor}};">
             <view class="center" style="display: flex; flex-direction: column;">
               <view class="mark">
-                <text>{{text}}</text>
+                <text>{{node.mark}}</text>
               </view>
               <view class="dates">
                 <text>{{dates}}</text>
@@ -149,39 +149,304 @@
             <view>
               <image src="../image/up.png" class="uplow"></image>
             </view>
-            <view wx:if="{{tick === -1}}">
-              <text>{{loops}} </text>
+            <view wx:if="{{}}">
+              <text>"loops" </text>
             </view>
             <view wx:else>
-              <text>{{time}} </text>
+              <text>{{time}}</text>
             </view>
             <view>
               <image src="../image/low.png" class="uplow"></image>
             </view>
           </view>
-          <view wx:if="{{key === 0}}" @tap="time" class="center buttonview">
-            <text class="button center">{{kStatus[key]}}</text>
+          <view wx:if="{{startButton}}" @tap="start" class="center buttonview">
+            <text class="button center">start</text>
           </view>
           <view wx:else class="center buttonview">
-            <view @tap="time" class="button center" style="margin-right: 8%;">
-              <text>{{kStatus[key]}}</text>
+            <view wx:if="{{pauseOrContinue}}" @tap="pause" class="button center" style="margin-right: 8%;">
+              <text>暂停</text>
             </view>
-            <view @tap="timerEnd" class="button center" style="margin-left: 8%;">
-              <text>{{endKey}}</text>
+            <view wx:else @tap="start" class="button center" style="margin-right: 8%;">
+              <text>继续</text>
+            </view>
+            <view @tap="end" class="button center" style="margin-left: 8%;">
+              <text>结束</text>
             </view>
           </view>
           <view class="lowertext center">
             <text>跨过山水，我在这里拥抱你</text>
           </view>
           <view class="lowpoint center">
-            <image src="../image/point.png" class="point" style="opacity: {{goldPoint}};"></image>
-            <image src="../image/point.png" class="point" style="opacity: {{treePoint}};"></image>
-            <image src="../image/point.png" class="point" style="opacity: {{waterPoint}};"></image>
-            <image src="../image/point.png" class="point" style="opacity: {{firePoint}};"></image>
-            <image src="../image/point.png" class="point" style="opacity: {{soilPoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{node.goldPoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{node.treePoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{node.waterPoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{node.firePoint}};"></image>
+            <image src="../image/point.png" class="point" style="opacity: {{node.soilPoint}};"></image>
           </view>
         </view>
       </view>
     </view>
   </view>
 </template>
+<script>
+import wepy from 'wepy'
+
+const calendar = require('../pages/calendar.js')
+const initialTimeText = '20 : 00'
+const initialMin = 20
+const secondsPerMin = 60
+const xPos = 0
+const yPos = 1
+const changeTimePoint = 1
+const changeImagePoint = 5
+const timeUplimit = 60
+const timeLowlimit = 0
+const loop = '∞'
+const trueOpacity = 1
+const falseOpacity = 0.3
+const nodeWater = {
+  mark: '雨水',
+  bgcolor: 'rgba(0, 255, 255, 0.12)',
+  noise: 'http://www.smartestee.com/noise/water.mp3',
+  imageNode: 'WATER',
+  waterPoint: trueOpacity,
+  treePoint: falseOpacity,
+  goldPoint: falseOpacity,
+  firePoint: falseOpacity,
+  soilPoint: falseOpacity
+}
+const nodeGold = {
+  mark: '寺钟',
+  bgcolor: 'rgba( 255, 255, 0, 0.12)',
+  noise: 'http://www.smartestee.com/noise/gold.mp3',
+  imageNode: 'GOLD',
+  waterPoint: falseOpacity,
+  treePoint: falseOpacity,
+  goldPoint: trueOpacity,
+  firePoint: falseOpacity,
+  soilPoint: falseOpacity
+}
+const nodeTree = {
+  mark: '森林',
+  bgcolor: 'rgba( 0, 255, 0, 0.12)',
+  noise: 'http://www.smartestee.com/noise/tree.mp3',
+  imageNode: 'TREE',
+  waterPoint: falseOpacity,
+  treePoint: trueOpacity,
+  goldPoint: falseOpacity,
+  firePoint: falseOpacity,
+  soilPoint: falseOpacity
+}
+const nodeFire = {
+  mark: '篝火',
+  bgcolor: 'rgba( 255, 0, 0, 0.12)',
+  noise: 'http://www.smartestee.com/noise/fire.mp3',
+  imageNode: 'FIRE',
+  waterPoint: falseOpacity,
+  treePoint: falseOpacity,
+  goldPoint: falseOpacity,
+  firePoint: trueOpacity,
+  soilPoint: falseOpacity
+}
+const noiseSoil = {
+  mark: '浪潮',
+  bgcolor: 'rgba( 238, 99, 99, 0.12)',
+  noise: 'http://www.smartestee.com/noise/soil.mp3',
+  imageNode: 'SOIL',
+  waterPoint: falseOpacity,
+  treePoint: falseOpacity,
+  goldPoint: falseOpacity,
+  firePoint: falseOpacity,
+  soilPoint: trueOpacity
+}
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: ''
+  }
+  data = {
+    startButton: true,
+    pauseOrContinue: true,
+    touchmove: true,
+    lunar: null,
+    dates: null,
+    time: null,
+    tick: null,
+    starPoint: [0, 0],
+    curPoint: [0, 0],
+    touches: [],
+    changePoint: 0,
+    node: nodeWater
+  }
+  methods = {
+    date(self) {
+      let date = new Date()
+      const weeks = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
+      const week = date.getUTCDay()
+      const weekd = weeks[week]
+      const month = date.getMonth()
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+      const mon = months[month]
+      const day = date.getDate()
+      const year = date.getFullYear()
+      self.dates = mon + ' ' + day + ' ' + weekd + ' ' + year
+      let lunardate = calendar.solar2lunar(year, month + 1, day)
+      const lunarMonths = ['正月', '贰月', '叁月', '肆月', '伍月', '陆月', '七月', '捌月', '玖月', '拾月', '拾壹月', '腊月']
+      const lunarDays = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
+      if (lunardate.lDay <= 10) {
+        self.lunarDay = '初' + lunarDays[lunardate.lDay - 1]
+      } else if (lunardate.lDay > 10 && lunardate.lDay < 20) {
+        self.lunarDay = '十' + lunarDays[lunardate.lDay - 11]
+      } else if (lunardate.lDay > 20 && lunardate.lDay < 30) {
+        self.lunarDay = '廿' + lunarDays[lunardate.lDay - 21]
+      } else if (lunardate.lDay === 20) {
+        self.lunarDay = '二十'
+      } else if (lunardate.lDay === 30) {
+        self.lunarDay = '三十'
+      }
+      self.lunar = '农历' + lunarMonths[lunardate.lMonth - 1] + self.lunarDay
+    },
+    start() {
+      let self = this
+      self.startButton = false
+      self.pauseOrContinue = true
+      self.methods.playnoise(self)
+    },
+    pause() {
+      let self = this
+      self.pauseOrContinue = false
+      wepy.pauseBackgroundAudio()
+    },
+    end() {
+      let self = this
+      self.startButton = true
+      wepy.stopBackgroundAudio()
+    },
+    playnoise(self) {
+      wepy.playBackgroundAudio({
+        dataUrl: self.node.noise,
+        title: ''
+      })
+    },
+    touchstart(e) {
+      let self = this
+      self.starPoint = [e.touches[0].pageX, e.touches[0].pageY]
+    },
+    touchmove(e) {
+      let self = this
+      self.curPoint = [e.touches[0].pageX, e.touches[0].pageY]
+      self.changePoint++
+      if (self.touchmove) {
+        self.methods.timeChange(self)
+      }
+    },
+    touchend(e) {
+      let self = this
+      if (self.touchmove) {
+        self.methods.imageChange(self)
+      }
+    },
+    timeChange(self) {
+      let xchange = self.curPoint[xPos] - self.starPoint[xPos]
+      let ychange = self.curPoint[yPos] - self.starPoint[yPos]
+      if (Math.abs(xchange) < Math.abs(ychange)) {
+        if (self.changePoint > changeTimePoint) {
+          if (self.curPoint[yPos] > self.starPoint[yPos] && self.tick > 0) {
+            // 向下滑
+            self.tick = self.tick - secondsPerMin
+            self.methods.setTime(self, self.tick)
+            self.changePoint = 0
+          }
+          if (self.curPoint[yPos] < self.starPoint[yPos] && self.tick < 3600) {
+            // 向上滑
+            self.tick = self.tick + secondsPerMin
+            self.methods.setTime(self, self.tick)
+            self.changePoint = 0
+          }
+        }
+      }
+    },
+    imageChange(self) {
+      let xchange = self.curPoint[xPos] - self.starPoint[xPos]
+      let ychange = self.curPoint[yPos] - self.starPoint[yPos]
+      if (Math.abs(xchange) > Math.abs(ychange)) {
+        if (self.changePoint > changeImagePoint) {
+          if (self.curPoint[xPos] > self.starPoint[xPos]) {
+            // 向右划
+            switch (self.node.imageNode) {
+              case 'GOLD':
+                break
+              case 'TREE':
+                self.node = nodeGold
+                break
+              case 'WATER':
+                self.node = nodeTree
+                break
+              case 'FIRE':
+                self.node = nodeWater
+                break
+              case 'SOIL':
+                self.node = nodeFire
+                break
+            }
+            self.changePoint = 0
+          } else if (self.curPoint[xPos] < self.starPoint[xPos]) {
+            // 往左划
+            switch (self.node.imageNode) {
+              case 'GOLD':
+                self.node = nodeTree
+                break
+              case 'TREE':
+                self.node = nodeWater
+                break
+              case 'WATER':
+                self.node = nodeFire
+                break
+              case 'FIRE':
+                self.node = noiseSoil
+                break
+              case 'SOIL':
+                break
+            }
+            self.changePoint = 0
+          }
+        }
+      }
+    },
+    setTime(self, tick) {
+      let currentTime = self.methods.currentTime(self.tick)
+      self.setData({
+        time: currentTime
+      })
+      self.time = currentTime
+    },
+    currentTime(tick) {
+      if (tick < 0) {
+        // return loop
+      } else {
+        let min = (tick - (tick % secondsPerMin)) / secondsPerMin
+        let sec = tick % secondsPerMin
+        if (min > timeUplimit) {
+          tick = -1
+          return loop
+        } else {
+          if (min < 10) {
+            min = '0' + min
+          }
+          if (sec < 10) {
+            sec = '0' + sec
+          }
+          return min + ' : ' + sec
+        }
+      }
+    }
+  }
+  onLoad() {
+    let self = this
+    self.methods.date(self)
+    self.time = initialTimeText
+    self.tick = initialMin * secondsPerMin
+    console.log(self.time, self.tick)
+  }
+}
+</script>
