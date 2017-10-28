@@ -315,10 +315,9 @@ export default class Index extends wepy.page {
       self.touchmove = false
       console.log(self.tick)
       if (self.tick === timeLowlimit) {
-        self.methods.end()
       } else {
         self.methods.playnoise(self)
-        self.methods.listen(self)
+        // self.methods.listen(self)
       }
       if (self.tick > timeLowlimit && self.tick < timeUplimit) {
         self.methods.time(self)
@@ -329,7 +328,7 @@ export default class Index extends wepy.page {
       let self = this
       self.pauseOrContinue = false
       wepy.pauseBackgroundAudio()
-      clearInterval(self.listen)
+      // clearInterval(self.listen)
       clearInterval(self.timer)
       console.log('pause')
     },
@@ -338,7 +337,7 @@ export default class Index extends wepy.page {
       self.startButton = true
       self.touchmove = true
       wepy.stopBackgroundAudio()
-      clearInterval(self.listen)
+      // clearInterval(self.listen)
       clearInterval(self.timer)
       self.time = initialTimeText
       self.tick = initialMin * secondsPerMin
@@ -356,26 +355,35 @@ export default class Index extends wepy.page {
         self.methods.setTime(self)
         console.log(self.tick)
         if (self.tick === timeLowlimit) {
-          self.methods.end()
-          clearInterval(self.listen)
+          self.setData({
+            time: initialTimeText,
+            startButton: true,
+            tick: initialMin * secondsPerMin,
+            touchmove: true
+          })
+          self.startButton = true
+          self.touchmove = true
+          self.time = initialTimeText
+          self.tick = initialMin * secondsPerMin
+          wepy.stopBackgroundAudio()
           clearInterval(self.timer)
         }
       }, 1000)
     },
-    listen(self) {
-      self.listen = setInterval(function() {
-        if (self.tick !== timeLowlimit) {
-          wepy.getBackgroundAudioPlayerState({
-            success: function(res) {
-              if (res.status !== 1) {
-                self.methods.playnoise(self)
-              }
-            }
-          })
-        }
-        console.log('listen')
-      }, 50)
-    },
+    // listen(self) {
+    //   self.listen = setInterval(function() {
+    //     if (self.tick !== timeLowlimit) {
+    //       wepy.getBackgroundAudioPlayerState({
+    //         success: function(res) {
+    //           if (res.status !== 1) {
+    //             self.methods.playnoise(self)
+    //           }
+    //         }
+    //       })
+    //     }
+    //     console.log('listen')
+    //   }, 50)
+    // },
     touchstart(e) {
       let self = this
       self.starPoint = [e.touches[0].pageX, e.touches[0].pageY]
