@@ -199,7 +199,7 @@ const xPos = 0
 const yPos = 1
 const changeTimePoint = 1
 const changeImagePoint = 5
-const timeUplimit = 60
+const timeUplimit = 3660
 const timeLowlimit = 0
 const loop = '∞'
 const trueOpacity = 1
@@ -272,6 +272,8 @@ export default class Index extends wepy.page {
     dates: null,
     time: null,
     tick: null,
+    timer: null,
+    listen: null,
     starPoint: [0, 0],
     curPoint: [0, 0],
     touches: [],
@@ -310,23 +312,69 @@ export default class Index extends wepy.page {
       let self = this
       self.startButton = false
       self.pauseOrContinue = true
-      self.methods.playnoise(self)
+      self.touchmove = false
+      console.log(self.tick)
+      if (self.tick === timeLowlimit) {
+        self.methods.end()
+      } else {
+        self.methods.playnoise(self)
+        self.methods.listen(self)
+      }
+      if (self.tick > timeLowlimit && self.tick < timeUplimit) {
+        self.methods.time(self)
+      }
+      console.log('start')
     },
     pause() {
       let self = this
       self.pauseOrContinue = false
       wepy.pauseBackgroundAudio()
+      clearInterval(self.listen)
+      clearInterval(self.timer)
+      console.log('pause')
     },
     end() {
       let self = this
       self.startButton = true
+      self.touchmove = true
       wepy.stopBackgroundAudio()
+      clearInterval(self.listen)
+      clearInterval(self.timer)
+      self.time = initialTimeText
+      self.tick = initialMin * secondsPerMin
+      console.log('end')
     },
     playnoise(self) {
       wepy.playBackgroundAudio({
         dataUrl: self.node.noise,
         title: ''
       })
+    },
+    time(self) {
+      self.timer = setInterval(function() {
+        self.tick--
+        self.methods.setTime(self)
+        console.log(self.tick)
+        if (self.tick === timeLowlimit) {
+          self.methods.end()
+          clearInterval(self.listen)
+          clearInterval(self.timer)
+        }
+      }, 1000)
+    },
+    listen(self) {
+      self.listen = setInterval(function() {
+        if (self.tick !== timeLowlimit) {
+          wepy.getBackgroundAudioPlayerState({
+            success: function(res) {
+              if (res.status !== 1) {
+                self.methods.playnoise(self)
+              }
+            }
+          })
+        }
+        console.log('listen')
+      }, 50)
     },
     touchstart(e) {
       let self = this
@@ -351,18 +399,45 @@ export default class Index extends wepy.page {
       let ychange = self.curPoint[yPos] - self.starPoint[yPos]
       if (Math.abs(xchange) < Math.abs(ychange)) {
         if (self.changePoint > changeTimePoint) {
-          if (self.curPoint[yPos] > self.starPoint[yPos] && self.tick > 0) {
+          if (self.curPoint[yPos] > self.starPoint[yPos] && self.tick > timeLowlimit) {
             // 向下滑
             self.tick = self.tick - secondsPerMin
             self.methods.setTime(self, self.tick)
             self.changePoint = 0
           }
-          if (self.curPoint[yPos] < self.starPoint[yPos] && self.tick < 3600) {
+          if (self.curPoint[yPos] < self.starPoint[yPos] && self.tick < timeUplimit) {
             // 向上滑
             self.tick = self.tick + secondsPerMin
             self.methods.setTime(self, self.tick)
             self.changePoint = 0
           }
+        }
+      }
+    },
+    setTime(self) {
+      let currentTime = self.methods.currentTime(self.tick)
+      self.setData({
+        time: currentTime
+      })
+      self.time = currentTime
+    },
+    currentTime(tick) {
+      if (tick < 0) {
+      } else {
+        let min = (tick - (tick % secondsPerMin)) / secondsPerMin
+        let sec = tick % secondsPerMin
+        if (tick === timeUplimit) {
+          // tick = -1
+          // console.log(tick)
+          return loop
+        } else {
+          if (min < 10) {
+            min = '0' + min
+          }
+          if (sec < 10) {
+            sec = '0' + sec
+          }
+          return min + ' : ' + sec
         }
       }
     },
@@ -410,33 +485,6 @@ export default class Index extends wepy.page {
             }
             self.changePoint = 0
           }
-        }
-      }
-    },
-    setTime(self, tick) {
-      let currentTime = self.methods.currentTime(self.tick)
-      self.setData({
-        time: currentTime
-      })
-      self.time = currentTime
-    },
-    currentTime(tick) {
-      if (tick < 0) {
-        // return loop
-      } else {
-        let min = (tick - (tick % secondsPerMin)) / secondsPerMin
-        let sec = tick % secondsPerMin
-        if (min > timeUplimit) {
-          tick = -1
-          return loop
-        } else {
-          if (min < 10) {
-            min = '0' + min
-          }
-          if (sec < 10) {
-            sec = '0' + sec
-          }
-          return min + ' : ' + sec
         }
       }
     }
