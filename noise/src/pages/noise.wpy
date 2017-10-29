@@ -47,9 +47,7 @@
 .dates {
   color: white;
   border-bottom: 0.5px solid white;
-  border-top: 0.5px solid white; // border-radius: 15px;
-  // border-left-color: rgba(255, 255, 255, 0);
-  // border-right-color: rgba(255, 255, 255, 0);
+  border-top: 0.5px solid white; 
   margin-top: 5%;
   font-size: 11px;
   font-weight: bold;
@@ -63,9 +61,11 @@
 }
 
 .buttonview {
-  margin-top: 20%;
   color: white;
   width: 100%;
+  height: 30px;
+  position: fixed;
+  bottom: 20%;
 }
 
 .button {
@@ -103,8 +103,15 @@
   font-size: 18px;
 }
 
+.tolow {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 20%;
+}
+
 .lowertext {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 12px;
   position: fixed;
   bottom: 10%;
@@ -132,7 +139,7 @@
       <view class="markbackground" style="background-color:{{node.bgcolor}}">
         <view class="top">
           <view class="blank"></view>
-          <view class="circular center" style="background-color:{{circlecolor}};  box-shadow:0px 0px 10px {{shadowcolor}};">
+          <view class="circular center" style="background-color:{{circlecolor}};  box-shadow:0px 0px 20px {{shadowcolor}};">
             <view class="center" style="display: flex; flex-direction: column;">
               <view class="mark">
                 <text>{{node.mark}}</text>
@@ -149,10 +156,7 @@
             <view>
               <image src="../image/up.png" class="uplow"></image>
             </view>
-            <view wx:if="{{}}">
-              <text>"loops" </text>
-            </view>
-            <view wx:else>
+            <view>
               <text>{{time}}</text>
             </view>
             <view>
@@ -160,17 +164,17 @@
             </view>
           </view>
           <view wx:if="{{startButton}}" @tap="start" class="center buttonview">
-            <text class="button center">start</text>
+            <text class="button center">{{start}}</text>
           </view>
           <view wx:else class="center buttonview">
             <view wx:if="{{pauseOrContinue}}" @tap="pause" class="button center" style="margin-right: 8%;">
-              <text>暂停</text>
+              <text>{{pause}}</text>
             </view>
             <view wx:else @tap="start" class="button center" style="margin-right: 8%;">
-              <text>继续</text>
+              <text>{{continues}}</text>
             </view>
             <view @tap="end" class="button center" style="margin-left: 8%;">
-              <text>结束</text>
+              <text>{{end}}</text>
             </view>
           </view>
           <view class="lowertext center">
@@ -278,7 +282,13 @@ export default class Index extends wepy.page {
     curPoint: [0, 0],
     touches: [],
     changePoint: 0,
-    node: nodeWater
+    node: nodeWater,
+    start: '开始',
+    pause: '暂停',
+    continues: '继续',
+    end: '结束',
+    shadowcolor: '#333333',
+    circlecolor: 'rgba( 0, 0, 0, 0)'
   }
   methods = {
     date(self) {
@@ -313,11 +323,13 @@ export default class Index extends wepy.page {
       self.startButton = false
       self.pauseOrContinue = true
       self.touchmove = false
+      self.circlecolor = self.node.bgcolor
+      self.shadowcolor = self.node.bgcolor
       console.log(self.tick)
       if (self.tick === timeLowlimit) {
       } else {
         self.methods.playnoise(self)
-        // self.methods.listen(self)
+        self.methods.listen(self)
       }
       if (self.tick > timeLowlimit && self.tick < timeUplimit) {
         self.methods.time(self)
@@ -328,7 +340,8 @@ export default class Index extends wepy.page {
       let self = this
       self.pauseOrContinue = false
       wepy.pauseBackgroundAudio()
-      // clearInterval(self.listen)
+      self.circlecolor = 'rgba( 0, 0, 0, 0)'
+      clearInterval(self.listen)
       clearInterval(self.timer)
       console.log('pause')
     },
@@ -337,7 +350,9 @@ export default class Index extends wepy.page {
       self.startButton = true
       self.touchmove = true
       wepy.stopBackgroundAudio()
-      // clearInterval(self.listen)
+      self.circlecolor = 'rgba( 0, 0, 0, 0)'
+      self.shadowcolor = '#333333'
+      clearInterval(self.listen)
       clearInterval(self.timer)
       self.time = initialTimeText
       self.tick = initialMin * secondsPerMin
@@ -356,6 +371,8 @@ export default class Index extends wepy.page {
         console.log(self.tick)
         if (self.tick === timeLowlimit) {
           self.setData({
+            circlecolor: 'rgba( 0, 0, 0, 0)',
+            shadowcolor: '#333333',
             time: initialTimeText,
             startButton: true,
             tick: initialMin * secondsPerMin,
@@ -365,25 +382,27 @@ export default class Index extends wepy.page {
           self.touchmove = true
           self.time = initialTimeText
           self.tick = initialMin * secondsPerMin
+          self.circlecolor = 'rgba( 0, 0, 0, 0)'
+          self.shadowcolor = '#333333'
           wepy.stopBackgroundAudio()
+          clearInterval(self.listen)
           clearInterval(self.timer)
         }
       }, 1000)
     },
-    // listen(self) {
-    //   self.listen = setInterval(function() {
-    //     if (self.tick !== timeLowlimit) {
-    //       wepy.getBackgroundAudioPlayerState({
-    //         success: function(res) {
-    //           if (res.status !== 1) {
-    //             self.methods.playnoise(self)
-    //           }
-    //         }
-    //       })
-    //     }
-    //     console.log('listen')
-    //   }, 50)
-    // },
+    listen(self) {
+      self.listen = setInterval(function() {
+        if (self.tick !== timeLowlimit) {
+          wepy.getBackgroundAudioPlayerState({
+            success: function(res) {
+              if (res.status !== 1) {
+                self.methods.playnoise(self)
+              }
+            }
+          })
+        }
+      }, 50)
+    },
     touchstart(e) {
       let self = this
       self.starPoint = [e.touches[0].pageX, e.touches[0].pageY]
@@ -430,23 +449,18 @@ export default class Index extends wepy.page {
       self.time = currentTime
     },
     currentTime(tick) {
-      if (tick < 0) {
+      let min = (tick - (tick % secondsPerMin)) / secondsPerMin
+      let sec = tick % secondsPerMin
+      if (tick === timeUplimit) {
+        return loop
       } else {
-        let min = (tick - (tick % secondsPerMin)) / secondsPerMin
-        let sec = tick % secondsPerMin
-        if (tick === timeUplimit) {
-          // tick = -1
-          // console.log(tick)
-          return loop
-        } else {
-          if (min < 10) {
-            min = '0' + min
-          }
-          if (sec < 10) {
-            sec = '0' + sec
-          }
-          return min + ' : ' + sec
+        if (min < 10) {
+          min = '0' + min
         }
+        if (sec < 10) {
+          sec = '0' + sec
+        }
+        return min + ' : ' + sec
       }
     },
     imageChange(self) {
