@@ -364,6 +364,7 @@ export default class Index extends wepy.page {
         title: ''
       })
     },
+    // 倒计时 时间到
     time(self) {
       self.timer = setInterval(function() {
         self.tick--
@@ -390,6 +391,7 @@ export default class Index extends wepy.page {
         }
       }, 1000)
     },
+    // 监听 音频停止时再起一个音频
     listen(self) {
       self.listen = setInterval(function() {
         if (self.tick !== timeLowlimit) {
@@ -441,6 +443,7 @@ export default class Index extends wepy.page {
         }
       }
     },
+    // 刷新时间
     setTime(self) {
       let currentTime = self.methods.currentTime(self.tick)
       self.setData({
@@ -448,6 +451,7 @@ export default class Index extends wepy.page {
       })
       self.time = currentTime
     },
+    // 计算时间格式
     currentTime(tick) {
       let min = (tick - (tick % secondsPerMin)) / secondsPerMin
       let sec = tick % secondsPerMin
