@@ -111,7 +111,7 @@
 }
 
 .lowertext {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 12px;
   position: fixed;
   bottom: 10%;
@@ -361,7 +361,7 @@ export default class Index extends wepy.page {
     playnoise(self) {
       wepy.playBackgroundAudio({
         dataUrl: self.node.noise,
-        title: ''
+        title: '123'
       })
     },
     // 倒计时 时间到
@@ -520,7 +520,6 @@ export default class Index extends wepy.page {
     self.methods.date(self)
     self.time = initialTimeText
     self.tick = initialMin * secondsPerMin
-    console.log(self.time, self.tick)
   }
 }
 </script>
