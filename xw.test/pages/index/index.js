@@ -17,7 +17,7 @@ const falseOpacity = 0.3
 const nodeWater = {
   mark: '雨水',
   bgcolor: 'rgba(0, 255, 255, 0.12)',
-  noise: 'http://www.smartestee.com/noise/water.mp3',
+  noise: 'http://10.0.0.100/noise/water.mp3',
   imageNode: 'WATER',
   waterPoint: trueOpacity,
   treePoint: falseOpacity,
@@ -28,7 +28,7 @@ const nodeWater = {
 const nodeGold = {
   mark: '寺钟',
   bgcolor: 'rgba( 255, 255, 0, 0.12)',
-  noise: 'http://www.smartestee.com/noise/gold.mp3',
+  noise: 'http://10.0.0.100/noise/gold.mp3',
   imageNode: 'GOLD',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -39,7 +39,7 @@ const nodeGold = {
 const nodeTree = {
   mark: '森林',
   bgcolor: 'rgba( 0, 255, 0, 0.12)',
-  noise: 'http://www.smartestee.com/noise/tree.mp3',
+  noise: 'http://10.0.0.100/noise/tree.mp3',
   imageNode: 'TREE',
   waterPoint: falseOpacity,
   treePoint: trueOpacity,
@@ -50,7 +50,7 @@ const nodeTree = {
 const nodeFire = {
   mark: '篝火',
   bgcolor: 'rgba( 255, 0, 0, 0.12)',
-  noise: 'http://www.smartestee.com/noise/fire.mp3',
+  noise: 'http://10.0.0.100/noise/fire.mp3',
   imageNode: 'FIRE',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -61,7 +61,7 @@ const nodeFire = {
 const nodeSoil = {
   mark: '浪潮',
   bgcolor: 'rgba( 238, 99, 99, 0.12)',
-  noise: 'http://www.smartestee.com/noise/soil.mp3',
+  noise: 'http://10.0.0.100/noise/soil.mp3',
   imageNode: 'SOIL',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -72,6 +72,7 @@ const nodeSoil = {
 
 Page({
   data: {
+    showImage: true,
     startButton: true,
     pauseOrContinue: true,
     touchmove: true,
@@ -170,7 +171,7 @@ Page({
   playnoise: function (self) {
     wx.playBackgroundAudio({
       dataUrl: self.data.node.noise,
-      title: '123'
+      title: self.data.node.imageNode
     });
   },
   time: function (self) {
@@ -220,7 +221,8 @@ Page({
   },
   touchend: function (e) {
     var self = this;
-    if (self.touchmove) {
+    console.log()
+    if (self.data.touchmove) {
       self.imageChange(self);
     }
   },
@@ -331,14 +333,34 @@ Page({
       }
     }
   },
- 
+  onShareAppMessage() {
+    return {
+      title: '归心',
+      desc: '都市喧闹 何处归心',
+      path: '/pages/index'
+    }
+  },
   
   onLoad: function () {
     var self = this;
     self.date(self);
-    self.setData({
-      time: initialTimeText
-    })
+    setTimeout(() => {
+      self.showImage = false
+      self.setData({
+        showImage: false,
+        time: initialTimeText
+      })
+    }, 3000)
+    // wx.getBackgroundAudioPlayerState({
+    //   success: function success(res) {
+    //     if (res.status === 1) {
+          // clearInterval(self.data.listen);          
+    //       setTimeout(() => {
+    //         wx.stopBackgroundAudio();
+    //       },100)
+    //     }
+    //   }
+    // });
     self.data.tick = initialMin * secondsPerMin;
   },
   

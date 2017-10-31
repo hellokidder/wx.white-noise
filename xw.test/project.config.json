@@ -9,7 +9,7 @@
 	"compileType": "weapp",
 	"libVersion": "1.6.0",
 	"appid": "wx2d1ae648c752ad57",
-	"projectname": "dome",
+	"projectname": "%E5%8E%9F%E7%94%9Fnoise",
 	"condition": {
 		"weapp": {
 			"current": -1,

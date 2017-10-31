@@ -133,7 +133,7 @@
 <template>
   <view>
     <view wx:if="{{showImge}}">
-      <image src="../image/bg.jpeg" class="top"></image>
+      <image src="http://10.0.0.100/noise/top.jpeg" class="top"></image>
     </view>
     <view wx:else class="background" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
       <view class="markbackground" style="background-color:{{node.bgcolor}}">
@@ -211,7 +211,7 @@ const falseOpacity = 0.3
 const nodeWater = {
   mark: '雨水',
   bgcolor: 'rgba(0, 255, 255, 0.12)',
-  noise: 'http://www.smartestee.com/noise/water.mp3',
+  noise: 'http://10.0.0.100/noise/water.mp3',
   imageNode: 'WATER',
   waterPoint: trueOpacity,
   treePoint: falseOpacity,
@@ -222,7 +222,7 @@ const nodeWater = {
 const nodeGold = {
   mark: '寺钟',
   bgcolor: 'rgba( 255, 255, 0, 0.12)',
-  noise: 'http://www.smartestee.com/noise/gold.mp3',
+  noise: 'http://10.0.0.100/noise/gold.mp3',
   imageNode: 'GOLD',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -233,7 +233,7 @@ const nodeGold = {
 const nodeTree = {
   mark: '森林',
   bgcolor: 'rgba( 0, 255, 0, 0.12)',
-  noise: 'http://www.smartestee.com/noise/tree.mp3',
+  noise: 'http://10.0.0.100/noise/tree.mp3',
   imageNode: 'TREE',
   waterPoint: falseOpacity,
   treePoint: trueOpacity,
@@ -244,7 +244,7 @@ const nodeTree = {
 const nodeFire = {
   mark: '篝火',
   bgcolor: 'rgba( 255, 0, 0, 0.12)',
-  noise: 'http://www.smartestee.com/noise/fire.mp3',
+  noise: 'http://10.0.0.100/noise/fire.mp3',
   imageNode: 'FIRE',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -255,7 +255,7 @@ const nodeFire = {
 const noiseSoil = {
   mark: '浪潮',
   bgcolor: 'rgba( 238, 99, 99, 0.12)',
-  noise: 'http://www.smartestee.com/noise/soil.mp3',
+  noise: 'http://10.0.0.100/noise/soil.mp3',
   imageNode: 'SOIL',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -266,9 +266,10 @@ const noiseSoil = {
 
 export default class Index extends wepy.page {
   config = {
-    navigationBarTitleText: ''
+    navigationBarTitleText: '归心'
   }
   data = {
+    showImge: true,
     startButton: true,
     pauseOrContinue: true,
     touchmove: true,
@@ -325,7 +326,6 @@ export default class Index extends wepy.page {
       self.touchmove = false
       self.circlecolor = self.node.bgcolor
       self.shadowcolor = self.node.bgcolor
-      console.log(self.tick)
       if (self.tick === timeLowlimit) {
       } else {
         self.methods.playnoise(self)
@@ -334,7 +334,6 @@ export default class Index extends wepy.page {
       if (self.tick > timeLowlimit && self.tick < timeUplimit) {
         self.methods.time(self)
       }
-      console.log('start')
     },
     pause() {
       let self = this
@@ -343,7 +342,6 @@ export default class Index extends wepy.page {
       self.circlecolor = 'rgba( 0, 0, 0, 0)'
       clearInterval(self.listen)
       clearInterval(self.timer)
-      console.log('pause')
     },
     end() {
       let self = this
@@ -356,7 +354,6 @@ export default class Index extends wepy.page {
       clearInterval(self.timer)
       self.time = initialTimeText
       self.tick = initialMin * secondsPerMin
-      console.log('end')
     },
     playnoise(self) {
       wepy.playBackgroundAudio({
@@ -515,9 +512,22 @@ export default class Index extends wepy.page {
       }
     }
   }
+  onShareAppMessage() {
+    return {
+      title: '归心',
+      desc: '都市喧闹 何处归心',
+      path: '/page/noise'
+    }
+  }
   onLoad() {
     let self = this
     self.methods.date(self)
+    setTimeout(() => {
+      self.showImge = false
+      self.setData({
+        showImge: false
+      })
+    }, 5000)
     self.time = initialTimeText
     self.tick = initialMin * secondsPerMin
   }
