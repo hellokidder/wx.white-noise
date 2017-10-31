@@ -1,0 +1,61 @@
+
+  <view>
+    <view  wx:if="{{showImge}}">
+      <image src="../image/bg.jpeg" class="top"/>
+    </view>
+    <view  wx:else class="background" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
+      <view class="markbackground" style="background-color:{{node.bgcolor}}">
+        <view class="top">
+          <view class="blank"/>
+          <view class="circular center" style="background-color:{{circlecolor}};  box-shadow:0px 0px 20px {{shadowcolor}};">
+            <view class="center" style="display: flex; flex-direction: column;">
+              <view class="mark">
+                <text>{{node.mark}}</text>
+              </view>
+              <view class="dates">
+                <text>{{dates}}</text>
+              </view>
+              <view class="nongli">
+                <text>{{lunar}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="center timer">
+            <view>
+              <image src="../../image/up.png" class="uplow"/>
+            </view>
+            <view>
+              <text>{{time}}</text>
+            </view>
+            <view>
+              <image src="../../image/low.png" class="uplow"/>
+            </view>
+          </view>
+          <view wx:if="{{startButton}}" bindtap="start" class="center buttonview">
+            <text class="button center">{{start}}</text>
+          </view>
+          <view wx:else class="center buttonview">
+            <view wx:if="{{pauseOrContinue}}" bindtap="pause" class="button center" style="margin-right: 8%;">
+              <text>{{pause}}</text>
+            </view>
+            <view wx:else bindtap="start" class="button center" style="margin-right: 8%;">
+              <text>{{continues}}</text>
+            </view>
+            <view bindtap="end" class="button center" style="margin-left: 8%;">
+              <text>{{end}}</text>
+            </view>
+          </view>
+          <view class="lowertext center">
+            <text>跨过山水，我在这里拥抱你</text>
+          </view>
+          <view class="lowpoint center">
+            <image src="../../image/point.png" class="point" style="opacity: {{node.goldPoint}};"/>
+            <image src="../../image/point.png" class="point" style="opacity: {{node.treePoint}};"/>
+            <image src="../../image/point.png" class="point" style="opacity: {{node.waterPoint}};"/>
+            <image src="../../image/point.png" class="point" style="opacity: {{node.firePoint}};"/>
+            <image src="../../image/point.png" class="point" style="opacity: {{node.soilPoint}};"/>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
