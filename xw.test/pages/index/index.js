@@ -17,7 +17,7 @@ const falseOpacity = 0.3
 const nodeWater = {
   mark: '雨水',
   bgcolor: 'rgba(0, 255, 255, 0.12)',
-  noise: 'http://10.0.0.100/noise/water.mp3',
+  noise: 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E061FF02C31F716658E5C81F5594D561F2E88B854E81CAAB7806D5E4F103E55D33C16F3FAC506D1AB172DE8600B37E43FAD&fromtag=46',
   imageNode: 'WATER',
   waterPoint: trueOpacity,
   treePoint: falseOpacity,
@@ -28,7 +28,7 @@ const nodeWater = {
 const nodeGold = {
   mark: '寺钟',
   bgcolor: 'rgba( 255, 255, 0, 0.12)',
-  noise: 'http://10.0.0.100/noise/gold.mp3',
+  noise: 'http://sc1.111ttt.com/2017/4/05/10/298101104389.mp3',
   imageNode: 'GOLD',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -39,7 +39,7 @@ const nodeGold = {
 const nodeTree = {
   mark: '森林',
   bgcolor: 'rgba( 0, 255, 0, 0.12)',
-  noise: 'http://10.0.0.100/noise/tree.mp3',
+  noise: 'http://sc1.111ttt.com/2017/1/05/09/298092042172.mp3',
   imageNode: 'TREE',
   waterPoint: falseOpacity,
   treePoint: trueOpacity,
@@ -50,7 +50,7 @@ const nodeTree = {
 const nodeFire = {
   mark: '篝火',
   bgcolor: 'rgba( 255, 0, 0, 0.12)',
-  noise: 'http://10.0.0.100/noise/fire.mp3',
+  noise: 'http://sc1.111ttt.com/2017/1/05/09/298092036247.mp3',
   imageNode: 'FIRE',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -61,7 +61,7 @@ const nodeFire = {
 const nodeSoil = {
   mark: '浪潮',
   bgcolor: 'rgba( 238, 99, 99, 0.12)',
-  noise: 'http://10.0.0.100/noise/soil.mp3',
+  noise: 'http://sc1.111ttt.com/2017/1/05/09/298092036393.mp3',
   imageNode: 'SOIL',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -171,7 +171,7 @@ Page({
   playnoise: function (self) {
     wx.playBackgroundAudio({
       dataUrl: self.data.node.noise,
-      title: self.data.node.imageNode
+      title: self.data.node.imageNode,
     });
   },
   time: function (self) {
@@ -351,17 +351,20 @@ Page({
         time: initialTimeText
       })
     }, 3000)
-    // wx.getBackgroundAudioPlayerState({
-    //   success: function success(res) {
-    //     if (res.status === 1) {
-          // clearInterval(self.data.listen);          
-    //       setTimeout(() => {
-    //         wx.stopBackgroundAudio();
-    //       },100)
-    //     }
-    //   }
-    // });
     self.data.tick = initialMin * secondsPerMin;
   },
-  
+
+  onHide: function() {
+    
+  },
+
+  onShow: function() {
+    wx.getBackgroundAudioPlayerState({
+      success: function success(res) {
+        if (res.status === 1) {
+          wx.stopBackgroundAudio()
+        }
+      }
+    });
+  },
 })
