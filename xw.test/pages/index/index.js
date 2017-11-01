@@ -166,7 +166,7 @@ Page({
       time: initialTimeText,
       tick: initialMin * secondsPerMin
     })
-    wx.stopBackgroundAudio();
+    wx.pauseBackgroundAudio();
     clearInterval(self.data.listens);
     clearInterval(self.data.times);
   },
@@ -189,14 +189,14 @@ Page({
           tick: initialMin * secondsPerMin,
           touchmove: true
         });
-        self.setData({
-          timer: self.data.times
-        });
         wx.stopBackgroundAudio();
         clearInterval(self.data.listens);
         clearInterval(self.data.times);
       }
     }, 1000);
+    self.setData({
+      timer: self.data.times
+    });
   },
   // 监听 音频停止时再起一个音频
   listen: function (self) {
@@ -217,12 +217,16 @@ Page({
   },
   touchstart: function (e) {
     var self = this;
-    self.data.starPoint = [e.touches[0].pageX, e.touches[0].pageY];
+    self.setData({
+      starPoint:[e.touches[0].pageX, e.touches[0].pageY]
+    })
   },
   touchmove: function (e) {
     var self = this;
-    self.data.curPoint = [e.touches[0].pageX, e.touches[0].pageY];
-    self.data.changePoint++;
+    self.setData({
+      curPoint:[e.touches[0].pageX, e.touches[0].pageY],
+      changePoint: self.data.changePoint + 1
+    })
     if (self.data.touchmove) {
       self.timeChange(self);
     }
@@ -240,15 +244,19 @@ Page({
       if (self.data.changePoint > changeTimePoint) {
         if (self.data.curPoint[yPos] > self.data.starPoint[yPos] && self.data.tick > timeLowlimit) {
           // 向下滑
-          self.data.tick = self.data.tick - secondsPerMin;
+          self.setData({
+            tick: self.data.tick - secondsPerMin,
+            changePoint: 0
+          })
           self.setTime(self, self.data.tick);
-          self.data.changePoint = 0;
         }
         if (self.data.curPoint[yPos] < self.data.starPoint[yPos] && self.data.tick < timeUplimit) {
           // 向上滑
-          self.data.tick = self.data.tick + secondsPerMin;
+          self.setData({
+            tick: self.data.tick + secondsPerMin,
+            changePoint: 0
+          })
           self.setTime(self, self.data.tick);
-          self.data.changePoint = 0;
         }
       }
     }
@@ -357,6 +365,7 @@ Page({
   },
   
   onLoad: function () {
+    console.log('load')
     var self = this;
     self.date(self);
     setTimeout(() => {
@@ -370,10 +379,14 @@ Page({
   },
 
   onHide: function() {
-    
+    console.log('onHide')
+
   },
 
   onShow: function() {
-
+    console.log('onshow')
+  },
+  onReady:function() {
+    console.log('onready')
   },
 })
