@@ -17,7 +17,7 @@ const falseOpacity = 0.3
 const nodeWater = {
   mark: '雨水',
   bgcolor: 'rgba(0, 255, 255, 0.12)',
-  noise: 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E061FF02C31F716658E5C81F5594D561F2E88B854E81CAAB7806D5E4F103E55D33C16F3FAC506D1AB172DE8600B37E43FAD&fromtag=46',
+  noise: 'http://10.0.0.100:80/noise/water.m4a',
   imageNode: 'WATER',
   waterPoint: trueOpacity,
   treePoint: falseOpacity,
@@ -28,7 +28,7 @@ const nodeWater = {
 const nodeGold = {
   mark: '寺钟',
   bgcolor: 'rgba( 255, 255, 0, 0.12)',
-  noise: 'http://sc1.111ttt.com/2017/4/05/10/298101104389.mp3',
+  noise: 'http://10.0.0.100:80/noise/gold.m4a',
   imageNode: 'GOLD',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -39,7 +39,7 @@ const nodeGold = {
 const nodeTree = {
   mark: '森林',
   bgcolor: 'rgba( 0, 255, 0, 0.12)',
-  noise: 'http://sc1.111ttt.com/2017/1/05/09/298092042172.mp3',
+  noise: 'http://10.0.0.100:80/noise/tree.m4a',
   imageNode: 'TREE',
   waterPoint: falseOpacity,
   treePoint: trueOpacity,
@@ -50,7 +50,7 @@ const nodeTree = {
 const nodeFire = {
   mark: '篝火',
   bgcolor: 'rgba( 255, 0, 0, 0.12)',
-  noise: 'http://sc1.111ttt.com/2017/1/05/09/298092036247.mp3',
+  noise: 'http://10.0.0.100:80/noise/fire.m4a',
   imageNode: 'FIRE',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -61,7 +61,7 @@ const nodeFire = {
 const nodeSoil = {
   mark: '浪潮',
   bgcolor: 'rgba( 238, 99, 99, 0.12)',
-  noise: 'http://sc1.111ttt.com/2017/1/05/09/298092036393.mp3',
+  noise: 'http://10.0.0.100:80/noise/soil.m4a',
   imageNode: 'SOIL',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -81,7 +81,9 @@ Page({
     time: null,
     tick: null,
     timer: null,
+    times:null,
     listen: null,
+    listens:null,
     starPoint: [0, 0],
     curPoint: [0, 0],
     touches: [],
@@ -151,8 +153,8 @@ Page({
       circlecolor: 'rgba( 0, 0, 0, 0)'
     })
     wx.pauseBackgroundAudio();
-    clearInterval(self.data.listen);
-    clearInterval(self.data.timer);
+    clearInterval(self.data.listens);
+    clearInterval(self.data.times);
   },
   end: function () {
     var self = this;
@@ -165,8 +167,8 @@ Page({
       tick: initialMin * secondsPerMin
     })
     wx.stopBackgroundAudio();
-    clearInterval(self.data.listen);
-    clearInterval(self.data.timer);
+    clearInterval(self.data.listens);
+    clearInterval(self.data.times);
   },
   playnoise: function (self) {
     wx.playBackgroundAudio({
@@ -175,7 +177,7 @@ Page({
     });
   },
   time: function (self) {
-    self.data.timer = setInterval(function () {
+    self.data.times = setInterval(function () {
       self.data.tick--;
       self.setTime(self);
       if (self.data.tick === timeLowlimit) {
@@ -187,15 +189,18 @@ Page({
           tick: initialMin * secondsPerMin,
           touchmove: true
         });
+        self.setData({
+          timer: self.data.times
+        });
         wx.stopBackgroundAudio();
-        clearInterval(self.data.listen);
-        clearInterval(self.data.timer);
+        clearInterval(self.data.listens);
+        clearInterval(self.data.times);
       }
     }, 1000);
   },
   // 监听 音频停止时再起一个音频
   listen: function (self) {
-    self.data.listen = setInterval(function () {
+    self.data.listens = setInterval(function () {
       if (self.data.tick !== timeLowlimit) {
         wx.getBackgroundAudioPlayerState({
           success: function success(res) {
@@ -206,6 +211,9 @@ Page({
         });
       }
     }, 50);
+    self.setData({
+      listen: self.data.listens
+    })
   },
   touchstart: function (e) {
     var self = this;
@@ -221,7 +229,6 @@ Page({
   },
   touchend: function (e) {
     var self = this;
-    console.log()
     if (self.data.touchmove) {
       self.imageChange(self);
     }
@@ -284,21 +291,25 @@ Page({
               self.setData({
                 node: nodeGold
               })
+              console.log(self.data.node.noise)
               break;
             case 'WATER':
               self.setData({
                 node: nodeTree
               })
+              console.log(self.data.node.noise)
               break;
             case 'FIRE':
               self.setData({
                 node: nodeWater
               })
+              console.log(self.data.node.noise)
               break;
             case 'SOIL':
               self.setData({
                 node: nodeFire
               })
+              console.log(self.data.node.noise)
               break;
           }
           self.data.changePoint = 0;
@@ -309,21 +320,25 @@ Page({
               self.setData({
                 node: nodeTree
               })
+              console.log(self.data.node.noise)
               break;
             case 'TREE':
               self.setData({
                 node: nodeWater
               })
+              console.log(self.data.node.noise)
               break;
             case 'WATER':
               self.setData({
                 node: nodeFire
               })
+              console.log(self.data.node.noise)
               break;
             case 'FIRE':
               self.setData({
                 node: nodeSoil
               })
+              console.log(self.data.node.noise)
               break;
             case 'SOIL':
               break;
@@ -359,12 +374,6 @@ Page({
   },
 
   onShow: function() {
-    wx.getBackgroundAudioPlayerState({
-      success: function success(res) {
-        if (res.status === 1) {
-          wx.stopBackgroundAudio()
-        }
-      }
-    });
+
   },
 })
