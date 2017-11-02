@@ -5,8 +5,8 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#000",
     "navigationBarTitleText": "归心",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle":"white"
   }
 }

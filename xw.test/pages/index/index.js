@@ -77,6 +77,7 @@ Page({
     startButton: true,
     pauseOrContinue: true,
     touchmove: true,
+    ifpool:true,
     lunar: null,
     dates: null,
     time: null,
@@ -94,7 +95,7 @@ Page({
     pause: '暂停',
     continues: '继续',
     end: '结束',
-    shadowcolor: '#333333',
+    shadowcolor: 'rgba( 0, 0, 0, 0)',
     circlecolor: 'rgba( 0, 0, 0, 0)'
   },
 
@@ -132,16 +133,17 @@ Page({
   start: function () {
     var self = this;
     self.setData({
+      ifpool: true,
       circlecolor: self.data.node.bgcolor,
       shadowcolor: self.data.node.bgcolor,
       startButton: false,
       pauseOrContinue: true,
       touchmove: false
     })
+    console.log(self.data.ifpool)
     if (self.tick === timeLowlimit) {
     } else {
       self.playnoise(self);
-      // self.listen(self);
     }
     if (self.data.tick > timeLowlimit && self.data.tick < timeUplimit) {
       self.time(self);
@@ -159,10 +161,11 @@ Page({
   end: function () {
     var self = this;
     self.setData({
+      ifpool: false,
       startButton: true,
       touchmove: true,
+      shadowcolor: 'rgba( 0, 0, 0, 0)',
       circlecolor: 'rgba( 0, 0, 0, 0)',
-      shadowcolor: '#333333',
       time: initialTimeText,
       tick: initialMin * secondsPerMin
     })
@@ -176,11 +179,13 @@ Page({
       dataUrl: self.data.node.noise,
       title: self.data.node.imageNode,
       complete: () => {
-        if (!self.data.startButton){
-          wx.onBackgroundAudioStop(
-            () => self.playnoise(self)
-          )
-        }        
+        wx.onBackgroundAudioStop(
+          () =>{
+            if (!self.data.startButton && self.data.ifpool){
+              self.playnoise(self)                
+            }
+          }
+        )
       }
     });
   },
@@ -190,6 +195,7 @@ Page({
       self.setTime(self);
       if (self.data.tick === timeLowlimit) {
         self.setData({
+          ifpool: false,
           circlecolor: 'rgba( 0, 0, 0, 0)',
           shadowcolor: '#333333',
           time: initialTimeText,
@@ -232,7 +238,7 @@ Page({
     var ychange = self.data.curPoint[yPos] - self.data.starPoint[yPos];
     if (Math.abs(xchange) < Math.abs(ychange)) {
       if (self.data.changePoint > changeTimePoint) {
-        if (self.data.curPoint[yPos] > self.data.starPoint[yPos] && self.data.tick > timeLowlimit) {
+        if (self.data.curPoint[yPos] > self.data.starPoint[yPos] && self.data.tick > timeLowlimit + 60) {
           // 向下滑
           self.setData({
             tick: self.data.tick - secondsPerMin,
