@@ -1,7 +1,7 @@
 
   <view>
     <view  wx:if="{{showImage}}">
-      <image src="http://10.0.0.100/noise/top.jpeg" class="top"/>
+      <image src="http://10.0.0.101/noise/top.jpeg" class="top"/>
     </view>
     <view  wx:else class="background" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
       <view class="markbackground" style="background-color:{{node.bgcolor}}">

@@ -14,10 +14,11 @@ const timeLowlimit = 0
 const loop = '∞'
 const trueOpacity = 1
 const falseOpacity = 0.3
+const host = 'http://10.0.0.101/noise/'
 const nodeWater = {
   mark: '雨水',
   bgcolor: 'rgba(0, 255, 255, 0.12)',
-  noise: 'http://10.0.0.100:80/noise/water.m4a',
+  noise: `${host}water.m4a`,
   imageNode: 'WATER',
   waterPoint: trueOpacity,
   treePoint: falseOpacity,
@@ -28,7 +29,7 @@ const nodeWater = {
 const nodeGold = {
   mark: '寺钟',
   bgcolor: 'rgba( 255, 255, 0, 0.12)',
-  noise: 'http://10.0.0.100:80/noise/gold.m4a',
+  noise: `${host}gold.m4a`,
   imageNode: 'GOLD',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -39,7 +40,7 @@ const nodeGold = {
 const nodeTree = {
   mark: '森林',
   bgcolor: 'rgba( 0, 255, 0, 0.12)',
-  noise: 'http://10.0.0.100:80/noise/tree.m4a',
+  noise: `${host}tree.m4a`,
   imageNode: 'TREE',
   waterPoint: falseOpacity,
   treePoint: trueOpacity,
@@ -50,7 +51,7 @@ const nodeTree = {
 const nodeFire = {
   mark: '篝火',
   bgcolor: 'rgba( 255, 0, 0, 0.12)',
-  noise: 'http://10.0.0.100:80/noise/fire.m4a',
+  noise: `${host}fire.m4a`,
   imageNode: 'FIRE',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -61,7 +62,7 @@ const nodeFire = {
 const nodeSoil = {
   mark: '浪潮',
   bgcolor: 'rgba( 238, 99, 99, 0.12)',
-  noise: 'http://10.0.0.100:80/noise/soil.m4a',
+  noise: `${host}soil.m4a`,
   imageNode: 'SOIL',
   waterPoint: falseOpacity,
   treePoint: falseOpacity,
@@ -140,7 +141,7 @@ Page({
     if (self.tick === timeLowlimit) {
     } else {
       self.playnoise(self);
-      self.listen(self);
+      // self.listen(self);
     }
     if (self.data.tick > timeLowlimit && self.data.tick < timeUplimit) {
       self.time(self);
@@ -153,7 +154,6 @@ Page({
       circlecolor: 'rgba( 0, 0, 0, 0)'
     })
     wx.pauseBackgroundAudio();
-    clearInterval(self.data.listens);
     clearInterval(self.data.times);
   },
   end: function () {
@@ -166,14 +166,22 @@ Page({
       time: initialTimeText,
       tick: initialMin * secondsPerMin
     })
-    wx.pauseBackgroundAudio();
-    clearInterval(self.data.listens);
+    wx.stopBackgroundAudio();
+    wx.onBackgroundAudioStop((d)=>{
+    })
     clearInterval(self.data.times);
   },
   playnoise: function (self) {
     wx.playBackgroundAudio({
       dataUrl: self.data.node.noise,
       title: self.data.node.imageNode,
+      complete: () => {
+        if (!self.data.startButton){
+          wx.onBackgroundAudioStop(
+            () => self.playnoise(self)
+          )
+        }        
+      }
     });
   },
   time: function (self) {
@@ -190,30 +198,12 @@ Page({
           touchmove: true
         });
         wx.stopBackgroundAudio();
-        clearInterval(self.data.listens);
         clearInterval(self.data.times);
       }
     }, 1000);
     self.setData({
       timer: self.data.times
     });
-  },
-  // 监听 音频停止时再起一个音频
-  listen: function (self) {
-    self.data.listens = setInterval(function () {
-      if (self.data.tick !== timeLowlimit) {
-        wx.getBackgroundAudioPlayerState({
-          success: function success(res) {
-            if (res.status !== 1) {
-              self.playnoise(self);
-            }
-          }
-        });
-      }
-    }, 50);
-    self.setData({
-      listen: self.data.listens
-    })
   },
   touchstart: function (e) {
     var self = this;
@@ -299,25 +289,21 @@ Page({
               self.setData({
                 node: nodeGold
               })
-              console.log(self.data.node.noise)
               break;
             case 'WATER':
               self.setData({
                 node: nodeTree
               })
-              console.log(self.data.node.noise)
               break;
             case 'FIRE':
               self.setData({
                 node: nodeWater
               })
-              console.log(self.data.node.noise)
               break;
             case 'SOIL':
               self.setData({
                 node: nodeFire
               })
-              console.log(self.data.node.noise)
               break;
           }
           self.data.changePoint = 0;
@@ -328,25 +314,21 @@ Page({
               self.setData({
                 node: nodeTree
               })
-              console.log(self.data.node.noise)
               break;
             case 'TREE':
               self.setData({
                 node: nodeWater
               })
-              console.log(self.data.node.noise)
               break;
             case 'WATER':
               self.setData({
                 node: nodeFire
               })
-              console.log(self.data.node.noise)
               break;
             case 'FIRE':
               self.setData({
                 node: nodeSoil
               })
-              console.log(self.data.node.noise)
               break;
             case 'SOIL':
               break;
@@ -365,7 +347,6 @@ Page({
   },
   
   onLoad: function () {
-    console.log('load')
     var self = this;
     self.date(self);
     setTimeout(() => {
@@ -376,17 +357,5 @@ Page({
       })
     }, 3000)
     self.data.tick = initialMin * secondsPerMin;
-  },
-
-  onHide: function() {
-    console.log('onHide')
-
-  },
-
-  onShow: function() {
-    console.log('onshow')
-  },
-  onReady:function() {
-    console.log('onready')
-  },
+  }
 })
