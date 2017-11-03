@@ -73,6 +73,7 @@ const nodeSoil = {
 
 Page({
   data: {
+    noticeShow: false,
     showImage: true,
     startButton: true,
     pauseOrContinue: true,
@@ -344,6 +345,20 @@ Page({
       }
     }
   },
+  showNotice: function() {
+    let self = this
+    self.setData({
+      noticeShow: true
+    })
+  },
+
+  closeNotice: function() {
+   let self = this
+   self.setData({
+     noticeShow: false
+   })
+ },
+
   onShareAppMessage() {
     return {
       title: '归心',

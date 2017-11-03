@@ -112,11 +112,16 @@
   bottom:5%
 }
 .notice {
-  position: absolute;
-  backgroundcolor: red;
   display:flex;
-  justify-content:center;
-  align-items:center;
-  width:80%;
-  height:80%
+  width:25px;
+  height:25px;
+  margin-top:5px;
+  margin-left:90%;
+}
+.noticeShow {
+  display:flex;
+  width: 80%;
+  height: 80%;
+  background-color:red;
+  margin-top:15%;
 }
