@@ -14,7 +14,7 @@ const timeLowlimit = 0
 const loop = '∞'
 const trueOpacity = 1
 const falseOpacity = 0.3
-const host = 'http://10.0.0.101/noise/'
+const host = 'http://10.0.0.100/noise/'
 const nodeWater = {
   mark: '雨水',
   bgcolor: 'rgba(0, 255, 255, 0.12)',

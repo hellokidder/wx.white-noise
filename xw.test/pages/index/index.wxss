@@ -111,3 +111,12 @@
   width:100%;
   bottom:5%
 }
+.notice {
+  position: absolute;
+  backgroundcolor: red;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:80%;
+  height:80%
+}

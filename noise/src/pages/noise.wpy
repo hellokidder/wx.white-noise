@@ -129,11 +129,18 @@
   width: 100%;
   bottom: 5%;
 }
+.notice {
+  position: fixed;
+  background-color: red;
+  width: 80%;
+  height: 80%;
+}
+
 </style>
 <template>
   <view>
     <view wx:if="{{showImge}}">
-      <image src="http://10.0.0.100/noise/top.jpeg" class="top"></image>
+      <image src="http://10.0.0.101/noise/top.jpeg" class="top"></image>
     </view>
     <view wx:else class="background" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
       <view class="markbackground" style="background-color:{{node.bgcolor}}">
@@ -187,6 +194,8 @@
             <image src="../image/point.png" class="point" style="opacity: {{node.firePoint}};"></image>
             <image src="../image/point.png" class="point" style="opacity: {{node.soilPoint}};"></image>
           </view>
+        </view>
+        <view class="notice" animation="{{animationData}}">
         </view>
       </view>
     </view>
@@ -289,7 +298,8 @@ export default class Index extends wepy.page {
     continues: '继续',
     end: '结束',
     shadowcolor: '#333333',
-    circlecolor: 'rgba( 0, 0, 0, 0)'
+    circlecolor: 'rgba( 0, 0, 0, 0)',
+    animationData: {}
   }
   methods = {
     date(self) {
@@ -518,6 +528,18 @@ export default class Index extends wepy.page {
       desc: '都市喧闹 何处归心',
       path: '/page/noise'
     }
+  }
+  onShow() {
+    let self = this
+    var animation = wx.createAnimation({
+      duration: 8000,
+      timingFunction: 'ease',
+    })
+    self.animation = animation
+    animation.translateY(200)
+    self.setData({
+      animationData: animation.export()
+    })
   }
   onLoad() {
     let self = this
