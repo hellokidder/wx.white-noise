@@ -358,14 +358,15 @@ Page({
     self.animation = animation
     animation.opacity(1).translateY(-20).step()
     self.setData({  
-    animationData : animation.export()  
+    animationData : animation.export()
     })
   },
 
   closeNotice: function() {
    let self = this
    self.setData({
-     noticeShow: false
+     noticeShow: false,
+     animationData: null
    })
  },
 
