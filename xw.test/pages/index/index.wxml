@@ -7,9 +7,9 @@
       <view class="markbackground" style="background-color:{{node.bgcolor}}">
         <view style="width:100%;">
         </view>
-        <view wx:if="{{noticeShow}}" class="noticeShow" bindtap="closeNotice">
+        <view wx:if="{{noticeShow}}" class="noticeShow" animation="{{animationData}}">
           <view style="width: 100%">
-            <view style="margin-left:90%; margin-top:5px;" >
+            <view style="margin-left:92%; margin-top:5px;" bindtap="closeNotice">
               <image src="http://10.0.0.100/noise/close.png" style="width:10px; height:10px;"></image>
             </view>
           </view>

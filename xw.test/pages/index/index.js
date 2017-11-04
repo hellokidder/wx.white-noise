@@ -97,7 +97,8 @@ Page({
     continues: '继续',
     end: '结束',
     shadowcolor: 'rgba( 0, 0, 0, 0)',
-    circlecolor: 'rgba( 0, 0, 0, 0)'
+    circlecolor: 'rgba( 0, 0, 0, 0)',
+    animationData: {}
   },
 
   date: function (self) {
@@ -349,6 +350,15 @@ Page({
     let self = this
     self.setData({
       noticeShow: true
+    })
+    var animation = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'ease',
+    })
+    self.animation = animation
+    animation.opacity(1).translateY(-20).step()
+    self.setData({  
+    animationData : animation.export()  
     })
   },
 
