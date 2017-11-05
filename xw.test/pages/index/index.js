@@ -1,5 +1,3 @@
-//index.js
-//获取应用实例
 const app = getApp()
 const calendar = require('../index/calendar')
 const initialTimeText = '20 : 00'
@@ -78,15 +76,15 @@ Page({
     startButton: true,
     pauseOrContinue: true,
     touchmove: true,
-    ifpool:true,
+    ifpool: true,
     lunar: null,
     dates: null,
     time: null,
     tick: null,
     timer: null,
-    times:null,
+    times: null,
     listen: null,
-    listens:null,
+    listens: null,
     starPoint: [0, 0],
     curPoint: [0, 0],
     touches: [],
@@ -132,6 +130,7 @@ Page({
       lunar: '农历' + lunarMonths[lunardate.lMonth - 1] + self.lunarDay
     })
   },
+  // 开始
   start: function () {
     var self = this;
     self.setData({
@@ -143,14 +142,14 @@ Page({
       touchmove: false
     })
     console.log(self.data.ifpool)
-    if (self.tick === timeLowlimit) {
-    } else {
+    if (self.tick === timeLowlimit) {} else {
       self.playnoise(self);
     }
     if (self.data.tick > timeLowlimit && self.data.tick < timeUplimit) {
       self.time(self);
     }
   },
+  // 暂停
   pause: function () {
     var self = this;
     self.setData({
@@ -160,6 +159,7 @@ Page({
     wx.pauseBackgroundAudio();
     clearInterval(self.data.times);
   },
+  // 结束
   end: function () {
     var self = this;
     self.setData({
@@ -172,8 +172,7 @@ Page({
       tick: initialMin * secondsPerMin
     })
     wx.stopBackgroundAudio();
-    wx.onBackgroundAudioStop((d)=>{
-    })
+    wx.onBackgroundAudioStop((d) => {})
     clearInterval(self.data.times);
   },
   playnoise: function (self) {
@@ -182,15 +181,16 @@ Page({
       title: self.data.node.imageNode,
       complete: () => {
         wx.onBackgroundAudioStop(
-          () =>{
-            if (!self.data.startButton && self.data.ifpool){
-              self.playnoise(self)                
+          () => {
+            if (!self.data.startButton && self.data.ifpool) {
+              self.playnoise(self)
             }
           }
         )
       }
     });
   },
+  // 一个倒计时,tick = 0 时停止
   time: function (self) {
     self.data.times = setInterval(function () {
       self.data.tick--;
@@ -213,16 +213,17 @@ Page({
       timer: self.data.times
     });
   },
+  // 触摸指令
   touchstart: function (e) {
     var self = this;
     self.setData({
-      starPoint:[e.touches[0].pageX, e.touches[0].pageY]
+      starPoint: [e.touches[0].pageX, e.touches[0].pageY]
     })
   },
   touchmove: function (e) {
     var self = this;
     self.setData({
-      curPoint:[e.touches[0].pageX, e.touches[0].pageY],
+      curPoint: [e.touches[0].pageX, e.touches[0].pageY],
       changePoint: self.data.changePoint + 1
     })
     if (self.data.touchmove) {
@@ -235,6 +236,7 @@ Page({
       self.imageChange(self);
     }
   },
+  // 上下滑动改变tick
   timeChange: function (self) {
     var xchange = self.data.curPoint[xPos] - self.data.starPoint[xPos];
     var ychange = self.data.curPoint[yPos] - self.data.starPoint[yPos];
@@ -259,7 +261,7 @@ Page({
       }
     }
   },
-  
+
   setTime: function (self) {
     var currentTime = self.currentTime(self.data.tick);
     self.setData({
@@ -283,6 +285,7 @@ Page({
       return min + ' : ' + sec;
     }
   },
+  // 左右滑动改变图片及音频
   imageChange: function (self) {
     var xchange = self.data.curPoint[xPos] - self.data.starPoint[xPos];
     var ychange = self.data.curPoint[yPos] - self.data.starPoint[yPos];
@@ -346,7 +349,8 @@ Page({
       }
     }
   },
-  showNotice: function() {
+  // 显示提示卡片
+  showNotice: function () {
     let self = this
     self.setData({
       noticeShow: true
@@ -357,19 +361,19 @@ Page({
     })
     self.animation = animation
     animation.opacity(1).translateY(-20).step()
-    self.setData({  
-    animationData : animation.export()
+    self.setData({
+      animationData: animation.export()
     })
   },
-
-  closeNotice: function() {
-   let self = this
-   self.setData({
-     noticeShow: false,
-     animationData: null
-   })
- },
-
+  // 关闭提示卡片
+  closeNotice: function () {
+    let self = this
+    self.setData({
+      noticeShow: false,
+      animationData: null
+    })
+  },
+  // 分享
   onShareAppMessage() {
     return {
       title: '归心',
@@ -377,7 +381,7 @@ Page({
       path: '/pages/index'
     }
   },
-  
+  // 初始化
   onLoad: function () {
     var self = this;
     self.date(self);
