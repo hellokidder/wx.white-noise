@@ -1,7 +1,7 @@
 
   <view>
     <view  wx:if="{{showImage}}">
-      <image src="http://10.0.0.100/noise/top.jpeg" class="top"/>
+      <image src="http://10.0.0.101/noise/top.jpeg" class="top"/>
     </view>
     <view  wx:else class="background" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
       <view class="markbackground" style="background-color:{{node.bgcolor}}">
@@ -10,13 +10,13 @@
         <view wx:if="{{noticeShow}}" class="noticeShow" animation="{{animationData}}">
           <view style="width: 100%">
             <view style="margin-left:92%; margin-top:5px;" bindtap="closeNotice">
-              <image src="http://10.0.0.100/noise/close.png" style="width:10px; height:10px;"></image>
+              <image src="http://10.0.0.101/noise/close.png" style="width:10px; height:10px;"></image>
             </view>
           </view>
         </view>
         <view wx:else class="top">
           <view bindtap="showNotice" class="notice">
-            <image src="http://10.0.0.100/noise/notice.png" style="width:25px; height:25px;"/>
+            <image src="http://10.0.0.101/noise/notice.png" style="width:25px; height:25px;"/>
           </view>
           <view class="blank"/>
           <view class="circular center" style="background-color:{{circlecolor}};  box-shadow:0px 0px 40px {{shadowcolor}};">

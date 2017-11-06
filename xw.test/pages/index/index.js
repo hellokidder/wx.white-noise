@@ -12,7 +12,7 @@ const timeLowlimit = 0
 const loop = '∞'
 const trueOpacity = 1
 const falseOpacity = 0.3
-const host = 'http://10.0.0.100/noise/'
+const host = 'http://10.0.0.101/noise/'
 const nodeWater = {
   mark: '雨水',
   bgcolor: 'rgba(0, 255, 255, 0.12)',
@@ -96,7 +96,8 @@ Page({
     end: '结束',
     shadowcolor: 'rgba( 0, 0, 0, 0)',
     circlecolor: 'rgba( 0, 0, 0, 0)',
-    animationData: {}
+    animationData: {},
+    mark: 'http://10.0.0.101/noise/mark.jpeg'
   },
 
   date: function (self) {
@@ -179,6 +180,7 @@ Page({
     wx.playBackgroundAudio({
       dataUrl: self.data.node.noise,
       title: self.data.node.imageNode,
+      coverImgUrl: self.data.mark,
       complete: () => {
         wx.onBackgroundAudioStop(
           () => {
@@ -377,7 +379,6 @@ Page({
   onShareAppMessage() {
     return {
       title: '归心',
-      desc: '都市喧闹 何处归心',
       path: '/pages/index'
     }
   },
