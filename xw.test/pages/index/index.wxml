@@ -12,6 +12,9 @@
             <view style="margin-left:92%; margin-top:5px;" bindtap="closeNotice">
               <image src="http://10.0.0.101/noise/close.png" style="width:10px; height:10px;"></image>
             </view>
+            <view class="noticeMark">
+                <image src="http://10.0.0.101/noise/mark.jpeg" style="width: 40px; height: 40px;"></image>
+            </view>
           </view>
         </view>
         <view wx:else class="top">
