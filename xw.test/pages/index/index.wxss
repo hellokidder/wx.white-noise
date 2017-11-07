@@ -115,17 +115,61 @@
   display:flex;
   width:25px;
   height:25px;
-  margin-top:5px;
-  margin-left:94%;
+  margin-top:10px;
+  margin-left:88%;
+  opacity: 0.8;
 }
 .noticeShow {
   display:flex;
   width: 80%;
   height: 80%;
-  background-color: gray;
   margin-top:15%;
 }
-.noticeMark {
+.close {
   display:flex;
   justify-content:center;
+  align-items:center;
+  background-color: rgb(38, 40, 55);
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+.line {
+  background-color: rgb(38, 40, 55);
+  width: 1px;
+  height: 20px;
+  opacity: 0.8;
+}
+.noticeview {
+  width: 100%;
+  height: 90%;
+  background-color: rgb(38, 40, 55);
+  border-radius: 10px;
+  opacity: 0.8;
+}
+.guixin {
+  display:flex;
+  justify-content:center;
+  color: #ffe9a7;
+  font-size: 30px;
+  margin-top:26px;
+  margin-bottom: 26px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-family: STFangsong;
+  font-weight: 100;
+}
+.font {
+  color: white;
+  font-size: 15px;
+  font-family: STFangsong;
+  margin-top:5px;
+  margin-bottom: 5px;
+  opacity: 0.8;
+}
+.xline {
+  width: 30px;
+  height: 1px;
+  background-color: #ffe9a7;
 }

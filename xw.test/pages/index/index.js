@@ -1,18 +1,18 @@
 const app = getApp()
-const calendar = require('../index/calendar')
+const calendar = require('../calendar')
 const initialTimeText = '20 : 00'
 const initialMin = 20
 const secondsPerMin = 60
 const xPos = 0
 const yPos = 1
-const changeTimePoint = 1
-const changeImagePoint = 5
+const changeTimePoint = 2
+const changeImagePoint = 10
 const timeUplimit = 3660
 const timeLowlimit = 0
 const loop = '∞'
 const trueOpacity = 1
 const falseOpacity = 0.3
-const host = 'http://10.0.0.101/noise/'
+const host = 'http://www.smartestee.com/noise/'
 const nodeWater = {
   mark: '雨水',
   bgcolor: 'rgba(0, 255, 255, 0.12)',
@@ -142,7 +142,6 @@ Page({
       pauseOrContinue: true,
       touchmove: false
     })
-    console.log(self.data.ifpool)
     if (self.tick === timeLowlimit) {} else {
       self.playnoise(self);
     }
@@ -201,7 +200,7 @@ Page({
         self.setData({
           ifpool: false,
           circlecolor: 'rgba( 0, 0, 0, 0)',
-          shadowcolor: '#333333',
+          shadowcolor: 'rgba( 0, 0, 0, 0)',
           time: initialTimeText,
           startButton: true,
           tick: initialMin * secondsPerMin,
@@ -378,8 +377,8 @@ Page({
   // 分享
   onShareAppMessage() {
     return {
-      title: '归心',
-      path: '/pages/index'
+      title: '归心之喃',
+      path: '/pages/index/index'
     }
   },
   // 初始化

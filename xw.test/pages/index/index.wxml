@@ -1,25 +1,39 @@
 
   <view>
     <view  wx:if="{{showImage}}">
-      <image src="http://10.0.0.101/noise/top.jpeg" class="top"/>
+      <image src="http://www.smartestee.com/noise/top.jpeg" class="top"/>
     </view>
     <view  wx:else class="background" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend">
       <view class="markbackground" style="background-color:{{node.bgcolor}}">
         <view style="width:100%;">
         </view>
         <view wx:if="{{noticeShow}}" class="noticeShow" animation="{{animationData}}">
-          <view style="width: 100%">
-            <view style="margin-left:92%; margin-top:5px;" bindtap="closeNotice">
-              <image src="http://10.0.0.101/noise/close.png" style="width:10px; height:10px;"></image>
+          <view style="width: 100%; display:flex; align-items:center; flex-direction:column;">
+            <view class="close" bindtap="closeNotice">
+              <image src="http://www.smartestee.com/noise/closenoise.png" style="width:10px; height:10px;"></image>
             </view>
-            <view class="noticeMark">
-                <image src="http://10.0.0.101/noise/mark.jpeg" style="width: 40px; height: 40px;"></image>
+            <view class="line"></view>
+            <view class="noticeview" style="display:flex; align-items:center; flex-direction:column;">
+              <view style="display:flex; align-items:center; flex-direction:row;">
+                <view class="xline"></view>
+                <view class="guixin">归心</view>
+                <view class="xline"></view>
+              </view>
+              <view>
+                <image src="http://www.smartestee.com/noise/left-right.png" style="width:69px; height:69px;"></image>
+              </view>
+              <view class="font">左右滑动转换声音</view>
+              <view>
+                  <image src="http://www.smartestee.com/noise/top-down.png" style="width:69px; height:69px; margin-top:10%; margin-left:28px;"></image>
+              </view>
+              <view class="font">上下滑动调整时间</view>
+              <view class="font" style="margin-top:16%;">想要后台播放请置顶“归心之喃”</view>
             </view>
           </view>
         </view>
         <view wx:else class="top">
           <view bindtap="showNotice" class="notice">
-            <image src="http://10.0.0.101/noise/notice.png" style="width:25px; height:25px;"/>
+            <image src="http://www.smartestee.com/noise/not.png" style="width:25px; height:25px;"/>
           </view>
           <view class="blank"/>
           <view class="circular center" style="background-color:{{circlecolor}};  box-shadow:0px 0px 40px {{shadowcolor}};">
